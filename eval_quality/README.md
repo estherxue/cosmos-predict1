@@ -37,3 +37,11 @@ python eval_quality/plot_results.py            # writes eval_quality/results/qua
 
 Defaults to the repo's `cosmos_predict1/tokenizer/test_data/` (1 image + 1 video, minimal smoke set).
 Point `--data_dir` at any folder of `.png/.jpg` images and `.mp4/.mov/.webm` videos to evaluate on more data.
+
+The committed `results/` were produced on **DAVIS 2017 val** (30 sequences, 480p; first 17 frames as a
+lossless mp4 per sequence for the video tokenizers, first frame as png for the image tokenizers):
+
+```bash
+bash eval_quality/prepare_davis.sh                 # downloads DAVIS, builds /workspace/davis_eval
+python eval_quality/run_eval.py --data_dir /workspace/davis_eval --short-side 480 --include-legacy
+```

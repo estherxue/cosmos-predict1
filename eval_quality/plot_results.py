@@ -77,8 +77,11 @@ def main():
 
     n_img = sum(1 for r in results if r["kind"] == "image")
     n_vid = len(results) - n_img
+    data_name = Path(data["args"].get("data_dir", "")).name
+    n_samples = max(len(r["samples"]) for r in results)
     fig.suptitle("Cosmos tokenizer reconstruction quality vs compression rate", color=INK, fontsize=13, x=0.02, ha="left")
-    fig.text(0.02, 0.925, f"{n_img} image + {n_vid} video tokenizers · hollow markers = legacy Cosmos-0.1 checkpoints",
+    fig.text(0.02, 0.925,
+             f"{n_img} image + {n_vid} video tokenizers · data: {data_name} ({n_samples} samples/tokenizer) · hollow markers = legacy Cosmos-0.1 checkpoints",
              color=MUTED, fontsize=9)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
 
