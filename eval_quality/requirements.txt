@@ -1,0 +1,9 @@
+# Deps for tokenizer-only inference + eval (assumes torch/torchvision already installed).
+# System requirement: ffmpeg binary (for mediapy video IO): apt-get install -y ffmpeg
+huggingface_hub
+mediapy
+einops
+loguru
+tqdm
+scikit-image
+matplotlib

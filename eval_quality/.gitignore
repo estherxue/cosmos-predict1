@@ -1,2 +1,3 @@
-# upstream .gitignore ignores results/ globally; we do want eval results in git
+# upstream .gitignore ignores results/ and *.txt globally; re-include ours
 !results/
+!requirements.txt
