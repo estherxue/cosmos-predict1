@@ -1,0 +1,175 @@
+{
+  "args": {
+    "checkpoint_dir": "checkpoints",
+    "data_dir": "cosmos_predict1/tokenizer/test_data",
+    "output_dir": "eval_quality/results",
+    "tokenizers": null,
+    "include_legacy": true,
+    "max_frames": 17,
+    "short_side": 512,
+    "device": "cuda",
+    "dtype": "bfloat16"
+  },
+  "results": [
+    {
+      "name": "CI8x8-360p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-CI8x8-360p",
+      "family": "CI",
+      "kind": "image",
+      "compression": 64,
+      "series": "tokenize1",
+      "samples": {
+        "image.png": {
+          "psnr": 26.10719128057291,
+          "ssim": 0.8649566577667073
+        }
+      },
+      "psnr": 26.10719128057291,
+      "ssim": 0.8649566577667073
+    },
+    {
+      "name": "CI16x16-360p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-CI16x16-360p",
+      "family": "CI",
+      "kind": "image",
+      "compression": 256,
+      "series": "tokenize1",
+      "samples": {
+        "image.png": {
+          "psnr": 20.745597647254286,
+          "ssim": 0.559432141776343
+        }
+      },
+      "psnr": 20.745597647254286,
+      "ssim": 0.559432141776343
+    },
+    {
+      "name": "DI8x8-360p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-DI8x8-360p",
+      "family": "DI",
+      "kind": "image",
+      "compression": 64,
+      "series": "tokenize1",
+      "samples": {
+        "image.png": {
+          "psnr": 21.520122746350268,
+          "ssim": 0.6334838592045434
+        }
+      },
+      "psnr": 21.520122746350268,
+      "ssim": 0.6334838592045434
+    },
+    {
+      "name": "DI16x16-360p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-DI16x16-360p",
+      "family": "DI",
+      "kind": "image",
+      "compression": 256,
+      "series": "tokenize1",
+      "samples": {
+        "image.png": {
+          "psnr": 18.185708734104903,
+          "ssim": 0.34738619997182824
+        }
+      },
+      "psnr": 18.185708734104903,
+      "ssim": 0.34738619997182824
+    },
+    {
+      "name": "CV4x8x8-360p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-CV4x8x8-360p",
+      "family": "CV",
+      "kind": "video",
+      "compression": 256,
+      "series": "tokenize1",
+      "samples": {
+        "video.mp4": {
+          "psnr": 41.84893610980476,
+          "ssim": 0.9752919838177547
+        }
+      },
+      "psnr": 41.84893610980476,
+      "ssim": 0.9752919838177547
+    },
+    {
+      "name": "CV8x8x8-720p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-CV8x8x8-720p",
+      "family": "CV",
+      "kind": "video",
+      "compression": 512,
+      "series": "tokenize1",
+      "samples": {
+        "video.mp4": {
+          "psnr": 38.58799750689853,
+          "ssim": 0.9507907428633248
+        }
+      },
+      "psnr": 38.58799750689853,
+      "ssim": 0.9507907428633248
+    },
+    {
+      "name": "DV4x8x8-360p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-DV4x8x8-360p",
+      "family": "DV",
+      "kind": "video",
+      "compression": 256,
+      "series": "tokenize1",
+      "samples": {
+        "video.mp4": {
+          "psnr": 36.038046805425665,
+          "ssim": 0.9238419927228613
+        }
+      },
+      "psnr": 36.038046805425665,
+      "ssim": 0.9238419927228613
+    },
+    {
+      "name": "DV8x16x16-720p",
+      "hf_repo": "nvidia/Cosmos-Tokenize1-DV8x16x16-720p",
+      "family": "DV",
+      "kind": "video",
+      "compression": 2048,
+      "series": "tokenize1",
+      "samples": {
+        "video.mp4": {
+          "psnr": 31.467326361907908,
+          "ssim": 0.8361949018601692
+        }
+      },
+      "psnr": 31.467326361907908,
+      "ssim": 0.8361949018601692
+    },
+    {
+      "name": "0.1-CV8x16x16",
+      "hf_repo": "nvidia/Cosmos-0.1-Tokenizer-CV8x16x16",
+      "family": "CV",
+      "kind": "video",
+      "compression": 2048,
+      "series": "legacy",
+      "samples": {
+        "video.mp4": {
+          "psnr": 33.927362543417566,
+          "ssim": 0.8806628361158069
+        }
+      },
+      "psnr": 33.927362543417566,
+      "ssim": 0.8806628361158069
+    },
+    {
+      "name": "0.1-DV8x8x8",
+      "hf_repo": "nvidia/Cosmos-0.1-Tokenizer-DV8x8x8",
+      "family": "DV",
+      "kind": "video",
+      "compression": 512,
+      "series": "legacy",
+      "samples": {
+        "video.mp4": {
+          "psnr": 33.035634128234285,
+          "ssim": 0.8814972875386496
+        }
+      },
+      "psnr": 33.035634128234285,
+      "ssim": 0.8814972875386496
+    }
+  ]
+}
