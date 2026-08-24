@@ -15,9 +15,9 @@ fi
 
 mkdir -p "$OUT_DIR"
 while read -r seq; do
-  ffmpeg -y -loglevel error -start_number 0 -i "DAVIS/JPEGImages/480p/$seq/%05d.jpg" \
+  ffmpeg -nostdin -y -loglevel error -start_number 0 -i "DAVIS/JPEGImages/480p/$seq/%05d.jpg" \
     -frames:v 17 -c:v libx264rgb -qp 0 "$OUT_DIR/$seq.mp4"
-  ffmpeg -y -loglevel error -i "DAVIS/JPEGImages/480p/$seq/00000.jpg" "$OUT_DIR/$seq.png"
+  ffmpeg -nostdin -y -loglevel error -i "DAVIS/JPEGImages/480p/$seq/00000.jpg" "$OUT_DIR/$seq.png"
 done < DAVIS/ImageSets/2017/val.txt
 
 echo "PREP_COMPLETE: $(ls "$OUT_DIR" | wc -l) files in $OUT_DIR"
