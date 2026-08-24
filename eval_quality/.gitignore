@@ -1,0 +1,2 @@
+# upstream .gitignore ignores results/ globally; we do want eval results in git
+!results/
