@@ -1,0 +1,7 @@
+name,series,family,kind,compression,psnr,ssim,enc_ms_per_frame,dec_ms_per_frame,peak_vram_gb,tokens_per_frame,latent_shape,n_samples
+0.1-CV4x8x8,legacy,CV,video,256,29.5105,0.837,7.4226,13.604,1.674,1905.9,16x5x60x108,30
+0.1-CV8x8x8,legacy,CV,video,512,28.1284,0.7868,7.4705,13.9291,1.429,1143.5,16x3x60x108,30
+0.1-CV8x16x16,legacy,CV,video,2048,25.9711,0.7066,4.9457,11.6582,1.438,285.9,16x3x30x54,30
+0.1-DV4x8x8,legacy,DV,video,256,26.1975,0.7373,9.0574,22.1663,1.734,1905.9,5x60x108,30
+0.1-DV8x8x8,legacy,DV,video,512,25.5633,0.6969,7.4943,13.9367,1.429,1143.5,3x60x108,30
+0.1-DV8x16x16,legacy,DV,video,2048,23.8943,0.6247,4.9735,11.6253,1.439,285.9,3x30x54,30
