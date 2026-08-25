@@ -1,0 +1,3 @@
+name,series,family,kind,compression,psnr,ssim,enc_ms_per_frame,dec_ms_per_frame,peak_vram_gb,n_samples
+0.1-CV4x8x8,legacy,CV,video,256,29.5105,0.837,7.4292,13.6449,1.674,30
+0.1-CV8x8x8,legacy,CV,video,512,28.1284,0.7868,7.5007,14.0519,1.429,30
