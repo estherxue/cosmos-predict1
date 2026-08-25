@@ -30,18 +30,20 @@ from tokenizers_registry import select
 IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 VIDEO_EXTS = {".mp4", ".mov", ".webm"}
 CSV_FIELDS = ["name", "series", "family", "kind", "compression", "psnr", "ssim",
-              "enc_ms_per_frame", "dec_ms_per_frame", "peak_vram_gb", "n_samples"]
+              "enc_ms_per_frame", "dec_ms_per_frame", "peak_vram_gb",
+              "tokens_per_frame", "latent_shape", "n_samples"]
 
 
 def frame_metrics(original: np.ndarray, reconstructed: np.ndarray) -> dict:
-    """Mean PSNR/SSIM over aligned uint8 frame stacks, layout TxHxWxC."""
+    """PSNR/SSIM over aligned uint8 frame stacks (TxHxWxC): means + per-frame PSNR."""
     from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
     psnrs, ssims = [], []
     for orig, recon in zip(original, reconstructed):
         psnrs.append(peak_signal_noise_ratio(orig, recon, data_range=255))
         ssims.append(structural_similarity(orig, recon, data_range=255, channel_axis=-1))
-    return {"psnr": float(np.mean(psnrs)), "ssim": float(np.mean(ssims))}
+    return {"psnr": float(np.mean(psnrs)), "ssim": float(np.mean(ssims)),
+            "psnr_frames": [round(float(p), 3) for p in psnrs]}
 
 
 def motion_heatmap(video: np.ndarray) -> tuple:
@@ -86,7 +88,7 @@ def autoencode_timed(tokenizer, batch: np.ndarray, kind: str, device: str) -> tu
         sync()
         t2 = time.perf_counter()
     recon = unpad(tensor2numpy(output_tensor), crop_region)
-    return recon, t1 - t0, t2 - t1
+    return recon, t1 - t0, t2 - t1, tuple(latent.shape)
 
 
 def eval_tokenizer(tok: dict, args, images: list, videos: list) -> dict:
@@ -118,14 +120,17 @@ def eval_tokenizer(tok: dict, args, images: list, videos: list) -> dict:
     files = images if tok["kind"] == "image" else videos
     autoencode_timed(tokenizer, load(files[0]), tok["kind"], args.device)  # warmup (JIT/cuDNN init)
 
-    samples, enc_ms, dec_ms = {}, [], []
+    samples, enc_ms, dec_ms, latent_shape, tokens_per_frame = {}, [], [], None, None
     for filepath in files:
         batch = load(filepath)
-        recon_batch, t_enc, t_dec = autoencode_timed(tokenizer, batch, tok["kind"], args.device)
+        recon_batch, t_enc, t_dec, latent_shape = autoencode_timed(tokenizer, batch, tok["kind"], args.device)
         original, recon = batch[0], recon_batch[0]
         n_frames = 1 if tok["kind"] == "image" else original.shape[0]
         enc_ms.append(t_enc * 1000 / n_frames)
         dec_ms.append(t_dec * 1000 / n_frames)
+        # tokens = latent spatio-temporal positions (channel dim excluded for continuous)
+        n_dims = 2 if tok["kind"] == "image" else 3
+        tokens_per_frame = float(np.prod(latent_shape[-n_dims:]) / n_frames)
 
         if tok["kind"] == "image":
             samples[filepath.name] = frame_metrics(original[None], recon[None])
@@ -148,6 +153,8 @@ def eval_tokenizer(tok: dict, args, images: list, videos: list) -> dict:
         "ssim": float(np.mean([s["ssim"] for s in samples.values()])),
         "enc_ms_per_frame": float(np.median(enc_ms)),
         "dec_ms_per_frame": float(np.median(dec_ms)),
+        "tokens_per_frame": round(tokens_per_frame, 1),
+        "latent_shape": "x".join(map(str, latent_shape[1:])),
         "n_samples": len(samples),
     }
     if args.device == "cuda":
