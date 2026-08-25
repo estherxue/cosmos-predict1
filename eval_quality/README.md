@@ -23,6 +23,13 @@ python eval_quality/download_checkpoints.py --include-legacy   # encoder/decoder
 python eval_quality/run_eval.py --include-legacy               # writes eval_quality/results/metrics.json + comparisons/
 ```
 
+Besides PSNR/SSIM, `run_eval.py` reports encode/decode ms per frame (median across samples,
+CUDA-synced, after a warmup pass) and peak VRAM, and writes a one-line-per-tokenizer
+`results/summary.csv`. For videos it also stores a per-clip motion score (mean |frame diff|)
+in metrics.json and saves a second comparison image cropped to the motion-hot region
+(`*__motioncrop.png`) — original | reconstruction of the same crop, where temporal
+compression damage is most visible.
+
 Smoke test a single tokenizer first: `python eval_quality/run_eval.py --tokenizers CI8x8-360p`
 
 Defaults are 24GB-safe: videos are cut to `--max-frames 17` and inputs resized to `--short-side 512`.

@@ -15,9 +15,15 @@ TOKENIZERS = [
     dict(name="CV8x8x8-720p", hf_repo="nvidia/Cosmos-Tokenize1-CV8x8x8-720p", family="CV", kind="video", compression=512, series="tokenize1"),
     dict(name="DV4x8x8-360p", hf_repo="nvidia/Cosmos-Tokenize1-DV4x8x8-360p", family="DV", kind="video", compression=256, series="tokenize1"),
     dict(name="DV8x16x16-720p", hf_repo="nvidia/Cosmos-Tokenize1-DV8x16x16-720p", family="DV", kind="video", compression=2048, series="tokenize1"),
-    # -- Legacy Cosmos-0.1 fill-ins: compression rates missing from Tokenize1 --
+    # -- Legacy Cosmos-0.1 series: one training recipe across all compression
+    # rates (no per-variant resolution split), so within-series comparisons are
+    # clean compression ablations --
+    dict(name="0.1-CV4x8x8", hf_repo="nvidia/Cosmos-0.1-Tokenizer-CV4x8x8", family="CV", kind="video", compression=256, series="legacy"),
+    dict(name="0.1-CV8x8x8", hf_repo="nvidia/Cosmos-0.1-Tokenizer-CV8x8x8", family="CV", kind="video", compression=512, series="legacy"),
     dict(name="0.1-CV8x16x16", hf_repo="nvidia/Cosmos-0.1-Tokenizer-CV8x16x16", family="CV", kind="video", compression=2048, series="legacy"),
+    dict(name="0.1-DV4x8x8", hf_repo="nvidia/Cosmos-0.1-Tokenizer-DV4x8x8", family="DV", kind="video", compression=256, series="legacy"),
     dict(name="0.1-DV8x8x8", hf_repo="nvidia/Cosmos-0.1-Tokenizer-DV8x8x8", family="DV", kind="video", compression=512, series="legacy"),
+    dict(name="0.1-DV8x16x16", hf_repo="nvidia/Cosmos-0.1-Tokenizer-DV8x16x16", family="DV", kind="video", compression=2048, series="legacy"),
 ]
 
 
