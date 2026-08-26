@@ -91,16 +91,37 @@ def autoencode_timed(tokenizer, batch: np.ndarray, kind: str, device: str) -> tu
     return recon, t1 - t0, t2 - t1, tuple(latent.shape)
 
 
-def eval_tokenizer(tok: dict, args, images: list, videos: list) -> dict:
-    import torch
+def build_tokenizer(tok: dict, args, native: bool = False):
+    """Build an ImageTokenizer/CausalVideoTokenizer from JIT checkpoints.
+
+    native=True loads the PyTorch-native modules instead of the serialized JIT
+    graphs (weights come from the JIT files' state_dict) — required for dtype
+    changes and quantization. Legacy 0.1 names map onto the same-architecture
+    Tokenize1 config where one exists.
+    """
     from cosmos_predict1.tokenizer.inference.image_lib import ImageTokenizer
-    from cosmos_predict1.tokenizer.inference.utils import read_image, read_video, resize_image, resize_video, write_image
     from cosmos_predict1.tokenizer.inference.video_lib import CausalVideoTokenizer
 
     ckpt_dir = Path(args.checkpoint_dir) / tok["hf_repo"].split("/")[-1]
     enc, dec = ckpt_dir / "encoder.jit", ckpt_dir / "decoder.jit"
     if not (enc.exists() and dec.exists()):
         raise FileNotFoundError(f"{ckpt_dir} missing encoder.jit/decoder.jit; run download_checkpoints.py first")
+
+    cls = ImageTokenizer if tok["kind"] == "image" else CausalVideoTokenizer
+    kwargs = dict(checkpoint_enc=str(enc), checkpoint_dec=str(dec), device=args.device, dtype=args.dtype)
+    if native:
+        from cosmos_predict1.tokenizer.networks import TokenizerConfigs
+
+        cfg_name = tok["name"].removeprefix("0.1-").replace("-", "_")
+        if not cfg_name.endswith(("_360p", "_720p")):  # legacy names carry no resolution suffix
+            cfg_name += "_720p" if cfg_name in ("CV8x8x8", "DV8x16x16") else "_360p"
+        kwargs["tokenizer_config"] = dict(TokenizerConfigs[cfg_name].value)
+    return cls(**kwargs)
+
+
+def eval_tokenizer(tok: dict, args, images: list, videos: list, tokenizer=None) -> dict:
+    import torch
+    from cosmos_predict1.tokenizer.inference.utils import read_image, read_video, resize_image, resize_video, write_image
 
     comparison_dir = Path(args.output_dir) / "comparisons"
     comparison_dir.mkdir(parents=True, exist_ok=True)
@@ -109,8 +130,8 @@ def eval_tokenizer(tok: dict, args, images: list, videos: list) -> dict:
         torch.cuda.empty_cache()
         torch.cuda.reset_peak_memory_stats()
 
-    cls = ImageTokenizer if tok["kind"] == "image" else CausalVideoTokenizer
-    tokenizer = cls(checkpoint_enc=str(enc), checkpoint_dec=str(dec), device=args.device, dtype=args.dtype)
+    if tokenizer is None:
+        tokenizer = build_tokenizer(tok, args, native=getattr(args, "native", False))
 
     def load(filepath):
         if tok["kind"] == "image":
@@ -174,6 +195,8 @@ def main():
     parser.add_argument("--crop-size", type=int, default=256, help="side of the motion-hot-region comparison crop")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--dtype", default="bfloat16")
+    parser.add_argument("--native", action="store_true",
+                        help="load PyTorch-native modules (JIT files used as weight store) instead of serialized JIT graphs")
     args = parser.parse_args()
 
     data_dir = Path(args.data_dir)
