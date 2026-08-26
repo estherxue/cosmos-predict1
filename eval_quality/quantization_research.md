@@ -68,6 +68,18 @@ answer quantitatively.
   and the attention block; TRT supports 3D conv INT8 on Ampere with possible
   per-layer fallbacks.
 
+**Decision rule for "loss too big" (pre-committed before seeing results)**
+
+Reference scale: doubling temporal compression costs 1.38 dB on this data — a
+quantization tax should be well below one compression step, or you'd rather just
+compress harder instead.
+
+| ΔPSNR vs native-bf16 | verdict | action |
+|---|---|---|
+| ≤ 0.3 dB (and ΔSSIM ≤ 0.01) | acceptable | ship the config |
+| 0.3 – 1.0 dB | borderline | SmoothQuant (`w8a8_dec_sq`); still >0.3 → per-block sensitivity scan, keep sensitive blocks bf16 |
+| > 1.0 dB | PTQ insufficient | QAT (Phase 3) |
+
 **Phase 3 — QAT (only if PTQ quality is unacceptable)**
 - modelopt QAT = fine-tune the fake-quant model; decoder-only, frozen encoder,
   reconstruction loss on DAVIS train, few thousand steps. The repo's
