@@ -22,10 +22,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from run_eval import IMAGE_EXTS, VIDEO_EXTS, autoencode_timed, build_tokenizer, eval_tokenizer
 from tokenizers_registry import select
 
-QUANT_CHOICES = ["none", "w8_dec", "w8a8_dec", "w8a8_all", "w8a8_dec_sq"]
+QUANT_CHOICES = ["none", "w8_dec", "w8a8_dec", "w8a8_all", "w8a8_dec_sq", "w8a8_dec_mixed"]
 
 
-def make_config(mtq, quant: str):
+def make_config(mtq, quant: str, keep_bf16=()):
     import copy
 
     base = mtq.INT8_SMOOTHQUANT_CFG if quant.endswith("_sq") else mtq.INT8_DEFAULT_CFG
@@ -42,6 +42,12 @@ def make_config(mtq, quant: str):
                 if "input_quantizer" in entry.get("quantizer_name", ""):
                     entry.pop("cfg", None)
                     entry["enable"] = False
+    for pattern in keep_bf16:  # mixed precision: leave matching modules unquantized
+        disable = {"quantizer_name": f"*{pattern}*", "enable": False}
+        if isinstance(cfg["quant_cfg"], dict):
+            cfg["quant_cfg"][disable["quantizer_name"]] = {"enable": False}
+        else:
+            cfg["quant_cfg"].append(disable)
     return cfg
 
 
@@ -59,8 +65,12 @@ def main():
     parser.add_argument("--crop-size", type=int, default=256)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--dtype", default="bfloat16")
+    parser.add_argument("--keep_bf16", nargs="*", default=[],
+                        help="module-name substrings to leave unquantized (mixed precision), e.g. conv_out attn")
+    parser.add_argument("--limit", type=int, default=None, help="evaluate only the first N clips (fast scans)")
+    parser.add_argument("--tag", default=None, help="output subdir name (default: the quant config name)")
     args = parser.parse_args()
-    args.output_dir = args.output_dir or f"eval_quality/results_quant/{args.quant}"
+    args.output_dir = args.output_dir or f"eval_quality/results_quant/{args.tag or args.quant}"
 
     tok = select([args.tokenizer])[0]
     print(f"Loading {tok['name']} natively (config-mapped, JIT weights, {args.dtype})")
@@ -82,15 +92,19 @@ def main():
                 autoencode_timed(tokenizer, batch, tok["kind"], args.device)
 
         target = tokenizer if args.quant == "w8a8_all" else tokenizer._dec_model
-        print(f"PTQ {args.quant}: calibrating on {len(calib_batches)} clips from {args.calib_dir}")
-        mtq.quantize(target, make_config(mtq, args.quant), forward_loop=forward_loop)
+        print(f"PTQ {args.quant}: calibrating on {len(calib_batches)} clips from {args.calib_dir}"
+              + (f", keep_bf16={args.keep_bf16}" if args.keep_bf16 else ""))
+        mtq.quantize(target, make_config(mtq, args.quant, args.keep_bf16), forward_loop=forward_loop)
         mtq.print_quant_summary(target)
 
     data_dir = Path(args.data_dir)
     images = sorted(p for p in data_dir.iterdir() if p.suffix.lower() in IMAGE_EXTS)
     videos = sorted(p for p in data_dir.iterdir() if p.suffix.lower() in VIDEO_EXTS)
+    if args.limit:
+        images, videos = images[: args.limit], videos[: args.limit]
     result = eval_tokenizer(tok, args, images, videos, tokenizer=tokenizer)
-    result["quant"] = args.quant
+    result["quant"] = args.tag or args.quant
+    result["keep_bf16"] = args.keep_bf16
     print(f"[{args.quant}] PSNR {result['psnr']:.2f} dB, SSIM {result['ssim']:.4f}")
 
     output_path = Path(args.output_dir) / "metrics.json"
