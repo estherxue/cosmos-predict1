@@ -22,7 +22,7 @@ import tensorrt as trt
 import torch
 
 
-def build_engine(onnx_path: str, engine_path: Path, workspace_gb: int = 8):
+def build_engine(onnx_path: str, engine_path: Path, workspace_gb: int = 18, fp16: bool = True):
     logger = trt.Logger(trt.Logger.WARNING)
     builder = trt.Builder(logger)
     network = builder.create_network(0)  # TRT 10: explicit batch is the default, the old flag is gone
@@ -31,7 +31,8 @@ def build_engine(onnx_path: str, engine_path: Path, workspace_gb: int = 8):
         raise RuntimeError("\n".join(str(parser.get_error(i)) for i in range(parser.num_errors)))
     config = builder.create_builder_config()
     config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, workspace_gb << 30)
-    config.set_flag(trt.BuilderFlag.FP16)  # int8 Q/DQ ONNX: non-quantized layers fall back to fp16
+    if fp16:
+        config.set_flag(trt.BuilderFlag.FP16)  # int8 Q/DQ ONNX: non-quantized layers fall back to fp16
     engine_bytes = builder.build_serialized_network(network, config)
     if engine_bytes is None:
         raise RuntimeError("engine build failed")
@@ -73,12 +74,14 @@ def main():
     parser.add_argument("--tag", required=True)
     parser.add_argument("--frames", type=int, default=17, help="video frames one latent decodes to (for ms/frame)")
     parser.add_argument("--out", default="/workspace/trt/bench.json")
+    parser.add_argument("--no-fp16", action="store_true", help="build without the FP16 flag (pure fp32 fallback)")
+    parser.add_argument("--workspace-gb", type=int, default=18)
     args = parser.parse_args()
 
     engine_path = Path(args.onnx).with_suffix(f".{args.tag}.engine")
     if not engine_path.exists():
         print(f"building {engine_path} ...")
-        build_engine(args.onnx, engine_path)
+        build_engine(args.onnx, engine_path, workspace_gb=args.workspace_gb, fp16=not args.no_fp16)
     ms, shapes = bench(engine_path)
     row = {"tag": args.tag, "onnx": args.onnx, "median_ms": round(ms, 2),
            "ms_per_frame": round(ms / args.frames, 3), "io": {k: list(v) for k, v in shapes.items()},
