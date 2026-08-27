@@ -84,10 +84,12 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     tok = select([args.tokenizer])[0]
-    tokenizer = build_tokenizer(tok, args, native=True)
 
     from cosmos_predict1.tokenizer.inference.utils import numpy2tensor, pad_video_batch, read_video, resize_video
 
+    # Calibration latents via the JIT encoder — the native eager encoder hits
+    # CUDA misaligned-address/illegal-access errors on 4090 at 480p.
+    tokenizer_jit = build_tokenizer(tok, args, native=False)
     calib_files = sorted(p for p in Path(args.calib_dir).iterdir() if p.suffix.lower() in VIDEO_EXTS)[: args.calib_n]
     latents, ref_hw = [], None
     with torch.no_grad():
@@ -99,11 +101,15 @@ def main():
                 print(f"skip {p.name}: smaller than reference {ref_hw}")
                 continue
             padded, _ = pad_video_batch(video)
-            latents.append(tokenizer.encode(numpy2tensor(padded, tokenizer._dtype, args.device))[0].float().cpu().numpy())
+            latents.append(tokenizer_jit.encode(numpy2tensor(padded, tokenizer_jit._dtype, args.device))[0].float().cpu().numpy())
     calib = np.concatenate(latents, axis=0)
     np.save(out_dir / "calib_latents.npy", calib)
     print(f"calib latents: {calib.shape} -> {out_dir/'calib_latents.npy'}")
+    del tokenizer_jit
+    torch.cuda.empty_cache()
 
+    tokenizer = build_tokenizer(tok, args, native=True)
+    torch.backends.cudnn.enabled = False  # dodge 4090 cuDNN conv3d faults; one-off trace, perf irrelevant
     decoder = tokenizer._dec_model.float().eval()
     install_export_friendly_idwt(decoder)
     example = torch.from_numpy(calib[:1]).to(args.device)
