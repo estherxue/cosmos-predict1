@@ -42,10 +42,15 @@ def main():
     from cosmos_predict1.tokenizer.inference.utils import numpy2tensor, pad_video_batch, read_video, resize_video
 
     calib_files = sorted(p for p in Path(args.calib_dir).iterdir() if p.suffix.lower() in VIDEO_EXTS)[: args.calib_n]
-    latents = []
+    latents, ref_hw = [], None
     with torch.no_grad():
         for p in calib_files:
             video = resize_video(read_video(str(p))[: args.max_frames], short_size=args.short_side)[None]
+            ref_hw = ref_hw or video.shape[2:4]  # crop to a common size (DAVIS aspect ratios vary)
+            video = video[:, :, : ref_hw[0], : ref_hw[1]]
+            if video.shape[2:4] != ref_hw:
+                print(f"skip {p.name}: smaller than reference {ref_hw}")
+                continue
             padded, _ = pad_video_batch(video)
             latents.append(tokenizer.encode(numpy2tensor(padded, tokenizer._dtype, args.device))[0].float().cpu().numpy())
     calib = np.concatenate(latents, axis=0)
