@@ -15,9 +15,11 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-ORDER = ["none", "w8_dec", "w8a8_dec", "w8a8_all", "w8a8_dec_sq"]
+ORDER = ["none", "w8_dec", "w8a8_dec", "w8a8_dec_sq", "w8a8_dec_mixed", "w8a8_all"]
 LABELS = {"none": "bf16\n(baseline)", "w8_dec": "W8\ndecoder", "w8a8_dec": "W8A8\ndecoder",
-          "w8a8_all": "W8A8\nfull VAE", "w8a8_dec_sq": "W8A8 dec\nSmoothQuant"}
+          "w8a8_all": "W8A8\nfull VAE", "w8a8_dec_sq": "W8A8 dec\nSmoothQuant",
+          "w8a8_dec_mixed": "W8A8 mixed\n(3 blocks bf16)"}
+SCATTER_SKIP = {"w8a8_all", "w8a8_dec_sq"}  # off-scale / identical-to-plain — keep the scatter readable
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]  # validated categorical palette
 SURFACE, INK, MUTED, GRID, AXIS = "#fcfcfb", "#0b0b0b", "#898781", "#e1e0d9", "#c3c2b7"
 
@@ -66,7 +68,7 @@ def main():
         ax.set_ylim(lo - pad, hi + pad * 2)
         style(ax, ylabel)
 
-    quant_configs = [q for q in configs if q != "none"]
+    quant_configs = [q for q in configs if q != "none" and q not in SCATTER_SKIP]
     for i, q in enumerate(quant_configs):
         pts = [(base["samples"][s]["motion"], base["samples"][s]["psnr"] - runs[q]["samples"][s]["psnr"])
                for s in base["samples"] if s in runs[q]["samples"]]

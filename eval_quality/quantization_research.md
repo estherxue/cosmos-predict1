@@ -1,5 +1,24 @@
 # Quantizing the Cosmos tokenizer (VAE) — research notes
 
+## RESULTS (2026-08-27, 0.1-CV8x8x8, DAVIS val 30 clips, RTX 3090, modelopt 0.46 fake-quant)
+
+| config | PSNR | SSIM | ΔPSNR | verdict |
+|---|---|---|---|---|
+| bf16 native (baseline) | 28.13 | 0.787 | — | parity with JIT confirmed (bit-identical metrics) |
+| W8 decoder (weights-only) | 28.11 | 0.786 | 0.02 | ✅ free |
+| W8A8 decoder | 27.38 | 0.738 | 0.75 | borderline |
+| W8A8 dec + SmoothQuant | 27.38 | 0.738 | 0.75 | no-op on conv nets (Linear-oriented) |
+| **W8A8 decoder mixed** (conv_out, norm_out, up.0 kept bf16) | **27.97** | **0.782** | **0.16** | ✅ **accepted** |
+| W8A8 full VAE | 19.48 | 0.570 | 8.65 | ❌ encoder activations unquantizable |
+
+Sensitivity scan (10-clip subset): damage is *distributed* across the decoder —
+single-component recovery: head +0.16 dB, up.0 +0.21, attn/mid ≈ 0; the
+head+up.0 combo recovers 0.75 → 0.16 dB on full val. Also: per-clip quantization
+damage is **motion-independent** (flat scatter vs motion score) — the opposite
+signature of temporal compression, confirming they degrade through different
+mechanisms. Deployed-int8 speed (Phase 2, TensorRT) remains future work; all
+numbers above are fake-quant quality.
+
 Goal: an "int8 ms/frame gain vs PSNR loss" result for one variant (target: CV8x8x8),
 PTQ first, QAT only if PTQ quality is unacceptable. Timing hardware is locked to
 RTX 3090 (Ampere, sm_86): **INT8 yes, FP8 no** (FP8 needs Ada/Hopper).
