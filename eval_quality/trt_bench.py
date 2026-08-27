@@ -25,7 +25,7 @@ import torch
 def build_engine(onnx_path: str, engine_path: Path, workspace_gb: int = 8):
     logger = trt.Logger(trt.Logger.WARNING)
     builder = trt.Builder(logger)
-    network = builder.create_network(1 << int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
+    network = builder.create_network(0)  # TRT 10: explicit batch is the default, the old flag is gone
     parser = trt.OnnxParser(network, logger)
     if not parser.parse(Path(onnx_path).read_bytes()):
         raise RuntimeError("\n".join(str(parser.get_error(i)) for i in range(parser.num_errors)))
