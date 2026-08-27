@@ -21,6 +21,53 @@ from run_eval import VIDEO_EXTS, build_tokenizer
 from tokenizers_registry import select
 
 
+def install_export_friendly_idwt(decoder):
+    """UnPatcher3D builds its wavelet conv kernels inside forward from x.shape,
+    which the ONNX tracer can't resolve to a static kernel shape. Cache the
+    kernels per (groups, dtype) during an eager warmup run, so tracing hits the
+    cache and records them as constants. Upstream code is left untouched.
+    """
+    import types
+
+    import torch.nn.functional as F
+    from cosmos_predict1.tokenizer.modules.patching import UnPatcher3D
+
+    def cached_idwt(self, x, wavelet="haar", mode="reflect", rescale=False):
+        dtype = x.dtype
+        g = int(x.shape[1]) // 8
+        key = (g, dtype)
+        if key not in self._kernel_cache:
+            h = self.wavelets
+            hl = h.flip([0]).reshape(1, 1, -1).repeat([g, 1, 1]).to(dtype=dtype)
+            hh = (h * ((-1) ** self._arange)).reshape(1, 1, -1).repeat(g, 1, 1).to(dtype=dtype)
+            self._kernel_cache[key] = (hl.detach().clone(), hh.detach().clone())
+        hl, hh = self._kernel_cache[key]
+
+        xlll, xllh, xlhl, xlhh, xhll, xhlh, xhhl, xhhh = torch.chunk(x, 8, dim=1)
+        xll = F.conv_transpose3d(xlll, hl.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xll += F.conv_transpose3d(xllh, hh.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xlh = F.conv_transpose3d(xlhl, hl.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xlh += F.conv_transpose3d(xlhh, hh.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xhl = F.conv_transpose3d(xhll, hl.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xhl += F.conv_transpose3d(xhlh, hh.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xhh = F.conv_transpose3d(xhhl, hl.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xhh += F.conv_transpose3d(xhhh, hh.unsqueeze(2).unsqueeze(3), groups=g, stride=(1, 1, 2))
+        xl = F.conv_transpose3d(xll, hl.unsqueeze(2).unsqueeze(4), groups=g, stride=(1, 2, 1))
+        xl += F.conv_transpose3d(xlh, hh.unsqueeze(2).unsqueeze(4), groups=g, stride=(1, 2, 1))
+        xh = F.conv_transpose3d(xhl, hl.unsqueeze(2).unsqueeze(4), groups=g, stride=(1, 2, 1))
+        xh += F.conv_transpose3d(xhh, hh.unsqueeze(2).unsqueeze(4), groups=g, stride=(1, 2, 1))
+        x = F.conv_transpose3d(xl, hl.unsqueeze(3).unsqueeze(4), groups=g, stride=(2, 1, 1))
+        x += F.conv_transpose3d(xh, hh.unsqueeze(3).unsqueeze(4), groups=g, stride=(2, 1, 1))
+        if rescale:
+            x = x * (2 * torch.sqrt(torch.tensor(2.0)))
+        return x
+
+    for m in decoder.modules():
+        if isinstance(m, UnPatcher3D):
+            m._kernel_cache = {}
+            m._idwt = types.MethodType(cached_idwt, m)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--tokenizer", default="0.1-CV8x8x8")
@@ -58,7 +105,10 @@ def main():
     print(f"calib latents: {calib.shape} -> {out_dir/'calib_latents.npy'}")
 
     decoder = tokenizer._dec_model.float().eval()
+    install_export_friendly_idwt(decoder)
     example = torch.from_numpy(calib[:1]).to(args.device)
+    with torch.no_grad():
+        decoder(example)  # eager warmup fills the kernel cache before tracing
     torch.onnx.export(
         decoder, example, str(out_dir / "decoder.onnx"),
         input_names=["latent"], output_names=["video"], opset_version=17,
