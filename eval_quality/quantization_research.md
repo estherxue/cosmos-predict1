@@ -16,8 +16,34 @@ single-component recovery: head +0.16 dB, up.0 +0.21, attn/mid ≈ 0; the
 head+up.0 combo recovers 0.75 → 0.16 dB on full val. Also: per-clip quantization
 damage is **motion-independent** (flat scatter vs motion score) — the opposite
 signature of temporal compression, confirming they degrade through different
-mechanisms. Deployed-int8 speed (Phase 2, TensorRT) remains future work; all
-numbers above are fake-quant quality.
+mechanisms.
+
+## Phase 2 RESULTS — deployed int8 speed (TensorRT 10.16, RTX 4090)
+
+Decoder CV8x8x8, (1,16,3,60,108) latent → (1,3,17,480,864) video, median of 30 runs
+(`results_quant/trt_bench.json`):
+
+| engine | median ms | ms/frame | speedup |
+|---|---|---|---|
+| TRT fp16 | 39.26 | 2.31 | 1× (reference) |
+| TRT int8 (all-conv Q/DQ) | 34.64 | 2.04 | **1.13×** |
+
+For scale: PyTorch (JIT, bf16) decode on the same 4090 is 7.6 ms/frame — the TRT
+runtime alone is worth 3.3×; int8 adds a further 13%. Pairing honestly: the
+benchmarked int8 engine quantizes *all* decoder convs, which corresponds to the
+plain W8A8 quality row (−0.75 dB); the accepted mixed config (−0.16 dB) would land
+between 2.04 and 2.31 ms/frame. The modest int8 gain suggests the 3D-conv decoder
+is bandwidth-/tactic-bound rather than math-bound at this size.
+
+4090 re-timing of the 6-variant sweep is in `results_full_4090/` (quality metrics
+reproduce the 3090 run to ~1e-3 dB; timings ~1.7× faster across the board).
+
+### Phase-2 pitfalls (all hit, all worked around)
+- torch 2.8.0+cu128: large-tensor conv3d → CUDA illegal access (small convs fine); fixed by torch 2.4.1+cu124.
+- Native eager *encoder* faults on 4090 at 480p even on 2.4.1 (fine on 3090) → calibrate via the JIT encoder.
+- UnPatcher3D builds wavelet conv kernels from `x.shape` in forward → ONNX "kernel of unknown shape"; fixed by pre-caching kernels (eager warmup) so tracing sees constants.
+- pip `tensorrt` now installs TRT 11 (weak-typing flags removed) → pin `tensorrt==10.*`.
+- TRT 10 Pad+Conv3d tactic search needs a large workspace: 8 GB fails on the first conv, 18 GB builds.
 
 Goal: an "int8 ms/frame gain vs PSNR loss" result for one variant (target: CV8x8x8),
 PTQ first, QAT only if PTQ quality is unacceptable. Timing hardware is locked to

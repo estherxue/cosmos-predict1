@@ -1,0 +1,50 @@
+[
+  {
+    "tag": "fp16",
+    "onnx": "/workspace/trt/decoder.onnx",
+    "median_ms": 39.26,
+    "ms_per_frame": 2.31,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_int8.onnx",
+    "median_ms": 34.64,
+    "ms_per_frame": 2.037,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  }
+]
