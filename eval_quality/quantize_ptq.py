@@ -31,9 +31,17 @@ def make_config(mtq, quant: str):
     base = mtq.INT8_SMOOTHQUANT_CFG if quant.endswith("_sq") else mtq.INT8_DEFAULT_CFG
     cfg = copy.deepcopy(base)
     if quant == "w8_dec":  # weights-only: disable all activation/input quantizers
-        for key, entry in cfg["quant_cfg"].items():
-            if "input_quantizer" in key and isinstance(entry, dict):
-                entry["enable"] = False
+        qcfg = cfg["quant_cfg"]
+        if isinstance(qcfg, dict):  # modelopt <=0.4x: {"*input_quantizer": {...}, ...}
+            for key, entry in qcfg.items():
+                if "input_quantizer" in key and isinstance(entry, dict):
+                    entry.clear()
+                    entry["enable"] = False
+        else:  # modelopt >=0.46: list of {"quantizer_name": ..., "cfg"/"enable": ...}
+            for entry in qcfg:
+                if "input_quantizer" in entry.get("quantizer_name", ""):
+                    entry.pop("cfg", None)
+                    entry["enable"] = False
     return cfg
 
 
