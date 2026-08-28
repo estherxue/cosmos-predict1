@@ -224,3 +224,32 @@ attention/reformat work that INT8 does not touch, and every fusion-level lever w
 tested and found flat. Going further would need a custom fused GroupNorm+SiLU kernel/
 plugin or model-level changes (2:4 sparsity with retraining, lower-res processing),
 which are outside a quantization study.
+
+### Phase 3 — FINAL (after export-time graph rewrites; pod stopped after this run)
+
+Export-time rewrites (`export_patches.py`, upstream untouched, verified numerically
+equivalent in eager: max|diff| = 0): CausalConv3d's repeat+cat+pad → replicate Pad with
+spatial zero-padding folded into the conv attribute; repeat_interleave upsampling →
+Resize. The GroupNorm rewrite (transpose-free per-frame stats) is exact in fp32 but
+breaks under fp16 in the traced graph (PSNR 12) — dropped.
+
+| config | PSNR (Δ) | ms/clip | clips/s | vs PyTorch bf16 | vs TRT fp16 |
+|---|---|---|---|---|---|
+| PyTorch bf16 JIT (shipped runtime) | 28.10 | 185.3 | 5.40 | 1.00× | 0.33× |
+| TRT fp16 | 28.11 | 61.4 | 16.29 | 3.02× | 1.00× |
+| TRT fp16 + graph rewrite | 28.11 | 60.7 | 16.47 | 3.05× | 1.01× |
+| INT8 dec-full + enc-mixed | 27.49 (−0.62) | 53.6 | 18.67 | 3.46× | 1.15× |
+| **INT8 dec-full + enc-mixed + graph rewrite, opt level 5** | **27.49 (−0.62)** | **50.5** | **19.80** | **3.67×** | **1.22×** |
+
+The graph rewrite is worth ~1% on the fp16 engine but ~6% on the INT8 engine: the
+removed concat/expand/reformat nodes sat exactly at Q/DQ boundaries, where each one
+cost an extra int8↔fp16 relayout.
+
+**Final statement (baseline = shipped PyTorch runtime, per the agreed framing):**
+encoder+decoder INT8 PTQ (mixed precision on the encoder's wavelet front + first
+level, full INT8 decoder) + TensorRT fp16/CUDA-graph + export-time graph rewrites give
+**3.67× throughput (19.8 vs 5.4 clips/s at 480p×17f, RTX 4090) at −0.62 dB PSNR**.
+Relative to an already-optimized TensorRT-fp16 deployment the same engine is 1.22×;
+the INT8-only ceiling on this memory-bound 3D-conv VAE is ~1.17× and the graph
+rewrite adds the rest. All numbers come from one artifact measured for both axes
+(`results_e2e/e2e.json`, `e2e_qps_vs_psnr.png`).
