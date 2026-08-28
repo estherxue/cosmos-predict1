@@ -166,3 +166,32 @@ compress harder instead.
 - [Diffusers × ModelOpt integration](https://huggingface.co/docs/diffusers/quantization/modelopt)
 - [NeMo SDXL INT8 quantization guide](https://docs.nvidia.com/nemo-framework/user-guide/24.12/nemotoolkit/multimodal/text2img/sdxl_quantization.html) (U-Net quantized, VAE kept at native precision)
 - [Quanto + Diffusers blog](https://huggingface.co/blog/quanto-diffusers) (VAE excluded from quantization for stability)
+
+## Phase 3 — encoder+decoder INT8, end-to-end TRT (goal: ≥+30% QPS, ≤1 dB) — in progress
+
+Measured with `trt_eval.py` (same engines give PSNR and clips/s; DAVIS val, 480x854x17,
+RTX 4090, TRT 10.16, CUDA-graph replay):
+
+| config | PSNR | ms/clip | clips/s | vs TRT-fp16 |
+|---|---|---|---|---|
+| PyTorch JIT bf16 | 28.10 | 185.3 | 5.40 | 0.33× |
+| TRT fp16 (baseline) | 28.11 | 61.4 | 16.29 | 1.00× |
+| TRT fp16 + fp16 IO + opset18 GN + CUDA graph | 28.11 | 59.7 | 16.74 | 1.03× |
+| INT8 full VAE (torch-side Q/DQ) | 19.24 ❌ | 52.3 | 19.12 | 1.17× |
+| INT8 mixed (enc: patcher/conv_in/down.0 fp16; dec: conv_out/norm_out/up.0 fp16) | 27.99 ✅ (−0.12) | 56.8 | 17.61 | 1.08× |
+
+Findings so far: (1) pure-fp16 graph/fusion levers are worth only ~3% — TRT's fp16 graph
+is already near its floor; (2) even *full* INT8 is only 1.17×, so the ceiling is set by
+non-conv ops + Q/DQ boundary costs, not conv coverage; (3) batching is not a lever:
+fp16 decoder at batch 4 is 16% *slower per frame* than batch 1 (2.48 vs 2.14 ms/frame),
+INT8 batch 4/8 exports OOM in the fp32 trace — the GPU is saturated at batch 1
+(consistent with a bandwidth-bound decoder; partial evidence, per the 30-min cap).
+Engineering pitfalls this round: modelopt.onnx's preprocessing produced a cyclic graph
+for the encoder (raw ONNX is acyclic) → switched to torch-side Q/DQ export; that export
+must use the TorchScript exporter (`dynamo=False`) since modelopt's Q/DQ symbolics are
+not registered for the dynamo exporter (modelopt's install silently upgraded torch);
+and a `pgrep -f` self-match idled the GPU queue for 30 min.
+
+Sequence-length probe (49 frames, agent-run, `results_probe49/`): temporal-compression
+penalty is unchanged in direction and magnitude (+0.2 dB larger at 49f, ranking
+preserved), so the 17-frame sweep is a faithful proxy.
