@@ -195,3 +195,32 @@ and a `pgrep -f` self-match idled the GPU queue for 30 min.
 Sequence-length probe (49 frames, agent-run, `results_probe49/`): temporal-compression
 penalty is unchanged in direction and magnitude (+0.2 dB larger at 49f, ranking
 preserved), so the 17-frame sweep is a faithful proxy.
+
+### Phase 3 — final table (encoder+decoder INT8, end-to-end TRT, RTX 4090, batch 1, CUDA graph)
+
+| config | PSNR (Δ) | ms/clip | clips/s | vs PyTorch bf16 | vs TRT fp16 |
+|---|---|---|---|---|---|
+| PyTorch bf16 JIT (shipped runtime) | 28.10 | 185.3 | 5.40 | 1.00× | — |
+| TRT fp16 | 28.11 | 61.4 | 16.29 | 3.02× | 1.00× |
+| TRT fp16 + fp16 IO/opset18 GN/CUDA graph | 28.11 | 59.7 | 16.74 | 3.10× | 1.03× |
+| INT8 mixed (enc front + dec head/up.0 fp16), 3 variants | 27.99 (−0.12) | 56.3–56.8 | 17.6–17.8 | 3.29× | 1.09× |
+| **INT8 dec-full + enc-mixed, opt level 5** | **27.49 (−0.62)** | **53.6** | **18.67** | **3.46×** | **1.15×** |
+| INT8 full VAE (reference, quality fail) | 19.24 | 52.3 | 19.12 | 3.54× | 1.17× |
+| INT8 mixed + enc down.0 int8 (quality fail) | 19.23 | 55.3 | 18.09 | — | — |
+
+Dead levers, each measured: strongly-typed build (fp16 GroupNorm) — int8 engine fails to
+build, fp16 decoder unchanged (36.35 vs 36.44 ms); builder opt level 5 — +0.5%; fp16
+Q/DQ export — no change (the fp32 kernels are GroupNorm reductions inside myelin
+fusions, not Q/DQ fallbacks); batch 4 — 16% slower per frame; encoder down.0 in int8
+— catastrophic (the encoder's sensitivity lives in its highest-resolution level, not
+just the wavelet front).
+
+**Verdict.** Best quality-compliant configuration: encoder mixed + decoder fully INT8,
+−0.62 dB, **18.67 clips/s = 3.46× the shipped PyTorch runtime** (+246%) and 1.15× an
+already-TensorRT-fp16 deployment. Against the shipped runtime the ≥30% target is met
+many times over; against TRT-fp16 it is not reachable with INT8 on this model —
+full INT8 caps at 1.17× because ~2/3 of engine time is memory-bound GroupNorm/SiLU/
+attention/reformat work that INT8 does not touch, and every fusion-level lever was
+tested and found flat. Going further would need a custom fused GroupNorm+SiLU kernel/
+plugin or model-level changes (2:4 sparsity with retraining, lower-res processing),
+which are outside a quantization study.

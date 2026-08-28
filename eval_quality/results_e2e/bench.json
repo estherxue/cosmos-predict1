@@ -1,0 +1,430 @@
+[
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_int8.onnx",
+    "median_ms": 32.28,
+    "ms_per_frame": 1.899,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "fp16",
+    "onnx": "/workspace/trt/decoder_h16.onnx",
+    "median_ms": 36.44,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 2.143,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/encoder_full.onnx",
+    "median_ms": 18.48,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 1.087,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_full.onnx",
+    "median_ms": 31.56,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 1.856,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/encoder_mixed.onnx",
+    "median_ms": 20.13,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 1.184,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_mixed.onnx",
+    "median_ms": 34.4,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 2.024,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "fp16",
+    "onnx": "/workspace/trt/decoder_h16_b4.onnx",
+    "median_ms": 168.54,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 2.479,
+    "batch": 4,
+    "io": {
+      "latent": [
+        4,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        4,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/encoder_mixed_h16.onnx",
+    "median_ms": 20.14,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 1.185,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_mixed_h16.onnx",
+    "median_ms": 34.38,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 2.023,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/encoder_mixed2_h16.onnx",
+    "median_ms": 18.88,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 1.111,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_mixed2_h16.onnx",
+    "median_ms": 34.38,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 2.023,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/encoder_encmix_decfull.onnx",
+    "median_ms": 20.07,
+    "cuda_graph": true,
+    "opt_level": 5,
+    "ms_per_frame": 1.18,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_encmix_decfull.onnx",
+    "median_ms": 31.49,
+    "cuda_graph": true,
+    "opt_level": 5,
+    "ms_per_frame": 1.853,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/encoder_mixed_o5.onnx",
+    "median_ms": 20.01,
+    "cuda_graph": true,
+    "opt_level": 5,
+    "ms_per_frame": 1.177,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "int8",
+    "onnx": "/workspace/trt/decoder_mixed_o5.onnx",
+    "median_ms": 34.24,
+    "cuda_graph": true,
+    "opt_level": 5,
+    "ms_per_frame": 2.014,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "fp16st",
+    "onnx": "/workspace/trt/decoder_h16.onnx",
+    "median_ms": 36.35,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 2.138,
+    "batch": 1,
+    "io": {
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ],
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  }
+]
