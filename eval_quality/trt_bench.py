@@ -22,17 +22,21 @@ import tensorrt as trt
 import torch
 
 
-def build_engine(onnx_path: str, engine_path: Path, workspace_gb: int = 18, fp16: bool = True, opt_level: int = 3):
+def build_engine(onnx_path: str, engine_path: Path, workspace_gb: int = 18, fp16: bool = True, opt_level: int = 3,
+                 strongly_typed: bool = False):
     logger = trt.Logger(trt.Logger.WARNING)
     builder = trt.Builder(logger)
-    network = builder.create_network(0)  # TRT 10: explicit batch is the default, the old flag is gone
+    # TRT 10: explicit batch is the default. Strongly typed = obey ONNX dtypes exactly
+    # (fp16 GroupNorm stays fp16 instead of TRT's default fp32 upcast; Q/DQ define int8).
+    flags = (1 << int(trt.NetworkDefinitionCreationFlag.STRONGLY_TYPED)) if strongly_typed else 0
+    network = builder.create_network(flags)
     parser = trt.OnnxParser(network, logger)
     # parse_from_file resolves external weight files (decoder.onnx.data) next to the model
     if not parser.parse_from_file(str(onnx_path)):
         raise RuntimeError("\n".join(str(parser.get_error(i)) for i in range(parser.num_errors)))
     config = builder.create_builder_config()
     config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, workspace_gb << 30)
-    if fp16:
+    if fp16 and not strongly_typed:  # precision flags are illegal in strongly typed mode
         config.set_flag(trt.BuilderFlag.FP16)  # int8 Q/DQ ONNX: non-quantized layers fall back to fp16
     config.builder_optimization_level = opt_level
     engine_bytes = builder.build_serialized_network(network, config)
@@ -93,12 +97,14 @@ def main():
     parser.add_argument("--opt-level", type=int, default=3, help="TRT builder optimization level (5 = max tactic search)")
     parser.add_argument("--cuda-graph", action="store_true", help="benchmark with CUDA graph replay")
     parser.add_argument("--batch", type=int, default=1, help="clips per engine run (ms/frame = ms / (batch*frames))")
+    parser.add_argument("--strongly-typed", action="store_true", help="build a strongly typed network (ONNX dtypes obeyed)")
     args = parser.parse_args()
 
     engine_path = Path(args.onnx).with_suffix(f".{args.tag}.engine")
     if not engine_path.exists():
         print(f"building {engine_path} ...")
-        build_engine(args.onnx, engine_path, workspace_gb=args.workspace_gb, fp16=not args.no_fp16, opt_level=args.opt_level)
+        build_engine(args.onnx, engine_path, workspace_gb=args.workspace_gb, fp16=not args.no_fp16,
+                     opt_level=args.opt_level, strongly_typed=args.strongly_typed)
     ms, shapes = bench(engine_path, cuda_graph=args.cuda_graph)
     row = {"tag": args.tag, "onnx": args.onnx, "median_ms": round(ms, 2), "cuda_graph": args.cuda_graph, "opt_level": args.opt_level,
            "ms_per_frame": round(ms / (args.frames * args.batch), 3), "batch": args.batch,
