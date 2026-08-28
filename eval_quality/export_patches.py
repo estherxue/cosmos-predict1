@@ -26,9 +26,10 @@ def install_fusion_friendly_patches(model: torch.nn.Module, which=("norm", "conv
         if self.num_groups != 1:
             return self.norm(x)
         dims = (1, 3, 4)  # per (b, t): stats over (c, h, w) == GroupNorm(1 group) per frame
-        mean = x.mean(dim=dims, keepdim=True)
-        var = (x - mean).pow(2).mean(dim=dims, keepdim=True)
-        y = (x - mean) * torch.rsqrt(var + self.norm.eps)
+        xf = x.float()  # stats in fp32 like native GroupNorm (fp16 variance overflows)
+        mean = xf.mean(dim=dims, keepdim=True)
+        var = (xf - mean).pow(2).mean(dim=dims, keepdim=True)
+        y = ((xf - mean) * torch.rsqrt(var + self.norm.eps)).to(x.dtype)
         C = x.shape[1]
         return y * self.norm.weight.view(1, C, 1, 1, 1) + self.norm.bias.view(1, C, 1, 1, 1)
 
