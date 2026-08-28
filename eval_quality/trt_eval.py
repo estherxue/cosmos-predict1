@@ -98,6 +98,7 @@ def main():
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--out", default="/workspace/trt/e2e.json")
     parser.add_argument("--cuda-graph", action="store_true")
+    parser.add_argument("--batch", type=int, default=1, help="clips per engine run (engines must be built for this batch)")
     args = parser.parse_args()
 
     from cosmos_predict1.tokenizer.inference.utils import numpy2tensor, pad_video_batch, tensor2numpy, unpad_video_batch
@@ -108,23 +109,27 @@ def main():
 
     def evaluate(tag, run_fn, in_dtype):
         psnrs, ssims, times, samples = [], [], [], {}
-        for name, video in clips:
-            padded, crop = pad_video_batch(video[None])
+        B = args.batch
+        groups = [clips[i : i + B] for i in range(0, len(clips) - len(clips) % B, B)]  # drop the remainder
+        for group in groups:
+            batch_np = np.concatenate([v[None] for _, v in group], axis=0)
+            padded, crop = pad_video_batch(batch_np)
             x = numpy2tensor(padded, in_dtype, "cuda")
             torch.cuda.synchronize()
             t0 = time.perf_counter()
             y = run_fn(x)
             torch.cuda.synchronize()
             times.append((time.perf_counter() - t0) * 1000)
-            recon = unpad_video_batch(tensor2numpy(y), crop)[0][: video.shape[0]]
-            m = frame_metrics(video, recon)
-            samples[name] = {"psnr": m["psnr"], "ssim": m["ssim"]}
-            psnrs.append(m["psnr"]); ssims.append(m["ssim"])
+            recons = unpad_video_batch(tensor2numpy(y), crop)
+            for (name, video), recon in zip(group, recons):
+                m = frame_metrics(video, recon[: video.shape[0]])
+                samples[name] = {"psnr": m["psnr"], "ssim": m["ssim"]}
+                psnrs.append(m["psnr"]); ssims.append(m["ssim"])
         med = float(np.median(times[1:])) if len(times) > 1 else float(times[0])
         row = {"tag": tag, "psnr": round(float(np.mean(psnrs)), 3), "ssim": round(float(np.mean(ssims)), 4),
-               "median_ms": round(med, 2), "clips_per_s": round(1000 / med, 3),
-               "frames_per_s": round(1000 / med * args.max_frames, 1), "n": len(clips), "samples": samples}
-        print(f"[{tag}] PSNR {row['psnr']:.2f}  SSIM {row['ssim']:.4f}  {row['median_ms']:.1f} ms/clip  "
+               "median_ms": round(med, 2), "batch": B, "clips_per_s": round(B * 1000 / med, 3),
+               "frames_per_s": round(B * 1000 / med * args.max_frames, 1), "n": len(psnrs), "samples": samples}
+        print(f"[{tag}] PSNR {row['psnr']:.2f}  SSIM {row['ssim']:.4f}  {row['median_ms']:.1f} ms/batch{B}  "
               f"{row['clips_per_s']:.2f} clips/s  {row['frames_per_s']:.0f} frames/s")
         rows.append(row)
 
@@ -132,7 +137,8 @@ def main():
         tok = select([args.tokenizer])[0]
         tokenizer = build_tokenizer(tok, args, native=False)
         with torch.no_grad():
-            first = numpy2tensor(pad_video_batch(clips[0][1][None])[0], tokenizer._dtype, "cuda")
+            first_np = np.concatenate([v[None] for _, v in clips[: args.batch]], axis=0)
+            first = numpy2tensor(pad_video_batch(first_np)[0], tokenizer._dtype, "cuda")
             tokenizer.decode(tokenizer.encode(first)[0])  # warmup
             evaluate("pytorch_jit_bf16", lambda x: tokenizer.decode(tokenizer.encode(x)[0]), tokenizer._dtype)
         del tokenizer
@@ -140,7 +146,8 @@ def main():
 
     if args.enc_engine and args.dec_engine:
         enc, dec = TRTModule(args.enc_engine, args.cuda_graph), TRTModule(args.dec_engine, args.cuda_graph)
-        warm = numpy2tensor(pad_video_batch(clips[0][1][None])[0], torch.float32, "cuda")
+        warm_np = np.concatenate([v[None] for _, v in clips[: args.batch]], axis=0)
+        warm = numpy2tensor(pad_video_batch(warm_np)[0], torch.float32, "cuda")
         dec.run(enc.run(warm))
         evaluate(args.tag, lambda x: dec.run(enc.run(x)), torch.float32)
 
