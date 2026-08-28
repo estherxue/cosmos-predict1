@@ -105,7 +105,8 @@ def main():
     print(json.dumps(row))
     out = Path(args.out)
     rows = json.loads(out.read_text()) if out.exists() else []
-    rows = [r for r in rows if r["tag"] != args.tag] + [row]
+    key = (args.tag, args.onnx)  # tag + onnx identify a row (encoder/decoder share tags)
+    rows = [r for r in rows if (r["tag"], r["onnx"]) != key] + [row]
     out.write_text(json.dumps(rows, indent=2))
     print(f"wrote {out}")
 
