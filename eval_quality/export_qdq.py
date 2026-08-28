@@ -55,8 +55,8 @@ def main():
     parser.add_argument("--part", default="both", choices=["both", "encoder", "decoder"])
     parser.add_argument("--fp16", action="store_true", help="export fp16 weights/activations around Q/DQ (no fp32 fallbacks in TRT)")
     parser.add_argument("--opset", type=int, default=17)
-    parser.add_argument("--fusion_patches", action="store_true",
-                        help="transpose-free norm, attribute padding, Resize upsampling (numerically equivalent)")
+    parser.add_argument("--fusion_patches", nargs="*", default=None,
+                        help="subset of {norm, conv, resize}; empty list = all")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -97,11 +97,13 @@ def main():
     video_np = np.resize(video_np, (args.batch, *video_np.shape[1:]))
     example_video = numpy2tensor(video_np, wdtype, args.device)
 
-    if args.fusion_patches:  # parity check: same weights, rewritten graph
+    if args.fusion_patches is not None:  # parity check: same weights, rewritten graph
+        which = set(args.fusion_patches) or {"norm", "conv", "resize"}
         with torch.no_grad():
             ref = tokenizer.decode(tokenizer.encode(example_video)[0]).float()
-        counts = install_fusion_friendly_patches(tokenizer)
-        install_resize_upsample()
+        counts = install_fusion_friendly_patches(tokenizer, which)
+        if "resize" in which:
+            install_resize_upsample()
         with torch.no_grad():
             out = tokenizer.decode(tokenizer.encode(example_video)[0]).float()
         diff = (out - ref).abs()

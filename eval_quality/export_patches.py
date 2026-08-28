@@ -16,7 +16,7 @@ import torch
 import torch.nn.functional as F
 
 
-def install_fusion_friendly_patches(model: torch.nn.Module) -> dict:
+def install_fusion_friendly_patches(model: torch.nn.Module, which=("norm", "conv")) -> dict:
     from cosmos_predict1.tokenizer.modules.layers3d import CausalConv3d
     from cosmos_predict1.tokenizer.modules.utils import CausalNormalize
 
@@ -38,10 +38,10 @@ def install_fusion_friendly_patches(model: torch.nn.Module) -> dict:
         return self.conv3d(x)
 
     for m in model.modules():
-        if isinstance(m, CausalNormalize):
+        if isinstance(m, CausalNormalize) and "norm" in which:
             m.forward = types.MethodType(norm_forward, m)
             counts["norm"] += 1
-        elif isinstance(m, CausalConv3d):
+        elif isinstance(m, CausalConv3d) and "conv" in which:
             assert m.pad_mode == "constant", m.pad_mode
             p = m.spatial_pad  # (w, w, h, h)
             m.conv3d.padding = (0, p[2], p[0])

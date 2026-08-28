@@ -146,7 +146,7 @@ def main():
     parser.add_argument("--opset", type=int, default=17, help="18 emits GroupNormalization ops (TRT native GN)")
     parser.add_argument("--suffix", default="", help="output name suffix, e.g. _h16")
     parser.add_argument("--batch", type=int, default=1, help="fixed batch size of the exported graph")
-    parser.add_argument("--fusion_patches", action="store_true", help="see export_patches.py")
+    parser.add_argument("--fusion_patches", nargs="*", default=None, help="subset of {norm, conv, resize}; empty = all")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -180,9 +180,11 @@ def main():
     tokenizer = build_tokenizer(tok, args, native=True)
     torch.backends.cudnn.enabled = False  # dodge 4090 cuDNN conv3d faults; one-off trace, perf irrelevant
     dev = args.export_device
-    if args.fusion_patches:
-        print("fusion patches:", install_fusion_friendly_patches(tokenizer))
-        install_resize_upsample()
+    if args.fusion_patches is not None:
+        which = set(args.fusion_patches) or {"norm", "conv", "resize"}
+        print("fusion patches:", install_fusion_friendly_patches(tokenizer, which), which)
+        if "resize" in which:
+            install_resize_upsample()
 
     wdtype = torch.float16 if args.fp16 else torch.float32
     if args.part in ("decoder", "both"):
