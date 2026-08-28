@@ -188,7 +188,7 @@ def main():
             decoder(example)  # eager warmup fills the kernel cache before tracing
         name = f"decoder{args.suffix}.onnx"
         torch.onnx.export(decoder, example, str(out_dir / name),
-                          input_names=["latent"], output_names=["video"], opset_version=args.opset)
+                          input_names=["latent"], output_names=["video"], opset_version=args.opset, dynamo=False)
         print(f"exported {out_dir/name} (input {tuple(example.shape)}, {wdtype}, opset {args.opset})")
 
     if args.part in ("encoder", "both"):
@@ -200,7 +200,7 @@ def main():
         print(f"encoder eager ok: {tuple(example.shape)} -> {tuple(out.shape)}")
         name = f"encoder{args.suffix}.onnx"
         torch.onnx.export(encoder, example, str(out_dir / name),
-                          input_names=["video"], output_names=["latent"], opset_version=args.opset)
+                          input_names=["video"], output_names=["latent"], opset_version=args.opset, dynamo=False)
         print(f"exported {out_dir/name}")
 
 

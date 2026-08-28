@@ -97,7 +97,7 @@ def main():
         latent = encoder(example_video)
     if args.part in ("both", "encoder"):
         torch.onnx.export(encoder, example_video, str(out_dir / f"encoder_{args.tag}.onnx"),
-                          input_names=["video"], output_names=["latent"], opset_version=17)
+                          input_names=["video"], output_names=["latent"], opset_version=17, dynamo=False)
         print(f"exported encoder_{args.tag}.onnx  {tuple(example_video.shape)} -> {tuple(latent.shape)}")
     del encoder
     torch.cuda.empty_cache()
@@ -108,7 +108,7 @@ def main():
         with torch.no_grad():
             decoder(latent)
         torch.onnx.export(decoder, latent, str(out_dir / f"decoder_{args.tag}.onnx"),
-                          input_names=["latent"], output_names=["video"], opset_version=17)
+                          input_names=["latent"], output_names=["video"], opset_version=17, dynamo=False)
         print(f"exported decoder_{args.tag}.onnx  (batch {args.batch})")
 
 
