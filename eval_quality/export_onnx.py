@@ -144,6 +144,7 @@ def main():
     parser.add_argument("--fp16", action="store_true", help="export fp16 weights/IO (removes TRT boundary casts)")
     parser.add_argument("--opset", type=int, default=17, help="18 emits GroupNormalization ops (TRT native GN)")
     parser.add_argument("--suffix", default="", help="output name suffix, e.g. _h16")
+    parser.add_argument("--batch", type=int, default=1, help="fixed batch size of the exported graph")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -182,7 +183,7 @@ def main():
     if args.part in ("decoder", "both"):
         decoder = tokenizer._dec_model.to(wdtype).eval().to(dev)
         install_export_friendly_idwt(decoder)
-        example = torch.from_numpy(calib_latents[:1]).to(dev, wdtype)
+        example = torch.from_numpy(np.resize(calib_latents, (args.batch, *calib_latents.shape[1:]))).to(dev, wdtype)
         with torch.no_grad():
             decoder(example)  # eager warmup fills the kernel cache before tracing
         name = f"decoder{args.suffix}.onnx"
@@ -193,7 +194,7 @@ def main():
     if args.part in ("encoder", "both"):
         encoder = EncoderWrap(tokenizer._enc_model.to(wdtype).eval()).to(dev)
         install_export_friendly_dwt(encoder)
-        example = torch.from_numpy(calib_videos[:1]).to(dev, wdtype)
+        example = torch.from_numpy(np.resize(calib_videos, (args.batch, *calib_videos.shape[1:]))).to(dev, wdtype)
         with torch.no_grad():
             out = encoder(example)
         print(f"encoder eager ok: {tuple(example.shape)} -> {tuple(out.shape)}")

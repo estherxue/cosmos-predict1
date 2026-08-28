@@ -50,6 +50,8 @@ def main():
     parser.add_argument("--width", type=int, default=854)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--dtype", default="bfloat16")
+    parser.add_argument("--batch", type=int, default=1, help="fixed batch size of the exported graph")
+    parser.add_argument("--part", default="both", choices=["both", "encoder", "decoder"])
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -85,23 +87,29 @@ def main():
     mtq.print_quant_summary(tokenizer)
 
     tokenizer = tokenizer.float().eval()
-    example_video = numpy2tensor(batches[0], torch.float32, args.device)
+    video_np = np.concatenate(batches[: args.batch], axis=0)
+    video_np = np.resize(video_np, (args.batch, *video_np.shape[1:]))
+    example_video = numpy2tensor(video_np, torch.float32, args.device)
 
     encoder = EncoderWrap(tokenizer._enc_model)
     install_export_friendly_dwt(encoder)
     with torch.no_grad():
         latent = encoder(example_video)
-    torch.onnx.export(encoder, example_video, str(out_dir / f"encoder_{args.tag}.onnx"),
-                      input_names=["video"], output_names=["latent"], opset_version=17)
-    print(f"exported encoder_{args.tag}.onnx  {tuple(example_video.shape)} -> {tuple(latent.shape)}")
+    if args.part in ("both", "encoder"):
+        torch.onnx.export(encoder, example_video, str(out_dir / f"encoder_{args.tag}.onnx"),
+                          input_names=["video"], output_names=["latent"], opset_version=17)
+        print(f"exported encoder_{args.tag}.onnx  {tuple(example_video.shape)} -> {tuple(latent.shape)}")
+    del encoder
+    torch.cuda.empty_cache()
 
-    decoder = tokenizer._dec_model
-    install_export_friendly_idwt(decoder)
-    with torch.no_grad():
-        decoder(latent)
-    torch.onnx.export(decoder, latent, str(out_dir / f"decoder_{args.tag}.onnx"),
-                      input_names=["latent"], output_names=["video"], opset_version=17)
-    print(f"exported decoder_{args.tag}.onnx")
+    if args.part in ("both", "decoder"):
+        decoder = tokenizer._dec_model
+        install_export_friendly_idwt(decoder)
+        with torch.no_grad():
+            decoder(latent)
+        torch.onnx.export(decoder, latent, str(out_dir / f"decoder_{args.tag}.onnx"),
+                          input_names=["latent"], output_names=["video"], opset_version=17)
+        print(f"exported decoder_{args.tag}.onnx  (batch {args.batch})")
 
 
 if __name__ == "__main__":

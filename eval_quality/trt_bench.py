@@ -92,6 +92,7 @@ def main():
     parser.add_argument("--workspace-gb", type=int, default=18)
     parser.add_argument("--opt-level", type=int, default=3, help="TRT builder optimization level (5 = max tactic search)")
     parser.add_argument("--cuda-graph", action="store_true", help="benchmark with CUDA graph replay")
+    parser.add_argument("--batch", type=int, default=1, help="clips per engine run (ms/frame = ms / (batch*frames))")
     args = parser.parse_args()
 
     engine_path = Path(args.onnx).with_suffix(f".{args.tag}.engine")
@@ -100,7 +101,8 @@ def main():
         build_engine(args.onnx, engine_path, workspace_gb=args.workspace_gb, fp16=not args.no_fp16, opt_level=args.opt_level)
     ms, shapes = bench(engine_path, cuda_graph=args.cuda_graph)
     row = {"tag": args.tag, "onnx": args.onnx, "median_ms": round(ms, 2), "cuda_graph": args.cuda_graph, "opt_level": args.opt_level,
-           "ms_per_frame": round(ms / args.frames, 3), "io": {k: list(v) for k, v in shapes.items()},
+           "ms_per_frame": round(ms / (args.frames * args.batch), 3), "batch": args.batch,
+           "io": {k: list(v) for k, v in shapes.items()},
            "trt": trt.__version__, "gpu": torch.cuda.get_device_name(0)}
     print(json.dumps(row))
     out = Path(args.out)
