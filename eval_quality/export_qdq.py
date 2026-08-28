@@ -52,6 +52,8 @@ def main():
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--batch", type=int, default=1, help="fixed batch size of the exported graph")
     parser.add_argument("--part", default="both", choices=["both", "encoder", "decoder"])
+    parser.add_argument("--fp16", action="store_true", help="export fp16 weights/activations around Q/DQ (no fp32 fallbacks in TRT)")
+    parser.add_argument("--opset", type=int, default=17)
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -86,10 +88,11 @@ def main():
         print(f"loaded QAT state: {len(missing)} missing, {len(unexpected)} unexpected keys")
     mtq.print_quant_summary(tokenizer)
 
-    tokenizer = tokenizer.float().eval()
+    wdtype = torch.float16 if args.fp16 else torch.float32
+    tokenizer = tokenizer.to(wdtype).eval()
     video_np = np.concatenate(batches[: args.batch], axis=0)
     video_np = np.resize(video_np, (args.batch, *video_np.shape[1:]))
-    example_video = numpy2tensor(video_np, torch.float32, args.device)
+    example_video = numpy2tensor(video_np, wdtype, args.device)
 
     encoder = EncoderWrap(tokenizer._enc_model)
     install_export_friendly_dwt(encoder)
@@ -97,7 +100,7 @@ def main():
         latent = encoder(example_video)
     if args.part in ("both", "encoder"):
         torch.onnx.export(encoder, example_video, str(out_dir / f"encoder_{args.tag}.onnx"),
-                          input_names=["video"], output_names=["latent"], opset_version=17, dynamo=False)
+                          input_names=["video"], output_names=["latent"], opset_version=args.opset, dynamo=False)
         print(f"exported encoder_{args.tag}.onnx  {tuple(example_video.shape)} -> {tuple(latent.shape)}")
     del encoder
     torch.cuda.empty_cache()
@@ -108,7 +111,7 @@ def main():
         with torch.no_grad():
             decoder(latent)
         torch.onnx.export(decoder, latent, str(out_dir / f"decoder_{args.tag}.onnx"),
-                          input_names=["latent"], output_names=["video"], opset_version=17, dynamo=False)
+                          input_names=["latent"], output_names=["video"], opset_version=args.opset, dynamo=False)
         print(f"exported decoder_{args.tag}.onnx  (batch {args.batch})")
 
 
