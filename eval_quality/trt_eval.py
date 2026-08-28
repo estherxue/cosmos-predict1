@@ -29,7 +29,7 @@ from tokenizers_registry import select
 class TRTModule:
     """Minimal single-input/single-output TensorRT engine runner on torch buffers."""
 
-    def __init__(self, engine_path: str):
+    def __init__(self, engine_path: str, cuda_graph: bool = False):
         logger = trt.Logger(trt.Logger.WARNING)
         self.engine = trt.Runtime(logger).deserialize_cuda_engine(Path(engine_path).read_bytes())
         self.ctx = self.engine.create_execution_context()
@@ -46,11 +46,22 @@ class TRTModule:
             else:
                 self.out_name = name
         self.stream = torch.cuda.Stream()
+        self.graph = None
+        if cuda_graph:
+            with torch.cuda.stream(self.stream):
+                self.ctx.execute_async_v3(self.stream.cuda_stream)
+            self.stream.synchronize()
+            self.graph = torch.cuda.CUDAGraph()
+            with torch.cuda.graph(self.graph, stream=self.stream):
+                self.ctx.execute_async_v3(self.stream.cuda_stream)
 
     def run(self, x: torch.Tensor) -> torch.Tensor:
         buf = self.buffers[self.in_name]
         buf.copy_(x.to(buf.dtype))
-        self.ctx.execute_async_v3(self.stream.cuda_stream)
+        if self.graph is not None:
+            self.graph.replay()
+        else:
+            self.ctx.execute_async_v3(self.stream.cuda_stream)
         self.stream.synchronize()
         return self.buffers[self.out_name].clone()
 
@@ -86,6 +97,7 @@ def main():
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--out", default="/workspace/trt/e2e.json")
+    parser.add_argument("--cuda-graph", action="store_true")
     args = parser.parse_args()
 
     from cosmos_predict1.tokenizer.inference.utils import numpy2tensor, pad_video_batch, tensor2numpy, unpad_video_batch
@@ -127,7 +139,7 @@ def main():
         torch.cuda.empty_cache()
 
     if args.enc_engine and args.dec_engine:
-        enc, dec = TRTModule(args.enc_engine), TRTModule(args.dec_engine)
+        enc, dec = TRTModule(args.enc_engine, args.cuda_graph), TRTModule(args.dec_engine, args.cuda_graph)
         warm = numpy2tensor(pad_video_batch(clips[0][1][None])[0], torch.float32, "cuda")
         dec.run(enc.run(warm))
         evaluate(args.tag, lambda x: dec.run(enc.run(x)), torch.float32)

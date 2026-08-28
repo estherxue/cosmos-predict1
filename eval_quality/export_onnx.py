@@ -141,6 +141,9 @@ def main():
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--dtype", default="bfloat16")
     parser.add_argument("--export_device", default="cuda", help="cuda (cudnn off) or cpu for tracing")
+    parser.add_argument("--fp16", action="store_true", help="export fp16 weights/IO (removes TRT boundary casts)")
+    parser.add_argument("--opset", type=int, default=17, help="18 emits GroupNormalization ops (TRT native GN)")
+    parser.add_argument("--suffix", default="", help="output name suffix, e.g. _h16")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -175,26 +178,29 @@ def main():
     torch.backends.cudnn.enabled = False  # dodge 4090 cuDNN conv3d faults; one-off trace, perf irrelevant
     dev = args.export_device
 
+    wdtype = torch.float16 if args.fp16 else torch.float32
     if args.part in ("decoder", "both"):
-        decoder = tokenizer._dec_model.float().eval().to(dev)
+        decoder = tokenizer._dec_model.to(wdtype).eval().to(dev)
         install_export_friendly_idwt(decoder)
-        example = torch.from_numpy(calib_latents[:1]).to(dev)
+        example = torch.from_numpy(calib_latents[:1]).to(dev, wdtype)
         with torch.no_grad():
             decoder(example)  # eager warmup fills the kernel cache before tracing
-        torch.onnx.export(decoder, example, str(out_dir / "decoder.onnx"),
-                          input_names=["latent"], output_names=["video"], opset_version=17)
-        print(f"exported {out_dir/'decoder.onnx'} (input {tuple(example.shape)})")
+        name = f"decoder{args.suffix}.onnx"
+        torch.onnx.export(decoder, example, str(out_dir / name),
+                          input_names=["latent"], output_names=["video"], opset_version=args.opset)
+        print(f"exported {out_dir/name} (input {tuple(example.shape)}, {wdtype}, opset {args.opset})")
 
     if args.part in ("encoder", "both"):
-        encoder = EncoderWrap(tokenizer._enc_model.float().eval()).to(dev)
+        encoder = EncoderWrap(tokenizer._enc_model.to(wdtype).eval()).to(dev)
         install_export_friendly_dwt(encoder)
-        example = torch.from_numpy(calib_videos[:1]).to(dev)
+        example = torch.from_numpy(calib_videos[:1]).to(dev, wdtype)
         with torch.no_grad():
             out = encoder(example)
         print(f"encoder eager ok: {tuple(example.shape)} -> {tuple(out.shape)}")
-        torch.onnx.export(encoder, example, str(out_dir / "encoder.onnx"),
-                          input_names=["video"], output_names=["latent"], opset_version=17)
-        print(f"exported {out_dir/'encoder.onnx'}")
+        name = f"encoder{args.suffix}.onnx"
+        torch.onnx.export(encoder, example, str(out_dir / name),
+                          input_names=["video"], output_names=["latent"], opset_version=args.opset)
+        print(f"exported {out_dir/name}")
 
 
 if __name__ == "__main__":
