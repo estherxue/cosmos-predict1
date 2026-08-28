@@ -22,6 +22,7 @@ import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from export_onnx import EncoderWrap, install_export_friendly_dwt, install_export_friendly_idwt
+from export_patches import install_fusion_friendly_patches, install_resize_upsample
 from run_eval import VIDEO_EXTS, build_tokenizer
 from tokenizers_registry import select
 
@@ -54,6 +55,8 @@ def main():
     parser.add_argument("--part", default="both", choices=["both", "encoder", "decoder"])
     parser.add_argument("--fp16", action="store_true", help="export fp16 weights/activations around Q/DQ (no fp32 fallbacks in TRT)")
     parser.add_argument("--opset", type=int, default=17)
+    parser.add_argument("--fusion_patches", action="store_true",
+                        help="transpose-free norm, attribute padding, Resize upsampling (numerically equivalent)")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -93,6 +96,17 @@ def main():
     video_np = np.concatenate(batches[: args.batch], axis=0)
     video_np = np.resize(video_np, (args.batch, *video_np.shape[1:]))
     example_video = numpy2tensor(video_np, wdtype, args.device)
+
+    if args.fusion_patches:  # parity check: same weights, rewritten graph
+        with torch.no_grad():
+            ref = tokenizer.decode(tokenizer.encode(example_video)[0]).float()
+        counts = install_fusion_friendly_patches(tokenizer)
+        install_resize_upsample()
+        with torch.no_grad():
+            out = tokenizer.decode(tokenizer.encode(example_video)[0]).float()
+        diff = (out - ref).abs()
+        print(f"fusion patches: {counts}, max|diff|={diff.max().item():.4g} mean|diff|={diff.mean().item():.4g} "
+              f"(output range [-1,1]; ~1e-2 or below is fp16 rounding)")
 
     encoder = EncoderWrap(tokenizer._enc_model)
     install_export_friendly_dwt(encoder)

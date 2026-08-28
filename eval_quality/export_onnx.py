@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from run_eval import VIDEO_EXTS, build_tokenizer
 from tokenizers_registry import select
+from export_patches import install_fusion_friendly_patches, install_resize_upsample
 
 
 def install_export_friendly_idwt(decoder):
@@ -145,6 +146,7 @@ def main():
     parser.add_argument("--opset", type=int, default=17, help="18 emits GroupNormalization ops (TRT native GN)")
     parser.add_argument("--suffix", default="", help="output name suffix, e.g. _h16")
     parser.add_argument("--batch", type=int, default=1, help="fixed batch size of the exported graph")
+    parser.add_argument("--fusion_patches", action="store_true", help="see export_patches.py")
     args = parser.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -178,6 +180,9 @@ def main():
     tokenizer = build_tokenizer(tok, args, native=True)
     torch.backends.cudnn.enabled = False  # dodge 4090 cuDNN conv3d faults; one-off trace, perf irrelevant
     dev = args.export_device
+    if args.fusion_patches:
+        print("fusion patches:", install_fusion_friendly_patches(tokenizer))
+        install_resize_upsample()
 
     wdtype = torch.float16 if args.fp16 else torch.float32
     if args.part in ("decoder", "both"):
