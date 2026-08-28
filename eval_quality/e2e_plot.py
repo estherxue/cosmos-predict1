@@ -30,9 +30,9 @@ def main():
     ax.annotate("−1 dB floor", (base["clips_per_s"] * 0.42, floor), textcoords="offset points", xytext=(0, 4), fontsize=8, color=MUTED)
     ax.annotate("+30% vs TRT fp16", (target, floor + 0.1), textcoords="offset points", xytext=(4, 0), fontsize=8, color=MUTED, rotation=90, va="bottom")
     SKIP = {"trt_mixed_h16", "trt_mixed_o5"}  # within 0.2 clips/s of trt_int8_mixed — one point stands for all three
-    OFFSETS = {"trt_fp16": (-8, -14), "trt_fp16_opt": (6, 6), "trt_int8_mixed": (6, -13),
-               "trt_encmix_decfull_o5": (8, -3), "trt_int8_full": (8, 4), "trt_mixed2_h16": (-8, -14)}
-    HA = {"trt_fp16": "right", "trt_mixed2_h16": "right"}
+    OFFSETS = {"trt_fp16": (-8, -14), "trt_fp16_opt": (6, 6), "trt_int8_mixed": (-8, 8),
+               "trt_encmix_decfull_o5": (8, -12), "trt_int8_full": (8, 4), "trt_mixed2_h16": (-8, -14)}
+    HA = {"trt_fp16": "right", "trt_mixed2_h16": "right", "trt_int8_mixed": "right"}
     for r in rows:
         if r["tag"] in SKIP:
             continue
