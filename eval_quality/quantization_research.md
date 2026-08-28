@@ -13,10 +13,17 @@
 
 Sensitivity scan (10-clip subset): damage is *distributed* across the decoder —
 single-component recovery: head +0.16 dB, up.0 +0.21, attn/mid ≈ 0; the
-head+up.0 combo recovers 0.75 → 0.16 dB on full val. Also: per-clip quantization
-damage is **motion-independent** (flat scatter vs motion score) — the opposite
-signature of temporal compression, confirming they degrade through different
-mechanisms.
+head+up.0 combo recovers 0.75 → 0.16 dB on full val.
+
+Correction (earlier note claimed motion-independence — wrong): per-clip W8A8
+damage correlates *negatively* with motion (ρ=−0.62), but this is almost fully
+mediated by baseline quality — ρ(baseline PSNR, drop) = **0.97**. Quantization
+adds roughly constant noise energy; on a nearly-perfect reconstruction (static
+clip, high baseline PSNR) that constant noise costs many dB, on an already-noisy
+one it is masked (dB ceiling effect). So the mechanism contrast with temporal
+compression stands, but the correct statement is: temporal compression targets
+motion content; quantization noise is content-agnostic and its *dB* cost tracks
+how clean the reconstruction was.
 
 ## Phase 2 RESULTS — deployed int8 speed (TensorRT 10.16, RTX 4090)
 
