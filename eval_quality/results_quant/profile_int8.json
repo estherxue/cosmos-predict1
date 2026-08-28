@@ -1,0 +1,3989 @@
+{
+  "tag": "int8",
+  "total_ms": 33.171,
+  "by_precision": {
+    "Int8": 6.911,
+    "Float": 7.98,
+    "Half": 18.129,
+    "Int32": 0.151,
+    "?": 0.0
+  },
+  "layers": [
+    {
+      "name": "Reformatting CopyNode for Output Tensor 0 to node_repeat_interleave_2",
+      "mean_ms": 1.0036,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "decoder.up.1.upsample.conv2.conv3d.weight + decoder.up.1.upsample.conv2.conv3d.weight_QuantizeLinear + node_conv3d_44 + node_add_11",
+      "mean_ms": 0.9563,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "__myl_MulMinMaxRounCastCastMulAddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl279_2",
+      "mean_ms": 0.6147,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl301_2",
+      "mean_ms": 0.6105,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl255_2",
+      "mean_ms": 0.5734,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.0.conv1.0.conv3d.weight + decoder.up.0.block.0.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_46",
+      "mean_ms": 0.5443,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_MulMaxrSubExpSumDivMul_myl45_8",
+      "mean_ms": 0.543,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_bmm_myl45_7",
+      "mean_ms": 0.5103,
+      "type": "gemm",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_bmm_1_myl45_12",
+      "mean_ms": 0.4804,
+      "type": "gemm",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl255_3",
+      "mean_ms": 0.4204,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl323_2",
+      "mean_ms": 0.4041,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.1.conv2.0.conv3d.weight + decoder.up.0.block.1.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_53",
+      "mean_ms": 0.3084,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.0.conv2.0.conv3d.weight + decoder.up.0.block.0.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_48",
+      "mean_ms": 0.3053,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.2.conv2.0.conv3d.weight + decoder.up.0.block.2.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_57",
+      "mean_ms": 0.3051,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.1.conv1.0.conv3d.weight + decoder.up.0.block.1.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_51",
+      "mean_ms": 0.3012,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.2.conv1.0.conv3d.weight + decoder.up.0.block.2.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_55",
+      "mean_ms": 0.2948,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_Expand_1317",
+      "mean_ms": 0.2603,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl266_2",
+      "mean_ms": 0.2503,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl290_2",
+      "mean_ms": 0.2501,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl312_2",
+      "mean_ms": 0.2499,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "unsqueeze_27 + unsqueeze_27_QuantizeLinear + unsqueeze_27_DequantizeLinear + node_convolution_13",
+      "mean_ms": 0.215,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_55 + unsqueeze_55_QuantizeLinear + unsqueeze_55_DequantizeLinear + node_convolution_27",
+      "mean_ms": 0.215,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_18_QuantizeLinear",
+      "mean_ms": 0.2139,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "unsqueeze_53 + unsqueeze_53_QuantizeLinear + unsqueeze_53_DequantizeLinear + node_convolution_26",
+      "mean_ms": 0.2137,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_25 + unsqueeze_25_QuantizeLinear + unsqueeze_25_DequantizeLinear + node_convolution_12",
+      "mean_ms": 0.2135,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "repeat_interleave_2_QuantizeLinear",
+      "mean_ms": 0.2112,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "conv3d_45_DequantizeLinear_clone_1",
+      "mean_ms": 0.2079,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl301_3",
+      "mean_ms": 0.2068,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl279_3",
+      "mean_ms": 0.2067,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.conv_out.0.conv3d.weight + decoder.conv_out.0.conv3d.weight_QuantizeLinear + node_conv3d_59",
+      "mean_ms": 0.2008,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_54_QuantizeLinear_clone_1",
+      "mean_ms": 0.1987,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_58_QuantizeLinear_clone_1",
+      "mean_ms": 0.1983,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_47_QuantizeLinear_clone_1",
+      "mean_ms": 0.1982,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_49_QuantizeLinear_clone_1",
+      "mean_ms": 0.1979,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_52_QuantizeLinear_clone_1",
+      "mean_ms": 0.1979,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_56_QuantizeLinear_clone_1",
+      "mean_ms": 0.1977,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl323_3",
+      "mean_ms": 0.1968,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl312_3",
+      "mean_ms": 0.1955,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl266_3",
+      "mean_ms": 0.1952,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl290_3",
+      "mean_ms": 0.1949,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.2.conv1.0.conv3d.weight + decoder.up.1.block.2.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_39",
+      "mean_ms": 0.1749,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl61_2",
+      "mean_ms": 0.1746,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "PWN(node_add_21, mul_25_1 + ONNXTRT_Broadcast_1696 + node_mul_26)",
+      "mean_ms": 0.1745,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl157_2",
+      "mean_ms": 0.1744,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "PWN(node_add_28, mul_25_2 + ONNXTRT_Broadcast_1755 + node_mul_28)",
+      "mean_ms": 0.1742,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl37_2",
+      "mean_ms": 0.1741,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl205_2",
+      "mean_ms": 0.174,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl49_2",
+      "mean_ms": 0.1738,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl109_2",
+      "mean_ms": 0.172,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.mid.block_1.conv1.0.conv3d.weight + decoder.mid.block_1.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_3",
+      "mean_ms": 0.1709,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl133_2",
+      "mean_ms": 0.1709,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl181_2",
+      "mean_ms": 0.1709,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.1.block.1.conv2.0.conv3d.weight + decoder.up.1.block.1.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_37",
+      "mean_ms": 0.1709,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.2.conv2.0.conv3d.weight + decoder.up.1.block.2.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_41",
+      "mean_ms": 0.1709,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.1.conv1.0.conv3d.weight + decoder.up.2.block.1.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_23",
+      "mean_ms": 0.1708,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.2.conv1.0.conv3d.weight + decoder.up.2.block.2.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_27",
+      "mean_ms": 0.1708,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.0.conv1.0.conv3d.weight + decoder.up.2.block.0.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_19",
+      "mean_ms": 0.1707,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.1.conv1.0.conv3d.weight + decoder.up.1.block.1.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_35",
+      "mean_ms": 0.1707,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.0.conv2.0.conv3d.weight + decoder.up.1.block.0.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_33",
+      "mean_ms": 0.1706,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.0.conv1.0.conv3d.weight + decoder.up.1.block.0.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_31",
+      "mean_ms": 0.1705,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddMulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl85_2",
+      "mean_ms": 0.1702,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.2.block.1.conv2.0.conv3d.weight + decoder.up.2.block.1.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_25",
+      "mean_ms": 0.1701,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.2.conv2.0.conv3d.weight + decoder.up.2.block.2.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_29",
+      "mean_ms": 0.1699,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.0.conv2.0.conv3d.weight + decoder.up.2.block.0.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_21",
+      "mean_ms": 0.1697,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_2.conv2.0.conv3d.weight + decoder.mid.block_2.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_17",
+      "mean_ms": 0.1696,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_2.conv1.0.conv3d.weight + decoder.mid.block_2.conv1.0.conv3d.weight_QuantizeLinear + node_conv3d_15",
+      "mean_ms": 0.169,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_1.conv2.0.conv3d.weight + decoder.mid.block_1.conv2.0.conv3d.weight_QuantizeLinear + node_conv3d_5",
+      "mean_ms": 0.1685,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_MulMinMaxRounCastCastMulTranReshCastMulCastSubMulMeanMean_myl13_2",
+      "mean_ms": 0.1586,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.upsample.conv3.conv3d.weight + decoder.up.1.upsample.conv3.conv3d.weight_QuantizeLinear + node_conv3d_45",
+      "mean_ms": 0.1572,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "decoder.up.0.block.0.nin_shortcut.conv3d.weight + decoder.up.0.block.0.nin_shortcut.conv3d.weight_QuantizeLinear + node_conv3d_50",
+      "mean_ms": 0.1536,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_21 + ONNXTRT_unsqueezeTensor_1368...node_mul_20]}",
+      "mean_ms": 0.1503,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_21 + ONNXTRT_unsqueezeTensor_1368...node_mul_20]}",
+      "mean_ms": 0.1449,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_25 + ONNXTRT_unsqueezeTensor_1586...node_mul_24]}",
+      "mean_ms": 0.1326,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_20 + ONNXTRT_unsqueezeTensor_1312...node_mul_19]}",
+      "mean_ms": 0.1324,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_24 + ONNXTRT_unsqueezeTensor_1532...node_mul_23]}",
+      "mean_ms": 0.132,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_23 + ONNXTRT_unsqueezeTensor_1478...node_mul_22]}",
+      "mean_ms": 0.1319,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_22 + ONNXTRT_unsqueezeTensor_1422...node_mul_21]}",
+      "mean_ms": 0.1311,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1309",
+      "mean_ms": 0.1281,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "video_cast_to_fp32",
+      "mean_ms": 0.1244,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "decoder.up.0.block.0.conv1.1.conv3d.weight + decoder.up.0.block.0.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_47",
+      "mean_ms": 0.1188,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.0.block.2.conv1.1.conv3d.weight + decoder.up.0.block.2.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_56",
+      "mean_ms": 0.1182,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.0.block.2.conv2.1.conv3d.weight + decoder.up.0.block.2.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_58",
+      "mean_ms": 0.1179,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.0.block.1.conv1.1.conv3d.weight + decoder.up.0.block.1.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_52",
+      "mean_ms": 0.1173,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.0.block.1.conv2.1.conv3d.weight + decoder.up.0.block.1.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_54",
+      "mean_ms": 0.1172,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.0.block.0.conv2.1.conv3d.weight + decoder.up.0.block.0.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_49",
+      "mean_ms": 0.1171,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_19_QuantizeLinear",
+      "mean_ms": 0.1132,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "decoder.up.1.upsample.conv1.conv3d.weight + decoder.up.1.upsample.conv1.conv3d.weight_QuantizeLinear + node_conv3d_43 + node_add_10",
+      "mean_ms": 0.1118,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl57_9",
+      "mean_ms": 0.11,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl57_4",
+      "mean_ms": 0.1047,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl45_4",
+      "mean_ms": 0.1024,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_19_1 + unsqueeze_19_1_QuantizeLinear + unsqueeze_19_1_DequantizeLinear + node_convolution_9",
+      "mean_ms": 0.1016,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_19_2 + unsqueeze_19_2_QuantizeLinear + unsqueeze_19_2_DequantizeLinear + node_convolution_11",
+      "mean_ms": 0.1014,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_17_1 + unsqueeze_17_1_QuantizeLinear + unsqueeze_17_1_DequantizeLinear + node_convolution_8",
+      "mean_ms": 0.1008,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_17_2 + unsqueeze_17_2_QuantizeLinear + unsqueeze_17_2_DequantizeLinear + node_convolution_10",
+      "mean_ms": 0.1006,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_47_1 + unsqueeze_47_1_QuantizeLinear + unsqueeze_47_1_DequantizeLinear + node_convolution_23",
+      "mean_ms": 0.1001,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_47_2 + unsqueeze_47_2_QuantizeLinear + unsqueeze_47_2_DequantizeLinear + node_convolution_25",
+      "mean_ms": 0.1001,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_45_1 + unsqueeze_45_1_QuantizeLinear + unsqueeze_45_1_DequantizeLinear + node_convolution_22",
+      "mean_ms": 0.0995,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_45_2 + unsqueeze_45_2_QuantizeLinear + unsqueeze_45_2_DequantizeLinear + node_convolution_24",
+      "mean_ms": 0.0995,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl45_9",
+      "mean_ms": 0.0972,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_23_QuantizeLinear",
+      "mean_ms": 0.0925,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_63",
+      "mean_ms": 0.0912,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_47",
+      "mean_ms": 0.0908,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_repeat_56",
+      "mean_ms": 0.0907,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_repeat_58",
+      "mean_ms": 0.0907,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_repeat_49",
+      "mean_ms": 0.0901,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_repeat_52",
+      "mean_ms": 0.0897,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_repeat_54",
+      "mean_ms": 0.0897,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "mul_21_QuantizeLinear",
+      "mean_ms": 0.0894,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "mul_24_QuantizeLinear",
+      "mean_ms": 0.0882,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "mul_22_QuantizeLinear",
+      "mean_ms": 0.0874,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "mul_20_QuantizeLinear",
+      "mean_ms": 0.087,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "decoder.conv_out.1.conv3d.weight + decoder.conv_out.1.conv3d.weight_QuantizeLinear + node_conv3d_60",
+      "mean_ms": 0.0824,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_49_QuantizeLinear_clone_0",
+      "mean_ms": 0.0801,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_54_QuantizeLinear_clone_0",
+      "mean_ms": 0.0795,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_52_QuantizeLinear_clone_0",
+      "mean_ms": 0.0794,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_47_QuantizeLinear_clone_0",
+      "mean_ms": 0.0791,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_56_QuantizeLinear_clone_0",
+      "mean_ms": 0.0791,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_58_QuantizeLinear_clone_0",
+      "mean_ms": 0.0791,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Output Tensor 0 to decoder.conv_out.1.conv3d.weight + decoder.conv_out.1.conv3d.weight_QuantizeLinear + node_conv3d_60",
+      "mean_ms": 0.0772,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_bmm_2_myl57_7",
+      "mean_ms": 0.0764,
+      "type": "gemm",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1277",
+      "mean_ms": 0.0755,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_62",
+      "mean_ms": 0.0745,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.2.conv2.1.conv3d.weight + decoder.up.1.block.2.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_42 + node_add_9",
+      "mean_ms": 0.0708,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_60_QuantizeLinear_clone_1",
+      "mean_ms": 0.0705,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "decoder.conv_in.1.conv3d.weight + decoder.conv_in.1.conv3d.weight_QuantizeLinear + node_conv3d_2",
+      "mean_ms": 0.0675,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_1.conv2.1.conv3d.weight + decoder.mid.block_1.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_6",
+      "mean_ms": 0.0673,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.0.conv2.1.conv3d.weight + decoder.up.1.block.0.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_34",
+      "mean_ms": 0.0672,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_60",
+      "mean_ms": 0.0672,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.0.conv1.1.conv3d.weight + decoder.up.2.block.0.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_20",
+      "mean_ms": 0.0669,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_2.conv2.1.conv3d.weight + decoder.mid.block_2.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_18",
+      "mean_ms": 0.0668,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.1.conv2.1.conv3d.weight + decoder.up.1.block.1.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_38",
+      "mean_ms": 0.0668,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.1.conv1.1.conv3d.weight + decoder.up.2.block.1.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_24",
+      "mean_ms": 0.0667,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.1.conv2.1.conv3d.weight + decoder.up.2.block.1.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_26",
+      "mean_ms": 0.0667,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.2.conv2.1.conv3d.weight + decoder.up.2.block.2.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_30",
+      "mean_ms": 0.0667,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_1.conv1.1.conv3d.weight + decoder.mid.block_1.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_4",
+      "mean_ms": 0.0666,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.block_2.conv1.1.conv3d.weight + decoder.mid.block_2.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_16",
+      "mean_ms": 0.0666,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.0.conv2.1.conv3d.weight + decoder.up.2.block.0.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_22",
+      "mean_ms": 0.0666,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.2.block.2.conv1.1.conv3d.weight + decoder.up.2.block.2.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_28",
+      "mean_ms": 0.0666,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.0.conv1.1.conv3d.weight + decoder.up.1.block.0.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_32",
+      "mean_ms": 0.0665,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.1.conv1.1.conv3d.weight + decoder.up.1.block.1.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_36",
+      "mean_ms": 0.0664,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.up.1.block.2.conv1.1.conv3d.weight + decoder.up.1.block.2.conv1.1.conv3d.weight_QuantizeLinear + node_conv3d_40",
+      "mean_ms": 0.0664,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_44",
+      "mean_ms": 0.0634,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to decoder.up.1.upsample.conv1.conv3d.weight + decoder.up.1.upsample.conv1.conv3d.weight_QuantizeLinear + node_conv3d_43 + node_add_10",
+      "mean_ms": 0.0603,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.1.v.conv3d.weight + decoder.mid.attn_1.1.v.conv3d.weight_QuantizeLinear + decoder.mid.attn_1.1.v.conv3d.weight_DequantizeLinear + node_conv3d_13",
+      "mean_ms": 0.0544,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.0.v.conv3d.weight + decoder.mid.attn_1.0.v.conv3d.weight_QuantizeLinear + decoder.mid.attn_1.0.v.conv3d.weight_DequantizeLinear + node_conv3d_9",
+      "mean_ms": 0.0542,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_3_3 + unsqueeze_3_3_QuantizeLinear + unsqueeze_3_3_DequantizeLinear + node_convolution_5",
+      "mean_ms": 0.0528,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_3_1 + unsqueeze_3_1_QuantizeLinear + unsqueeze_3_1_DequantizeLinear + node_convolution_1",
+      "mean_ms": 0.0527,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_31_4 + unsqueeze_31_4_QuantizeLinear + unsqueeze_31_4_DequantizeLinear + node_convolution_21",
+      "mean_ms": 0.0527,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_29_3 + unsqueeze_29_3_QuantizeLinear + unsqueeze_29_3_DequantizeLinear + node_convolution_18",
+      "mean_ms": 0.0527,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_31_2 + unsqueeze_31_2_QuantizeLinear + unsqueeze_31_2_DequantizeLinear + node_convolution_17",
+      "mean_ms": 0.0527,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_1_3 + unsqueeze_1_3_QuantizeLinear + unsqueeze_1_3_DequantizeLinear + node_convolution_4",
+      "mean_ms": 0.0526,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_1_1 + unsqueeze_1_1_QuantizeLinear + unsqueeze_1_1_DequantizeLinear + node_convolution",
+      "mean_ms": 0.0526,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_29_1 + unsqueeze_29_1_QuantizeLinear + unsqueeze_29_1_DequantizeLinear + node_convolution_14",
+      "mean_ms": 0.0526,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_3_4 + unsqueeze_3_4_QuantizeLinear + unsqueeze_3_4_DequantizeLinear + node_convolution_7",
+      "mean_ms": 0.0522,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_1_4 + unsqueeze_1_4_QuantizeLinear + unsqueeze_1_4_DequantizeLinear + node_convolution_6",
+      "mean_ms": 0.052,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_1_2 + unsqueeze_1_2_QuantizeLinear + unsqueeze_1_2_DequantizeLinear + node_convolution_2",
+      "mean_ms": 0.052,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_29_4 + unsqueeze_29_4_QuantizeLinear + unsqueeze_29_4_DequantizeLinear + node_convolution_20",
+      "mean_ms": 0.052,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_29_2 + unsqueeze_29_2_QuantizeLinear + unsqueeze_29_2_DequantizeLinear + node_convolution_16",
+      "mean_ms": 0.052,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_31_1 + unsqueeze_31_1_QuantizeLinear + unsqueeze_31_1_DequantizeLinear + node_convolution_15",
+      "mean_ms": 0.052,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_3_2 + unsqueeze_3_2_QuantizeLinear + unsqueeze_3_2_DequantizeLinear + node_convolution_3",
+      "mean_ms": 0.0518,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "unsqueeze_31_3 + unsqueeze_31_3_QuantizeLinear + unsqueeze_31_3_DequantizeLinear + node_convolution_19",
+      "mean_ms": 0.0518,
+      "type": "CaskDeconvolutionV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl57_3",
+      "mean_ms": 0.051,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.1.q.conv3d.weight + decoder.mid.attn_1.1.q.conv3d.weight_QuantizeLinear + decoder.mid.attn_1.1.q.conv3d.weight_DequantizeLinear + node_conv3d_11",
+      "mean_ms": 0.0509,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.0.q.conv3d.weight + decoder.mid.attn_1.0.q.conv3d.weight_QuantizeLinear + decoder.mid.attn_1.0.q.conv3d.weight_DequantizeLinear + node_conv3d_7",
+      "mean_ms": 0.0505,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.0.k.conv3d.weight + decoder.mid.attn_1.0.k.conv3d.weight_QuantizeLinear + decoder.mid.attn_1.0.k.conv3d.weight_DequantizeLinear + node_conv3d_8",
+      "mean_ms": 0.0502,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl45_3",
+      "mean_ms": 0.0499,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.1.k.conv3d.weight + decoder.mid.attn_1.1.k.conv3d.weight_QuantizeLinear + decoder.mid.attn_1.1.k.conv3d.weight_DequantizeLinear + node_conv3d_12",
+      "mean_ms": 0.0493,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl61_3",
+      "mean_ms": 0.0475,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl205_3",
+      "mean_ms": 0.0475,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl109_3",
+      "mean_ms": 0.0474,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl157_3",
+      "mean_ms": 0.0474,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMul_myl37_3",
+      "mean_ms": 0.0473,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl85_3",
+      "mean_ms": 0.0468,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl181_3",
+      "mean_ms": 0.0467,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl133_3",
+      "mean_ms": 0.0466,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMul_myl49_3",
+      "mean_ms": 0.0465,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_4",
+      "mean_ms": 0.0462,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_16",
+      "mean_ms": 0.0462,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_22",
+      "mean_ms": 0.0462,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_30",
+      "mean_ms": 0.0462,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_18",
+      "mean_ms": 0.0461,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_24",
+      "mean_ms": 0.0461,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_32",
+      "mean_ms": 0.0461,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_36",
+      "mean_ms": 0.0461,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_42",
+      "mean_ms": 0.0461,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_2",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_20",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_26",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_34",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_38",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_40",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_43",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_49",
+      "mean_ms": 0.046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_repeat_6",
+      "mean_ms": 0.0459,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_28",
+      "mean_ms": 0.0459,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_54",
+      "mean_ms": 0.0458,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_slice_58",
+      "mean_ms": 0.0456,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_slice_51",
+      "mean_ms": 0.0454,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_slice_56",
+      "mean_ms": 0.0453,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_slice_60",
+      "mean_ms": 0.0453,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "latent_QuantizeLinear",
+      "mean_ms": 0.0431,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_26)",
+      "mean_ms": 0.0421,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_10_QuantizeLinear",
+      "mean_ms": 0.042,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_20)",
+      "mean_ms": 0.0417,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_27)",
+      "mean_ms": 0.0416,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_19)",
+      "mean_ms": 0.0414,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_24_QuantizeLinear",
+      "mean_ms": 0.0413,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "__myl_Tran_myl57_13",
+      "mean_ms": 0.0404,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 2 to {ForeignNode[(Unnamed Layer* 362) [Constant]...node_permute_21 + node_view_20 + node_permute_22]}",
+      "mean_ms": 0.0396,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl97_2",
+      "mean_ms": 0.0392,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl193_2",
+      "mean_ms": 0.0392,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl13_3",
+      "mean_ms": 0.0391,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 2 to {ForeignNode[node_permute_6 + node_Reshape_2224 + node_permute_9...node_Reshape_2227 + node_permute_11]}",
+      "mean_ms": 0.0391,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl145_2",
+      "mean_ms": 0.0391,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl121_2",
+      "mean_ms": 0.0388,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl169_2",
+      "mean_ms": 0.0386,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl25_2",
+      "mean_ms": 0.0384,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "convolution_12_DequantizeLinear",
+      "mean_ms": 0.0384,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl73_2",
+      "mean_ms": 0.0382,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl217_2",
+      "mean_ms": 0.0381,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "convolution_26_DequantizeLinear",
+      "mean_ms": 0.0377,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.1.proj_out.conv3d.weight + decoder.mid.attn_1.1.proj_out.conv3d.weight_QuantizeLinear + node_conv3d_14",
+      "mean_ms": 0.0368,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to decoder.up.1.block.2.conv2.1.conv3d.weight + decoder.up.1.block.2.conv2.1.conv3d.weight_QuantizeLinear + node_conv3d_42 + node_add_9",
+      "mean_ms": 0.0359,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "decoder.mid.attn_1.0.proj_out.conv3d.weight + decoder.mid.attn_1.0.proj_out.conv3d.weight_QuantizeLinear + node_conv3d_10",
+      "mean_ms": 0.0354,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_3",
+      "mean_ms": 0.0336,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_26_QuantizeLinear",
+      "mean_ms": 0.0334,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_12_QuantizeLinear",
+      "mean_ms": 0.0324,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "decoder.conv_in.0.conv3d.weight + decoder.conv_in.0.conv3d.weight_QuantizeLinear + node_conv3d_1",
+      "mean_ms": 0.0321,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_Unsqueeze_1307",
+      "mean_ms": 0.0318,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_22_QuantizeLinear",
+      "mean_ms": 0.0318,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_8_QuantizeLinear",
+      "mean_ms": 0.0314,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "slice_44_DequantizeLinear_clone_2",
+      "mean_ms": 0.0275,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_19_DequantizeLinear",
+      "mean_ms": 0.0275,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1541",
+      "mean_ms": 0.0274,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "add_26_DequantizeLinear",
+      "mean_ms": 0.0274,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1406",
+      "mean_ms": 0.0273,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_Expand_1663",
+      "mean_ms": 0.0273,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_Expand_1724",
+      "mean_ms": 0.0273,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "cat_60_QuantizeLinear_clone_0",
+      "mean_ms": 0.0273,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Expand_1467",
+      "mean_ms": 0.0272,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "node_Expand_1602",
+      "mean_ms": 0.0272,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_Tran_myl45_13",
+      "mean_ms": 0.0267,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl121_3",
+      "mean_ms": 0.0254,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl193_3",
+      "mean_ms": 0.0253,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl217_3",
+      "mean_ms": 0.0253,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_cat_43_slice_44_DequantizeLinear_Output_clone_1_clone_1 copy",
+      "mean_ms": 0.0253,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_62",
+      "mean_ms": 0.0253,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl25_3",
+      "mean_ms": 0.025,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl97_3",
+      "mean_ms": 0.025,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl169_3",
+      "mean_ms": 0.0249,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl73_3",
+      "mean_ms": 0.0248,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddMulMinMaxRounCastReshTranCastMulSigmMulMinMaxRounCastCastMulEtc_myl145_3",
+      "mean_ms": 0.0247,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "PWN(node_add_17)",
+      "mean_ms": 0.0244,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_24)",
+      "mean_ms": 0.0243,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "slice_44_QuantizeLinear",
+      "mean_ms": 0.023,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_16)",
+      "mean_ms": 0.023,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_23)",
+      "mean_ms": 0.023,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_25)",
+      "mean_ms": 0.0227,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_18)",
+      "mean_ms": 0.0225,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "__myl_SlicSlicSlicSlicSlicSlicMulMoveMulMoveMulMoveAddAdd_myl57_12",
+      "mean_ms": 0.0222,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "PWN(node_add_15)",
+      "mean_ms": 0.0222,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_16_QuantizeLinear",
+      "mean_ms": 0.0215,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "PWN(node_add_22)",
+      "mean_ms": 0.0214,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Expand_1785",
+      "mean_ms": 0.0213,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_14_QuantizeLinear",
+      "mean_ms": 0.021,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_QuantizeLinear",
+      "mean_ms": 0.0209,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_2_QuantizeLinear",
+      "mean_ms": 0.0206,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_52_repeat_52_clone_0 copy",
+      "mean_ms": 0.0199,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_56_repeat_56_clone_0 copy",
+      "mean_ms": 0.0199,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[(Unnamed Layer* 362) [Constant]...node_permute_21 + node_view_20 + node_permute_22]}",
+      "mean_ms": 0.0194,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[node_permute_6 + node_Reshape_2224 + node_permute_9...node_Reshape_2227 + node_permute_11]}",
+      "mean_ms": 0.0192,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_cat_49_repeat_49_clone_0 copy",
+      "mean_ms": 0.0192,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_47_repeat_47_clone_0 copy",
+      "mean_ms": 0.0191,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_54_repeat_54_clone_0 copy",
+      "mean_ms": 0.0191,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_58_repeat_58_clone_0 copy",
+      "mean_ms": 0.019,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_6_QuantizeLinear",
+      "mean_ms": 0.0184,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Split_2208_1709",
+      "mean_ms": 0.0184,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_20_QuantizeLinear",
+      "mean_ms": 0.0181,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "post_quant_conv.conv3d.weight + post_quant_conv.conv3d.weight_QuantizeLinear + node_conv3d",
+      "mean_ms": 0.0179,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Split_2198_1646",
+      "mean_ms": 0.0175,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2198_1652",
+      "mean_ms": 0.0175,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2198_1650",
+      "mean_ms": 0.0174,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_4_QuantizeLinear",
+      "mean_ms": 0.0174,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Split_2198_1644",
+      "mean_ms": 0.0172,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2198_1642",
+      "mean_ms": 0.017,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2208_1711",
+      "mean_ms": 0.017,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_18_QuantizeLinear",
+      "mean_ms": 0.0169,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Output Tensor 1 to {ForeignNode[val_58_4 + ONNXTRT_unsqueezeTensor_378...permute_13_DequantizeLinear]}",
+      "mean_ms": 0.0168,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2198_1648",
+      "mean_ms": 0.0168,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2208",
+      "mean_ms": 0.0168,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2208_1707",
+      "mean_ms": 0.0167,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Output Tensor 1 to {ForeignNode[val_58_3 + ONNXTRT_unsqueezeTensor_354...permute_5_DequantizeLinear]}",
+      "mean_ms": 0.0165,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2208_1699",
+      "mean_ms": 0.0165,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_4_QuantizeLinear",
+      "mean_ms": 0.0164,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Split_2208_1701",
+      "mean_ms": 0.0164,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2208_1705",
+      "mean_ms": 0.0164,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_24_DequantizeLinear",
+      "mean_ms": 0.0164,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_8_QuantizeLinear",
+      "mean_ms": 0.0163,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "mul_12_QuantizeLinear",
+      "mean_ms": 0.0163,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Split_2198_1640",
+      "mean_ms": 0.0163,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_QuantizeLinear",
+      "mean_ms": 0.0162,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_5",
+      "mean_ms": 0.0162,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_33",
+      "mean_ms": 0.0162,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_16_QuantizeLinear",
+      "mean_ms": 0.0162,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_10_DequantizeLinear",
+      "mean_ms": 0.0162,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_41",
+      "mean_ms": 0.0161,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_45",
+      "mean_ms": 0.0161,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_165",
+      "mean_ms": 0.016,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_17",
+      "mean_ms": 0.016,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_783",
+      "mean_ms": 0.016,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1027",
+      "mean_ms": 0.016,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_539",
+      "mean_ms": 0.0159,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_25",
+      "mean_ms": 0.0159,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1271",
+      "mean_ms": 0.0159,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Split_2208_1703",
+      "mean_ms": 0.0159,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_cat_60_repeat_60_clone_0 copy",
+      "mean_ms": 0.0158,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Split_2198",
+      "mean_ms": 0.0158,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_14_QuantizeLinear",
+      "mean_ms": 0.0157,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "mul_10_QuantizeLinear",
+      "mean_ms": 0.0156,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_8_DequantizeLinear",
+      "mean_ms": 0.0156,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_22_DequantizeLinear",
+      "mean_ms": 0.0156,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_27_DequantizeLinear",
+      "mean_ms": 0.0156,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_5 + ONNXTRT_unsqueezeTensor_404...node_mul_4]}",
+      "mean_ms": 0.0155,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_6_QuantizeLinear",
+      "mean_ms": 0.0155,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_31",
+      "mean_ms": 0.0155,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_17_QuantizeLinear",
+      "mean_ms": 0.0155,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_21",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_23",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_722",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_29",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_11_QuantizeLinear",
+      "mean_ms": 0.0154,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_37",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_39",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_43",
+      "mean_ms": 0.0154,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_41",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_4 + ONNXTRT_unsqueezeTensor_378...permute_13_DequantizeLinear]}",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_5_QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_19",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_600",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_7_QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_23",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_9_QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_27",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_844",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_13_QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_slice_35",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1088",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_15_QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Expand_1210",
+      "mean_ms": 0.0153,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_3",
+      "mean_ms": 0.0152,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "mul_1_QuantizeLinear",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_Expand_478",
+      "mean_ms": 0.0152,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_12 + ONNXTRT_unsqueezeTensor_788...node_mul_11]}",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_31",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_966",
+      "mean_ms": 0.0152,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_39",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1149",
+      "mean_ms": 0.0152,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_1303",
+      "mean_ms": 0.0152,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_104",
+      "mean_ms": 0.0151,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_slice_7",
+      "mean_ms": 0.0151,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_905",
+      "mean_ms": 0.0151,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_37",
+      "mean_ms": 0.0151,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_20_DequantizeLinear",
+      "mean_ms": 0.0151,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_21",
+      "mean_ms": 0.015,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Expand_661",
+      "mean_ms": 0.015,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_29",
+      "mean_ms": 0.015,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "permute_11_QuantizeLinear",
+      "mean_ms": 0.0148,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_Unsqueeze_1275",
+      "mean_ms": 0.0148,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_1 + ONNXTRT_unsqueezeTensor_244...node_mul]}",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[(Unnamed Layer* 362) [Constant]...node_permute_21 + node_view_20 + node_permute_22]}",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_10 + ONNXTRT_unsqueezeTensor_678...node_mul_9]}",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_28_QuantizeLinear_clone_1",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_35",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_2 + ONNXTRT_unsqueezeTensor_298...node_mul_1]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_7",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[node_permute_6 + node_Reshape_2224 + node_permute_9...node_Reshape_2227 + node_permute_11]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "permute_22_QuantizeLinear",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_6 + ONNXTRT_unsqueezeTensor_458...node_mul_5]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_11 + ONNXTRT_unsqueezeTensor_734...node_mul_10]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_14 + ONNXTRT_unsqueezeTensor_898...node_mul_13]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_16 + ONNXTRT_unsqueezeTensor_1008...node_mul_15]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_18 + ONNXTRT_unsqueezeTensor_1118...node_mul_17]}",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_43",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_5",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_17",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_19",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_7 + ONNXTRT_unsqueezeTensor_514...node_mul_6]}",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_20_QuantizeLinear_clone_1",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_9 + ONNXTRT_unsqueezeTensor_624...node_mul_8]}",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_27",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_13 + ONNXTRT_unsqueezeTensor_844...node_mul_12]}",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_15 + ONNXTRT_unsqueezeTensor_954...node_mul_14]}",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_17 + ONNXTRT_unsqueezeTensor_1064...node_mul_16]}",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[val_58_3 + ONNXTRT_unsqueezeTensor_354...permute_5_DequantizeLinear]}",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[val_58_8 + ONNXTRT_unsqueezeTensor_568...node_mul_7]}",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_33",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_36_QuantizeLinear_clone_1",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_41",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to node_slice_25",
+      "mean_ms": 0.0143,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_25_DequantizeLinear",
+      "mean_ms": 0.0143,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_18_DequantizeLinear",
+      "mean_ms": 0.0142,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_24_DequantizeLinear",
+      "mean_ms": 0.0142,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_6_QuantizeLinear_clone_1",
+      "mean_ms": 0.014,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_38_QuantizeLinear_clone_1",
+      "mean_ms": 0.014,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "add_17_DequantizeLinear",
+      "mean_ms": 0.014,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "cat_4_QuantizeLinear_clone_1",
+      "mean_ms": 0.0139,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_18_QuantizeLinear_clone_1",
+      "mean_ms": 0.0139,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_26_QuantizeLinear_clone_1",
+      "mean_ms": 0.0139,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_34_QuantizeLinear_clone_1",
+      "mean_ms": 0.0139,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_40_QuantizeLinear_clone_1",
+      "mean_ms": 0.0139,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_2_QuantizeLinear_clone_1",
+      "mean_ms": 0.0138,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_16_QuantizeLinear_clone_1",
+      "mean_ms": 0.0138,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_24_QuantizeLinear_clone_1",
+      "mean_ms": 0.0138,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_30_QuantizeLinear_clone_1",
+      "mean_ms": 0.0138,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_32_QuantizeLinear_clone_1",
+      "mean_ms": 0.0138,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_22_QuantizeLinear_clone_1",
+      "mean_ms": 0.0137,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_42_QuantizeLinear_clone_1",
+      "mean_ms": 0.0137,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_2_repeat_2_clone_0 copy",
+      "mean_ms": 0.0125,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_2_QuantizeLinear",
+      "mean_ms": 0.0125,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_1_QuantizeLinear",
+      "mean_ms": 0.0125,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "add_23_DequantizeLinear",
+      "mean_ms": 0.0125,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_16_DequantizeLinear",
+      "mean_ms": 0.0123,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_cat_6_repeat_6_clone_0 copy",
+      "mean_ms": 0.0122,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_16_repeat_16_clone_0 copy",
+      "mean_ms": 0.0122,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_30_repeat_30_clone_0 copy",
+      "mean_ms": 0.0122,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_22_repeat_22_clone_0 copy",
+      "mean_ms": 0.0121,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_32_repeat_32_clone_0 copy",
+      "mean_ms": 0.0121,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_38_repeat_38_clone_0 copy",
+      "mean_ms": 0.0121,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_40_repeat_40_clone_0 copy",
+      "mean_ms": 0.0121,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_43_repeat_43_clone_0 copy",
+      "mean_ms": 0.0121,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_2_QuantizeLinear_clone_0",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_4_repeat_4_clone_0 copy",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_24_repeat_24_clone_0 copy",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_26_repeat_26_clone_0 copy",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_28_repeat_28_clone_0 copy",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_36_repeat_36_clone_0 copy",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_42_repeat_42_clone_0 copy",
+      "mean_ms": 0.012,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_18_repeat_18_clone_0 copy",
+      "mean_ms": 0.0119,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_20_repeat_20_clone_0 copy",
+      "mean_ms": 0.0119,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_1_QuantizeLinear",
+      "mean_ms": 0.0119,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_22_QuantizeLinear_clone_0",
+      "mean_ms": 0.0118,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "node_cat_34_repeat_34_clone_0 copy",
+      "mean_ms": 0.0118,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_38_QuantizeLinear_clone_0",
+      "mean_ms": 0.0118,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_3_QuantizeLinear",
+      "mean_ms": 0.0118,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_2_QuantizeLinear",
+      "mean_ms": 0.0118,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_0_QuantizeLinear",
+      "mean_ms": 0.0118,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_30_QuantizeLinear_clone_0",
+      "mean_ms": 0.0117,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_3_QuantizeLinear",
+      "mean_ms": 0.0117,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_0_QuantizeLinear",
+      "mean_ms": 0.0117,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_43_QuantizeLinear_clone_0",
+      "mean_ms": 0.0113,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_20_QuantizeLinear_clone_0",
+      "mean_ms": 0.0112,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_24_QuantizeLinear_clone_0",
+      "mean_ms": 0.0112,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_26_QuantizeLinear_clone_0",
+      "mean_ms": 0.0112,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_28_QuantizeLinear_clone_0",
+      "mean_ms": 0.0112,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_42_QuantizeLinear_clone_0",
+      "mean_ms": 0.0112,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_16_QuantizeLinear_clone_0",
+      "mean_ms": 0.0111,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_18_QuantizeLinear_clone_0",
+      "mean_ms": 0.0111,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_32_QuantizeLinear_clone_0",
+      "mean_ms": 0.0111,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_34_QuantizeLinear_clone_0",
+      "mean_ms": 0.0111,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_36_QuantizeLinear_clone_0",
+      "mean_ms": 0.0111,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_4_QuantizeLinear_clone_0",
+      "mean_ms": 0.011,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_6_QuantizeLinear_clone_0",
+      "mean_ms": 0.011,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "cat_40_QuantizeLinear_clone_0",
+      "mean_ms": 0.011,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "convolution_2_DequantizeLinear",
+      "mean_ms": 0.0098,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_14_DequantizeLinear",
+      "mean_ms": 0.0097,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_22_DequantizeLinear",
+      "mean_ms": 0.0093,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_4_DequantizeLinear",
+      "mean_ms": 0.0092,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_DequantizeLinear",
+      "mean_ms": 0.0092,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "add_15_DequantizeLinear",
+      "mean_ms": 0.0092,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_20_DequantizeLinear",
+      "mean_ms": 0.0092,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_18_DequantizeLinear",
+      "mean_ms": 0.0092,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_6_DequantizeLinear",
+      "mean_ms": 0.0091,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "convolution_16_DequantizeLinear",
+      "mean_ms": 0.009,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_5_QuantizeLinear",
+      "mean_ms": 0.0072,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_6_QuantizeLinear",
+      "mean_ms": 0.0071,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_4_QuantizeLinear",
+      "mean_ms": 0.0071,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_4_QuantizeLinear",
+      "mean_ms": 0.007,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_7_QuantizeLinear",
+      "mean_ms": 0.0069,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_1_split_6_QuantizeLinear",
+      "mean_ms": 0.0069,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_7_QuantizeLinear",
+      "mean_ms": 0.0068,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_5_QuantizeLinear",
+      "mean_ms": 0.0066,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "split_split_7_DequantizeLinear",
+      "mean_ms": 0.0064,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_6_DequantizeLinear",
+      "mean_ms": 0.0064,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_3_DequantizeLinear",
+      "mean_ms": 0.0064,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_7_DequantizeLinear",
+      "mean_ms": 0.0064,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_4_DequantizeLinear",
+      "mean_ms": 0.0064,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_2_DequantizeLinear",
+      "mean_ms": 0.0064,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_4_DequantizeLinear",
+      "mean_ms": 0.0063,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_2_DequantizeLinear",
+      "mean_ms": 0.0063,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_1_DequantizeLinear",
+      "mean_ms": 0.0063,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_6_DequantizeLinear",
+      "mean_ms": 0.0063,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_5_DequantizeLinear",
+      "mean_ms": 0.0063,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_0_DequantizeLinear",
+      "mean_ms": 0.0063,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_5_DequantizeLinear",
+      "mean_ms": 0.0062,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_split_0_DequantizeLinear",
+      "mean_ms": 0.0062,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_3_DequantizeLinear",
+      "mean_ms": 0.0062,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "split_1_split_1_DequantizeLinear",
+      "mean_ms": 0.0062,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_IotaIotaCastCastReshReshEqlGtrOrSeleEqlMulSeleSlicSlicMaxSlicMaxSubExpSlicSlicAddSlicAddDivEtc_myl57_8",
+      "mean_ms": 0.0046,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Move_myl290_0",
+      "mean_ms": 0.0038,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl312_0",
+      "mean_ms": 0.0038,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl255_0",
+      "mean_ms": 0.0036,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl25_0",
+      "mean_ms": 0.0035,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl181_1",
+      "mean_ms": 0.0034,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl13_1",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl157_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl279_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl301_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl312_1",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl323_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl49_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl49_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl61_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl73_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl85_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl109_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl169_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl181_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl255_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl266_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl266_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl279_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl290_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl301_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl323_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl37_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl61_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl73_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl85_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl97_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl97_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl109_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl121_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl133_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl133_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl145_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl157_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl169_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl193_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl205_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl205_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl217_0",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl217_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl13_0",
+      "mean_ms": 0.0028,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl25_1",
+      "mean_ms": 0.0028,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl37_0",
+      "mean_ms": 0.0028,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl121_1",
+      "mean_ms": 0.0028,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl145_0",
+      "mean_ms": 0.0028,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl193_1",
+      "mean_ms": 0.0028,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "latent_cast_to_fp16",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "entry^bb^signal^1_myl45_0",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^2_myl45_1",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^1_myl45_2",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3343_myl45_5",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3345_myl45_6",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3347_myl45_10",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3349_myl45_11",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^signal^1_myl57_0",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^2_myl57_1",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^1_myl57_2",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye6254_myl57_5",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye6256_myl57_6",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye6258_myl57_10",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye6260_myl57_11",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "node_Unsqueeze_1275",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_interleave",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_Unsqueeze_1307",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_interleave_1 + node_Unsqueeze_1315",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "node_repeat_interleave_2",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Int8"
+    }
+  ]
+}

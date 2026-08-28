@@ -39,8 +39,29 @@ For scale: PyTorch (JIT, bf16) decode on the same 4090 is 7.6 ms/frame — the T
 runtime alone is worth 3.3×; int8 adds a further 13%. Pairing honestly: the
 benchmarked int8 engine quantizes *all* decoder convs, which corresponds to the
 plain W8A8 quality row (−0.75 dB); the accepted mixed config (−0.16 dB) would land
-between 2.04 and 2.31 ms/frame. The modest int8 gain suggests the 3D-conv decoder
-is bandwidth-/tactic-bound rather than math-bound at this size.
+between 2.04 and 2.31 ms/frame.
+
+### Why only 13%: per-layer profile verdict (profile_{fp16,int8}.json)
+
+EngineInspector + IProfiler per-layer breakdown (equivalent of
+`trtexec --profilingVerbosity=detailed --dumpProfile`):
+
+| | fp16 engine (38.2 ms) | int8 engine (33.2 ms) |
+|---|---|---|
+| layers running int8 | — | **6.9 ms (21%)** |
+| fp16 layers | 33.6 ms (88%) | 18.1 ms (55%) |
+| fp32 layers | 4.4 ms (12%) | **8.0 ms (24%)** — Q/DQ broke fusions, segments fell back |
+| reformat/cast | 6.4 ms | **8.3 ms** — Q/DQ conversion tax |
+
+So the limited gain is (in order): **(1) coverage** — only ~21% of int8-engine
+runtime actually executes in int8; norm/SiLU/attention/reformats (~2/3 of time,
+memory-bound elementwise) are untouched by design; **(2) Q/DQ overhead** — casts
+grew ~1.9 ms and some inter-Q/DQ segments dropped to fp32, eating part of the
+conv win. Amdahl check: convs are 49% of the fp16 engine; perfect 2× int8 convs
+would cap the speedup at ~1.33×, and we realized 1.15× of that. Next levers, in
+order of expected value: quantize the wavelet ConvTranspose ops, reduce Q/DQ
+boundary count (quantize longer chains), and fuse the GroupNorm+SiLU pointwise
+chains — not more conv quantization.
 
 4090 re-timing of the 6-variant sweep is in `results_full_4090/` (quality metrics
 reproduce the 3090 run to ~1e-3 dB; timings ~1.7× faster across the board).
