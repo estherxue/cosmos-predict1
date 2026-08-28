@@ -24,7 +24,8 @@ def build_detailed(onnx_path: str, engine_path: Path, workspace_gb: int = 18):
     builder = trt.Builder(logger)
     network = builder.create_network(0)
     parser = trt.OnnxParser(network, logger)
-    if not parser.parse(Path(onnx_path).read_bytes()):
+    # parse_from_file resolves external weight files (decoder.onnx.data) next to the model
+    if not parser.parse_from_file(str(onnx_path)):
         raise RuntimeError("\n".join(str(parser.get_error(i)) for i in range(parser.num_errors)))
     config = builder.create_builder_config()
     config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, workspace_gb << 30)
