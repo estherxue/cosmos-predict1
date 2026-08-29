@@ -299,7 +299,15 @@ window effect at ≤0.3 dB. The 4x8x8 models also needed `PYTORCH_CUDA_ALLOC_CON
 | 0.1-DV4x8x8 | 28.81 / 0.818 | **27.14** / 0.768 (frame-avg PSNR 28.32) | -1.67 dB | 17 |
 
 Verdict: the harness reproduces the post-bug-fix official numbers to within 0.4–0.7 dB
-(video-MSE convention; the per-frame-average convention lands within 0.05–0.2 dB). The
-remaining offset is consistent with window 17 vs 49 and unspecified output recompression.
+(video-MSE convention; the per-frame-average convention lands within 0.05–0.2 dB).
+Attribution of the residual, with directions made explicit: our window 17 (vs official 49)
+*favours us* (one intra-coded frame per 17 instead of per 49), so it cannot explain us being
+lower. The coherent explanation is **input-side H.264 smoothing**: TokenBench's own
+preprocessing writes sources to lossy mp4 (default qp≈28) and evaluates against that same
+smoothed reference — reconstructing smoothed content is strictly easier than our
+pristine-JPEG protocol. (Output-only recompression would push the official numbers *down*
+and cannot explain the gap.) This also explains DV's larger residual (−1.67 dB): the FSQ
+discrete model struggles most with high-frequency content and thus benefits most from a
+smoothed input.
 Our 480p/17-frame sweep numbers are therefore ~3 dB below official purely due to the 480p
 evaluation resolution, not a pipeline defect. Files: `results_davis_official/*.json`.
