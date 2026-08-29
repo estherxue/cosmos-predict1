@@ -27,8 +27,25 @@ import numpy as np
 import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from run_eval import VIDEO_EXTS, build_tokenizer, frame_metrics
+from run_eval import VIDEO_EXTS, build_tokenizer
 from tokenizers_registry import select
+
+
+def _frame_pair_metrics(pair):
+    from skimage.metrics import peak_signal_noise_ratio, structural_similarity
+
+    orig, recon = pair
+    return (peak_signal_noise_ratio(orig, recon, data_range=255),
+            structural_similarity(orig, recon, data_range=255, channel_axis=-1))
+
+
+def frame_metrics(original, reconstructed, pool=None) -> dict:
+    """Per-frame PSNR/SSIM (uint8 RGB), SSIM parallelised over frames (CPU-bound at 1080p)."""
+    pairs = list(zip(original, reconstructed))
+    res = list(pool.map(_frame_pair_metrics, pairs, chunksize=2)) if pool else list(map(_frame_pair_metrics, pairs))
+    psnrs, ssims = zip(*res)
+    return {"psnr": float(np.mean(psnrs)), "ssim": float(np.mean(ssims)),
+            "psnr_frames": [round(float(p), 3) for p in psnrs]}
 
 
 def read_sequence(seq_dir: Path, max_frames=None) -> np.ndarray:
@@ -71,6 +88,10 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     all_results = []
+    from concurrent.futures import ProcessPoolExecutor
+    import os
+
+    pool = ProcessPoolExecutor(max_workers=max(1, min(16, (os.cpu_count() or 4) - 1)))
     for name in args.tokenizers:
         tok = select([name])[0]
         if args.mode == "jit":
@@ -100,7 +121,7 @@ def main():
             with torch.no_grad():
                 recon = tokenizer(video[None], temporal_window=args.temporal_window)[0]
             recon = recon[: video.shape[0]]
-            m = frame_metrics(video, recon)
+            m = frame_metrics(video, recon, pool)
             per_seq[seq] = {"psnr": m["psnr"], "ssim": m["ssim"], "frames": int(video.shape[0]),
                             "psnr_frames": m["psnr_frames"], "hw": list(video.shape[1:3])}
             print(f"  [{name}] {i+1:2d}/{len(seqs)} {seq:22s} {video.shape[0]:3d}f {video.shape[1]}x{video.shape[2]}  "
@@ -125,6 +146,7 @@ def main():
         del tokenizer
         torch.cuda.empty_cache()
 
+    pool.shutdown()
     print("wrote", out_dir)
 
 
