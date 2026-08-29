@@ -311,3 +311,23 @@ discrete model struggles most with high-frequency content and thus benefits most
 smoothed input.
 Our 480p/17-frame sweep numbers are therefore ~3 dB below official purely due to the 480p
 evaluation resolution, not a pipeline defect. Files: `results_davis_official/*.json`.
+
+### Recompression hypothesis — VERIFIED (qp28 experiment, 2026-08-29)
+
+Re-running 0.1-CV4x8x8 with TokenBench-style preprocessing (H.264 round-trip of the
+input, qp 28; the smoothed frames serve as both model input and PSNR reference,
+everything else identical to our anchor):
+
+| input handling | PSNR (video-MSE) | SSIM |
+|---|---|---|
+| pristine JPEG frames (our anchor) | 32.42 | 0.893 |
+| **official PSNR (paper/page)** | **32.80** | **0.900** |
+| qp28-smoothed input+reference | 33.21 | 0.917 |
+
+Input smoothing alone is worth **+0.79 dB** — and the official number is now
+*bracketed* by our two protocol variants. Conclusion: the residual anchor gap was
+input preprocessing, not the harness; the harness is validated on both sides.
+(Pod pitfalls this round, for the record: lean torch-2.4 image ships without
+`unzip` **and** `ffmpeg`, and `apt-get install` silently no-ops before `apt-get
+update`; my retry loop deleted a fully-downloaded 2.8 GB zip because the *unzip*
+step failed — separate download and extraction verification.)
