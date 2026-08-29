@@ -262,16 +262,20 @@ rewrite adds the rest. All numbers come from one artifact measured for both axes
 | resolution | short side 480 (854×480, padded to 864) | native 1080p (`short_size=None`, padded to 1088) |
 | frames | **first 17 frames** only (one causal window) | whole sequence (34–104 f), `temporal_window=17` sliding, tail window temporally padded |
 | precision / path | JIT, bf16, `CausalVideoTokenizer.forward` | same (CLI default bf16) — identical |
-| PSNR | uint8 RGB, data_range 255, per frame → per-video mean → mean over videos | "computed on all individual frames"; RGB vs Y and aggregation not stated |
-| SSIM | skimage `structural_similarity`, channel_axis=-1, win 7 | implementation not stated |
-| rFVD | not computed | reported (I3D features), implementation not stated |
-| checkpoints | curves: 0.1 series; DAVIS main table: Tokenize1 | Table 5: Tokenize1 (360p/720p); project page & HF cards: 0.1-era numbers — and the three official sources disagree (32.80 / 35.28 / 35.85 for CV4x8x8) |
+| PSNR | uint8 RGB, data_range 255, **per frame → mean** | TokenBench `metrics_cli.py`: **one MSE over the whole T×H×W×3 float32 array per video**, `20·log10(255/√mse)`, mean over videos (per-frame averaging is ≥ this by Jensen, so ours is if anything inflated) |
+| SSIM | skimage, channel_axis=-1, win 7, per frame → mean | identical (same skimage call) |
+| rFVD | not computed | StyleGAN-V I3D torchscript, ≤300 frames, short side 224 + center crop, FID over 50 video features |
+| split / window | DAVIS **2017 val (30)**, window 17 | DAVIS **2016 (50 seqs)** inferred (Perazzi 2016 citation; AToken re-eval on "1080p, 50 videos" gets 32.25 vs paper 32.80); window **49** (0.1 & 360p) / **121** (720p) per Table 5's Frames column |
+| official numbers | — | HF cards / README chart (35.28, DV 32.98) are **pre-fix** (uint8-overflow PSNR bug, TokenBench PR #3, 2024-12-30); paper Table 5 & project page are post-fix: 0.1-CV4x8x8 32.80, 0.1-CV8x8x8 30.61, T1-CV4x8x8-360p 35.85, T1-CV8x8x8-720p 31.28 |
+| checkpoints | curves: 0.1 series; DAVIS main table: Tokenize1 | Table 5 reports both 0.1-CV (32.80/30.61) and Tokenize1 (35.85/31.28); the "disagreeing" 35.28 is the pre-fix bug value |
 | quantized rows | fake-quant + TRT engines at 480p/17f | none |
 
-Directional impact on the absolute gap (ours 2.5–5 dB below official): Tokenize1 vs 0.1
-is +0.65…+1.76 dB (measured, same protocol); longer sequences slightly *lower* PSNR
-(49-frame probe: −0.2 dB), so frame count does not explain it; resolution and a
-possible Y-channel PSNR are the remaining candidates (order +1…+3 dB each). Relative
+Corrected gaps vs the post-fix official numbers: 0.1-CV4x8x8 29.51 vs 32.80 (−3.3),
+0.1-CV8x8x8 28.13 vs 30.61 (−2.5), T1-CV4x8x8-360p 31.27 vs 35.85 (−4.6),
+T1-CV8x8x8-720p 28.78 vs 31.28 (−2.5). Frame count (49-frame probe: −0.2 dB) and the
+video-MSE PSNR convention both push *down*, so the remaining gap is essentially
+**resolution (1080p vs 480p)**, plus one unspecified item: whether official metrics were
+computed on H.264-recompressed outputs (`write_video`, qp 28). Relative
 conclusions (compression-rate ordering, continuous > discrete, temporal-vs-spatial
 ablation, quantization deltas) do not depend on these. A ready-to-run official-protocol
 script exists (`eval_davis_official.py` + `davis_official_pipeline.sh`, ~1.5–2 h on a

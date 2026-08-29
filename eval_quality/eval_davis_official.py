@@ -1,9 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-"""DAVIS reconstruction eval following the official inference path:
-native resolution (DAVIS 2017 Full-Resolution, 1080p), the whole sequence,
-`CausalVideoTokenizer.forward(video, temporal_window=17)` (sliding causal
-windows, bf16), per-frame PSNR/SSIM on uint8 RGB, averaged per video then
-across videos (all-frame mean also reported).
+"""DAVIS reconstruction eval following the official protocol (TokenBench
+`metrics_cli.py` + Cosmos-Tokenizer `video_cli.py`, paper Table 5):
+DAVIS 2016's 50 sequences at native 1080p (Full-Resolution JPEGs), the whole
+sequence, `CausalVideoTokenizer.forward(video, temporal_window=49)` (the paper's
+window for 0.1 / 360p models; 720p models used 121, which does not fit 24 GB —
+flagged), bf16 JIT.  Metrics exactly as TokenBench: PSNR from the *video-level*
+MSE over the whole T×H×W×3 float32 RGB array (one value per video, then mean),
+SSIM per frame (skimage, data_range 255) → mean per video → mean. The per-frame
+PSNR mean is reported too for comparison with our 480p harness. rFVD not computed.
 
 Modes:
   jit        official JIT checkpoints (baseline reproduction)
@@ -40,11 +44,14 @@ def _frame_pair_metrics(pair):
 
 
 def frame_metrics(original, reconstructed, pool=None) -> dict:
-    """Per-frame PSNR/SSIM (uint8 RGB), SSIM parallelised over frames (CPU-bound at 1080p)."""
+    """TokenBench-style metrics: video-level-MSE PSNR (official), per-frame SSIM,
+    plus the per-frame PSNR mean (our 480p harness convention)."""
     pairs = list(zip(original, reconstructed))
     res = list(pool.map(_frame_pair_metrics, pairs, chunksize=2)) if pool else list(map(_frame_pair_metrics, pairs))
     psnrs, ssims = zip(*res)
-    return {"psnr": float(np.mean(psnrs)), "ssim": float(np.mean(ssims)),
+    mse = float(((original.astype(np.float32) - reconstructed.astype(np.float32)) ** 2).mean())
+    psnr_video = 20 * np.log10(255.0 / (np.sqrt(mse) + 1e-8))  # metrics_cli.py formula
+    return {"psnr": float(psnr_video), "psnr_frame_avg": float(np.mean(psnrs)), "ssim": float(np.mean(ssims)),
             "psnr_frames": [round(float(p), 3) for p in psnrs]}
 
 
@@ -62,13 +69,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--davis_root", default="/workspace/davis_fr/DAVIS")
     parser.add_argument("--resolution", default="Full-Resolution", help="JPEGImages subfolder: Full-Resolution or 480p")
-    parser.add_argument("--split", default="val", help="ImageSets/2017/<split>.txt")
+    parser.add_argument("--split", default="2016", help="'2016' = DAVIS 2016 train+val (50 seqs, official), or ImageSets/2017/<split>.txt")
     parser.add_argument("--tokenizers", nargs="+", required=True)
     parser.add_argument("--mode", default="jit", choices=["jit", "fakequant"])
     parser.add_argument("--keep_bf16", nargs="*", default=[])
     parser.add_argument("--calib_dir", default="/workspace/davis_calib")
     parser.add_argument("--calib_n", type=int, default=8)
-    parser.add_argument("--temporal_window", type=int, default=17)
+    parser.add_argument("--temporal_window", type=int, default=49, help="paper: 49 for 0.1/360p models, 121 for 720p (OOM on 24 GB)")
     parser.add_argument("--max_frames", type=int, default=None, help="debug: truncate sequences")
     parser.add_argument("--limit", type=int, default=None, help="debug: first N sequences")
     parser.add_argument("--tag", required=True)
@@ -79,7 +86,12 @@ def main():
     args = parser.parse_args()
 
     root = Path(args.davis_root)
-    seqs = [s.strip() for s in (root / "ImageSets" / "2017" / f"{args.split}.txt").read_text().split() if s.strip()]
+    if args.split == "2016":
+        seqs = []
+        for part in ("train", "val"):
+            seqs += [s.strip() for s in (root / "ImageSets" / "2016" / f"{part}.txt").read_text().split() if s.strip()]
+    else:
+        seqs = [s.strip() for s in (root / "ImageSets" / "2017" / f"{args.split}.txt").read_text().split() if s.strip()]
     if args.limit:
         seqs = seqs[: args.limit]
     img_root = root / "JPEGImages" / args.resolution
@@ -122,10 +134,10 @@ def main():
                 recon = tokenizer(video[None], temporal_window=args.temporal_window)[0]
             recon = recon[: video.shape[0]]
             m = frame_metrics(video, recon, pool)
-            per_seq[seq] = {"psnr": m["psnr"], "ssim": m["ssim"], "frames": int(video.shape[0]),
-                            "psnr_frames": m["psnr_frames"], "hw": list(video.shape[1:3])}
+            per_seq[seq] = {"psnr": m["psnr"], "psnr_frame_avg": m["psnr_frame_avg"], "ssim": m["ssim"],
+                            "frames": int(video.shape[0]), "psnr_frames": m["psnr_frames"], "hw": list(video.shape[1:3])}
             print(f"  [{name}] {i+1:2d}/{len(seqs)} {seq:22s} {video.shape[0]:3d}f {video.shape[1]}x{video.shape[2]}  "
-                  f"PSNR {m['psnr']:.2f} SSIM {m['ssim']:.4f}  ({time.time()-t0:.0f}s)", flush=True)
+                  f"PSNR(video-MSE) {m['psnr']:.2f}  PSNR(frame-avg) {m['psnr_frame_avg']:.2f}  SSIM {m['ssim']:.4f}  ({time.time()-t0:.0f}s)", flush=True)
             del recon
             torch.cuda.empty_cache()
 
@@ -133,14 +145,13 @@ def main():
         result = {
             "name": name, "mode": args.mode, "keep_bf16": args.keep_bf16, "tag": args.tag,
             "resolution": args.resolution, "split": args.split, "temporal_window": args.temporal_window,
-            "psnr_video_mean": float(np.mean([v["psnr"] for v in per_seq.values()])),
-            "ssim_video_mean": float(np.mean([v["ssim"] for v in per_seq.values()])),
-            "psnr_frame_mean": float(sum(v["psnr"] * v["frames"] for v in per_seq.values()) / n_frames),
-            "ssim_frame_mean": float(sum(v["ssim"] * v["frames"] for v in per_seq.values()) / n_frames),
+            "psnr_official": float(np.mean([v["psnr"] for v in per_seq.values()])),          # TokenBench: video-MSE PSNR, mean over videos
+            "psnr_frame_avg": float(np.mean([v["psnr_frame_avg"] for v in per_seq.values()])),  # our 480p-harness convention
+            "ssim_official": float(np.mean([v["ssim"] for v in per_seq.values()])),
             "n_sequences": len(per_seq), "n_frames": n_frames, "per_sequence": per_seq,
         }
-        print(f"[{args.tag}/{name}] PSNR {result['psnr_video_mean']:.2f} (video-mean) / {result['psnr_frame_mean']:.2f} (frame-mean)  "
-              f"SSIM {result['ssim_video_mean']:.4f}  over {len(per_seq)} seqs, {n_frames} frames", flush=True)
+        print(f"[{args.tag}/{name}] PSNR {result['psnr_official']:.2f} (official, video-MSE) / {result['psnr_frame_avg']:.2f} (frame-avg)  "
+              f"SSIM {result['ssim_official']:.4f}  over {len(per_seq)} seqs, {n_frames} frames", flush=True)
         all_results.append(result)
         (out_dir / f"{args.tag}__{name}.json").write_text(json.dumps(result, indent=2))
         del tokenizer
