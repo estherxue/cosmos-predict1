@@ -331,3 +331,20 @@ input preprocessing, not the harness; the harness is validated on both sides.
 `unzip` **and** `ffmpeg`, and `apt-get install` silently no-ops before `apt-get
 update`; my retry loop deleted a fully-downloaded 2.8 GB zip because the *unzip*
 step failed — separate download and extraction verification.)
+
+#### Evidence trail for the H.264 claim (documented vs inferred)
+
+Documented in public code:
+1. TokenBench GT is written as lossy H.264: `token_bench/video/preprocessing_script.py:74`
+   (`media.write_video(...)` with no quality args) — github.com/NVlabs/TokenBench.
+2. mediapy's default for >640×480 is `qp = 28`, codec h264, **yuv420p** (chroma subsampling):
+   `mediapy/__init__.py`, `qp = 20 if math.prod(self.shape) <= 640*480 else 28`.
+3. The metric CLI reads video FILES for both GT and reconstruction: `metrics_cli.py`
+   (`--ext=mp4`; `read_video(input0_file)` / `read_video(input1_file)`, lines 167–168).
+4. The inference CLI writes reconstructions via `write_video` (same lossy default):
+   `cosmos_tokenizer/video_cli.py:204`.
+
+NOT documented anywhere: how DAVIS (shipped as JPEG folders) was fed to this
+file-based pipeline. Our claim for DAVIS is therefore an inference — supported by the
+pipeline's video-file-only interface and by the bracketing experiment
+(pristine 32.42 < official 32.80 < qp28 33.21) — and is labeled as such.
