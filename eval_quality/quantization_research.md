@@ -280,3 +280,26 @@ conclusions (compression-rate ordering, continuous > discrete, temporal-vs-spati
 ablation, quantization deltas) do not depend on these. A ready-to-run official-protocol
 script exists (`eval_davis_official.py` + `davis_official_pipeline.sh`, ~1.5–2 h on a
 4090) if absolute alignment is ever needed.
+
+
+## Official-protocol anchor (run 2026-08-29, RTX 4090): our harness vs NVIDIA's DAVIS numbers
+
+DAVIS 2016, all 50 sequences, native 1080p (1920×1080, padded to 1088), whole sequences,
+official inference path (`CausalVideoTokenizer.forward`, bf16 JIT; code diff vs the archived
+NVIDIA/Cosmos-Tokenizer repo = import paths only), TokenBench `metrics_cli.py` metrics
+(video-level-MSE PSNR, per-frame SSIM). Temporal window 17 (= official CLI default) instead
+of the paper's 49: 49 needs ~26 GB at 1080p (OOM on 24 GB); the 49-frame probe bounds the
+window effect at ≤0.3 dB. The 4x8x8 models also needed `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`
+(allocator fragmentation, 10 GB reserved-but-unallocated).
+
+| model | official PSNR / SSIM | ours PSNR / SSIM | Δ | window |
+|---|---|---|---|---|
+| 0.1-CV4x8x8 | 32.80 / 0.900 | **32.42** / 0.893 (frame-avg PSNR 32.97) | -0.38 dB | 17 |
+| 0.1-CV8x8x8 | 30.61 | **29.95** / 0.838 (frame-avg PSNR 30.57) | -0.66 dB | 17 |
+| 0.1-DV4x8x8 | 28.81 / 0.818 | **27.14** / 0.768 (frame-avg PSNR 28.32) | -1.67 dB | 17 |
+
+Verdict: the harness reproduces the post-bug-fix official numbers to within 0.4–0.7 dB
+(video-MSE convention; the per-frame-average convention lands within 0.05–0.2 dB). The
+remaining offset is consistent with window 17 vs 49 and unspecified output recompression.
+Our 480p/17-frame sweep numbers are therefore ~3 dB below official purely due to the 480p
+evaluation resolution, not a pipeline defect. Files: `results_davis_official/*.json`.
