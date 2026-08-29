@@ -55,13 +55,21 @@ def frame_metrics(original, reconstructed, pool=None) -> dict:
             "psnr_frames": [round(float(p), 3) for p in psnrs]}
 
 
-def read_sequence(seq_dir: Path, max_frames=None) -> np.ndarray:
+def read_sequence(seq_dir: Path, max_frames=None, recompress_qp=None) -> np.ndarray:
     import mediapy as media
 
     frames = sorted(seq_dir.glob("*.jpg"))
     if max_frames:
         frames = frames[:max_frames]
     video = np.stack([media.read_image(str(f))[..., :3] for f in frames], axis=0)
+    if recompress_qp:  # TokenBench-style preprocessing: lossy H.264 round-trip; the
+        import tempfile, os  # smoothed frames become BOTH model input and PSNR reference
+
+        with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as f:
+            tmp = f.name
+        media.write_video(tmp, video, fps=24, qp=recompress_qp)
+        video = media.read_video(tmp)[..., :3]
+        os.unlink(tmp)
     return video
 
 
@@ -77,6 +85,8 @@ def main():
     parser.add_argument("--calib_n", type=int, default=8)
     parser.add_argument("--temporal_window", type=int, default=49, help="paper: 49 for 0.1/360p models, 121 for 720p (OOM on 24 GB)")
     parser.add_argument("--max_frames", type=int, default=None, help="debug: truncate sequences")
+    parser.add_argument("--recompress_qp", type=int, default=None,
+                        help="TokenBench-style H.264 round-trip of the input/reference (e.g. 28)")
     parser.add_argument("--limit", type=int, default=None, help="debug: first N sequences")
     parser.add_argument("--tag", required=True)
     parser.add_argument("--checkpoint_dir", default="checkpoints")
@@ -129,7 +139,7 @@ def main():
 
         per_seq, t0 = {}, time.time()
         for i, seq in enumerate(seqs):
-            video = read_sequence(img_root / seq, args.max_frames)
+            video = read_sequence(img_root / seq, args.max_frames, args.recompress_qp)
             with torch.no_grad():
                 recon = tokenizer(video[None], temporal_window=args.temporal_window)[0]
             recon = recon[: video.shape[0]]
@@ -145,6 +155,7 @@ def main():
         result = {
             "name": name, "mode": args.mode, "keep_bf16": args.keep_bf16, "tag": args.tag,
             "resolution": args.resolution, "split": args.split, "temporal_window": args.temporal_window,
+            "recompress_qp": args.recompress_qp,
             "psnr_official": float(np.mean([v["psnr"] for v in per_seq.values()])),          # TokenBench: video-MSE PSNR, mean over videos
             "psnr_frame_avg": float(np.mean([v["psnr_frame_avg"] for v in per_seq.values()])),  # our 480p-harness convention
             "ssim_official": float(np.mean([v["ssim"] for v in per_seq.values()])),
