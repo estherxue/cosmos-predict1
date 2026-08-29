@@ -253,3 +253,26 @@ Relative to an already-optimized TensorRT-fp16 deployment the same engine is 1.2
 the INT8-only ceiling on this memory-bound 3D-conv VAE is ~1.17× and the graph
 rewrite adds the rest. All numbers come from one artifact measured for both axes
 (`results_e2e/e2e.json`, `e2e_qps_vs_psnr.png`).
+
+## Our DAVIS protocol vs the official one (not re-run; differences only)
+
+| dimension | ours (`run_eval.py`, results_full*/results/) | official (paper Table 5 / `video_cli.py` defaults) |
+|---|---|---|
+| data | DAVIS 2017 **val, 30 seqs**, 480p JPEGs → lossless mp4 | DAVIS **1080p** (Full-Resolution); split not stated |
+| resolution | short side 480 (854×480, padded to 864) | native 1080p (`short_size=None`, padded to 1088) |
+| frames | **first 17 frames** only (one causal window) | whole sequence (34–104 f), `temporal_window=17` sliding, tail window temporally padded |
+| precision / path | JIT, bf16, `CausalVideoTokenizer.forward` | same (CLI default bf16) — identical |
+| PSNR | uint8 RGB, data_range 255, per frame → per-video mean → mean over videos | "computed on all individual frames"; RGB vs Y and aggregation not stated |
+| SSIM | skimage `structural_similarity`, channel_axis=-1, win 7 | implementation not stated |
+| rFVD | not computed | reported (I3D features), implementation not stated |
+| checkpoints | curves: 0.1 series; DAVIS main table: Tokenize1 | Table 5: Tokenize1 (360p/720p); project page & HF cards: 0.1-era numbers — and the three official sources disagree (32.80 / 35.28 / 35.85 for CV4x8x8) |
+| quantized rows | fake-quant + TRT engines at 480p/17f | none |
+
+Directional impact on the absolute gap (ours 2.5–5 dB below official): Tokenize1 vs 0.1
+is +0.65…+1.76 dB (measured, same protocol); longer sequences slightly *lower* PSNR
+(49-frame probe: −0.2 dB), so frame count does not explain it; resolution and a
+possible Y-channel PSNR are the remaining candidates (order +1…+3 dB each). Relative
+conclusions (compression-rate ordering, continuous > discrete, temporal-vs-spatial
+ablation, quantization deltas) do not depend on these. A ready-to-run official-protocol
+script exists (`eval_davis_official.py` + `davis_official_pipeline.sh`, ~1.5–2 h on a
+4090) if absolute alignment is ever needed.
