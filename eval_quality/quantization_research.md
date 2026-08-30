@@ -348,3 +348,24 @@ NOT documented anywhere: how DAVIS (shipped as JPEG folders) was fed to this
 file-based pipeline. Our claim for DAVIS is therefore an inference — supported by the
 pipeline's video-file-only interface and by the bracketing experiment
 (pristine 32.42 < official 32.80 < qp28 33.21) — and is labeled as such.
+
+
+### Output-side recompression — VERIFIED; the official number is reproduced (2026-08-29)
+
+Same anchor protocol (0.1-CV4x8x8, DAVIS 2016/50, 1080p, window 17), varying only
+where the H.264 (mediapy default: qp 28, yuv420p) round-trip is applied:
+
+| input/GT | reconstruction | PSNR (video-MSE) | SSIM |
+|---|---|---|---|
+| pristine | pristine | 32.42 | 0.893 |
+| pristine | qp28 | 31.90 | 0.875 |
+| qp28 | pristine | 33.21 | 0.917 |
+| **qp28** | **qp28** (= the public CLI pipeline: preprocessing + `video_cli` + `metrics_cli`) | **32.77** | **0.904** |
+| **official (paper / project page)** | | **32.80** | **0.900** |
+
+Both sides compressed reproduces the official DAVIS number to **0.03 dB / 0.004 SSIM**.
+Mechanism confirmed and decomposed: input smoothing raises PSNR (+0.78 dB), output
+recompression lowers it (-0.52 dB), and the official pipeline does both.
+So: (1) our harness is validated end-to-end against NVIDIA's own tooling; (2) published
+Cosmos DAVIS/TokenBench numbers are measured on H.264-round-tripped content on both sides,
+which any external comparison must replicate or declare.
