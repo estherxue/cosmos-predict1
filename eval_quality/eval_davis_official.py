@@ -85,6 +85,8 @@ def main():
     parser.add_argument("--calib_n", type=int, default=8)
     parser.add_argument("--temporal_window", type=int, default=49, help="paper: 49 for 0.1/360p models, 121 for 720p (OOM on 24 GB)")
     parser.add_argument("--max_frames", type=int, default=None, help="debug: truncate sequences")
+    parser.add_argument("--recompress_output_qp", type=int, default=None,
+                        help="also H.264 round-trip the reconstruction before metrics (official CLI writes recon via write_video)")
     parser.add_argument("--recompress_qp", type=int, default=None,
                         help="TokenBench-style H.264 round-trip of the input/reference (e.g. 28)")
     parser.add_argument("--limit", type=int, default=None, help="debug: first N sequences")
@@ -143,6 +145,12 @@ def main():
             with torch.no_grad():
                 recon = tokenizer(video[None], temporal_window=args.temporal_window)[0]
             recon = recon[: video.shape[0]]
+            if args.recompress_output_qp:  # official video_cli.py saves recon with mediapy defaults (qp28 @1080p)
+                import mediapy as media, tempfile, os
+                tmp = os.path.join(tempfile.gettempdir(), f"recon_{seq}.mp4")
+                media.write_video(tmp, recon, fps=24, qp=args.recompress_output_qp)
+                recon = media.read_video(tmp)[..., :3][: video.shape[0]]
+                os.remove(tmp)
             m = frame_metrics(video, recon, pool)
             per_seq[seq] = {"psnr": m["psnr"], "psnr_frame_avg": m["psnr_frame_avg"], "ssim": m["ssim"],
                             "frames": int(video.shape[0]), "psnr_frames": m["psnr_frames"], "hw": list(video.shape[1:3])}
@@ -155,7 +163,7 @@ def main():
         result = {
             "name": name, "mode": args.mode, "keep_bf16": args.keep_bf16, "tag": args.tag,
             "resolution": args.resolution, "split": args.split, "temporal_window": args.temporal_window,
-            "recompress_qp": args.recompress_qp,
+            "recompress_qp": args.recompress_qp, "recompress_output_qp": args.recompress_output_qp,
             "psnr_official": float(np.mean([v["psnr"] for v in per_seq.values()])),          # TokenBench: video-MSE PSNR, mean over videos
             "psnr_frame_avg": float(np.mean([v["psnr_frame_avg"] for v in per_seq.values()])),  # our 480p-harness convention
             "ssim_official": float(np.mean([v["ssim"] for v in per_seq.values()])),
