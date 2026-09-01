@@ -1,0 +1,2 @@
+NODECOUNT plaindec {'QuantizeLinear': 118, 'DequantizeLinear': 118, 'Pad': 57, 'Concat': 180, 'Tile': 60, 'Expand': 57, 'Slice': 137, 'Resize': 0, 'Reshape': 230, 'Transpose': 120, 'Conv': 61, 'ConvTranspose': 28} total 4277
+NODECOUNT crdec {'QuantizeLinear': 118, 'DequantizeLinear': 118, 'Pad': 25, 'Concat': 88, 'Tile': 0, 'Expand': 0, 'Slice': 43, 'Resize': 3, 'Reshape': 163, 'Transpose': 88, 'Conv': 61, 'ConvTranspose': 28} total 3098

@@ -369,3 +369,41 @@ recompression lowers it (-0.52 dB), and the official pipeline does both.
 So: (1) our harness is validated end-to-end against NVIDIA's own tooling; (2) published
 Cosmos DAVIS/TokenBench numbers are measured on H.264-round-tripped content on both sides,
 which any external comparison must replicate or declare.
+
+
+### TRT 全栈重测:质量与 latency 同源 + calib 假设验证 (2026-09-02)
+
+此前 ptq_quality 图混用两套口径(质量 = fake-quant,latency = TRT 引擎)。本轮把
+五个配置全部落成真实引擎(fp16 IO、opset 18、无图重写、batch 1、CUDA graph),
+PSNR/SSIM/latency 均出自同一引擎(数据: `results_trtfig/fig_e2e.json`、
+`fig_bench.json`;新 pod,driver 570,TRT 10.16.1.11 **cu12**,torch 2.7.1+cu126)。
+
+| 配置 | PSNR | Δ | SSIM | dec 引擎 ms | e2e clips/s |
+|---|---|---|---|---|---|
+| PyTorch JIT bf16(参考) | 28.10 | — | 0.786 | —(191 ms/clip e2e) | 5.2 |
+| fp16 引擎 | 28.11 | 基线 | 0.787 | 40.4 | 15.5 |
+| W8 dec(仅权重) | 28.11 | +0.00 | 0.787 | 41.1 (+2%) | 15.3 |
+| W8A8 dec(全量) | 27.53 | −0.58 | 0.747 | 32.8 (−19%) | 17.5 |
+| mixed(保 conv_out/norm_out/up.0) | 28.02 | −0.09 | 0.784 | 35.7 (−12%) | 16.7 |
+| full VAE(enc+dec 全量) | 19.25 | −8.86 | 0.581 | 32.8(enc 23.7→20.3) | 18.5 |
+
+要点:
+1. **仅权重 W8 这次有了真实引擎**:质量与 fp16 完全相同,但 TRT 上零加速(41.1 vs
+   40.4 ms)——权重 DQ 被常量折叠回 fp16 conv,坐实"仅权重量化在 TRT 无收益"。
+2. **跨栈 0.2 dB 之谜解决 = 校准集,不是执行栈**。fake-quant `w8a8_dec` 用 16 段校准
+   得 27.38;换成导出路径同款 8 段校准(`w8a8_dec_c8`)得 **27.54**;TRT dec-full 引擎
+   27.53 —— 校准集对齐后 fake-quant 与部署引擎一致到 **0.01 dB**。此前 27.38 vs 27.49
+   的差全部来自校准集(段数为主),两栈本身数值等价。
+3. 各优化贡献隔离(同宿主机,`isol_bench.json`):CUDA graph fp16 −0.37 ms / int8
+   −0.35 ms(约 −1%);fp16 IO −0.50 ms(−1.2%);opset18 GroupNorm −0.09 ms(≈0);
+   图重写(conv pad 折叠 + resize)int8 32.76→29.98 ms(**−8.5%**,最大单项)。
+4. **图重写不减 Q/DQ 节点**(118/118 不变),减的是 glue:总节点 4277→3098(−28%),
+   Tile 60→0、Expand 57→0、Slice 137→43、Concat 180→88、Pad 57→25、Transpose
+   120→88、Reshape 230→163(`results_trtfig/nodecount.txt`)。
+5. 宿主机注意:本轮绝对 latency 与 results_e2e 时代不可直接比(fp16 decoder 40.4 vs
+   当年 36.4 ms;同一 TRT 版本、不同宿主/driver)。只在同轮内比较。
+
+环境坑(新增):modelopt 0.46 要求 torch≥2.6(`CPUOffloadPolicy` import,2.4.1 直接
+挂);pip 装 `tensorrt` 元包在新环境解析到 **cu13** 轮子,driver 570(CUDA 12.8)上
+CUDA error 35 —— 显式装 `tensorrt-cu12==<同版本>` 与原结果保持版本一致;后台队列脚本
+必须逐步门控(`&&` + 显式 FAIL 标记),否则失败链会"空跑"并打出全部完成标记。

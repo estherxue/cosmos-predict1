@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Plot INT8 PTQ quality vs the native-bf16 baseline (no GPU needed).
+"""Plot INT8 PTQ quality + latency, all measured on deployed TensorRT engines.
 
-Reads eval_quality/results_quant/<config>/metrics.json produced by
-quantize_ptq.py and renders: PSNR/SSIM per config, and per-clip quantization
-damage vs clip motion for each quantized config.
+Every config is a real engine pair (encoder + decoder, fp16 IO, opset 18, no
+graph rewrite, batch 1, CUDA graph): PSNR/SSIM come from the end-to-end run in
+results_trtfig/fig_e2e.json and latency from the decoder-engine benchmark in
+results_trtfig/fig_bench.json — one artifact per point, no fake-quant/engine
+mixing. A PyTorch JIT bf16 reference on identical inputs is quoted in the
+subtitle.
 
 Usage:
-    python eval_quality/quant_plot.py [--results_dir eval_quality/results_quant]
+    python eval_quality/quant_plot.py
 """
 
 import argparse
@@ -15,11 +18,14 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-ORDER = ["none", "w8_dec", "w8a8_dec", "w8a8_dec_mixed", "w8a8_all"]
-HIDE = {"w8a8_dec_sq"}  # identical to plain W8A8 (no-op on conv nets) — text-only result
-LABELS = {"none": "bf16", "w8_dec": "W8 dec", "w8a8_dec": "W8A8 dec",
-          "w8a8_all": "full VAE", "w8a8_dec_sq": "+SQ", "w8a8_dec_mixed": "mixed"}
-SCATTER_SKIP = {"w8a8_all", "w8a8_dec_sq"}  # off-scale / identical-to-plain — keep the scatter readable
+# (e2e tag, decoder-bench tag, label)
+ORDER = [
+    ("fig_f16", "h16_g", "fp16"),
+    ("fig_w8dec", "figw8_g", "W8 dec"),
+    ("fig_w8a8dec", "figfull_g", "W8A8 dec"),
+    ("fig_mixed", "figmixed_g", "mixed"),
+    ("fig_fullvae", "figfull_g", "full VAE"),  # same decoder engine as W8A8; swaps the encoder
+]
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100"]  # validated categorical palette
 SURFACE, INK, MUTED, GRID, AXIS = "#fcfcfb", "#0b0b0b", "#898781", "#e1e0d9", "#c3c2b7"
 
@@ -37,79 +43,67 @@ def style(ax, ylabel):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--results_dir", default="eval_quality/results_quant")
-    parser.add_argument("--output", default=None)
+    parser.add_argument("--trt_dir", default="eval_quality/results_trtfig")
+    parser.add_argument("--output", default="eval_quality/results_quant/ptq_quality.png")
     args = parser.parse_args()
 
-    results_dir = Path(args.results_dir)
-    runs = {}
-    for path in results_dir.glob("*/metrics.json"):
-        r = json.loads(path.read_text())["results"][0]
-        runs[r.get("quant", path.parent.name)] = r
-    configs = [q for q in ORDER if q in runs] + sorted(set(runs) - set(ORDER) - HIDE)
-    if "none" not in runs:
-        raise SystemExit("missing baseline run (results_quant/none) — run quantize_ptq.py --quant none first")
-    base = runs["none"]
-    tok_name = base["name"]
+    trt_dir = Path(args.trt_dir)
+    e2e = {r["tag"]: r for r in json.loads((trt_dir / "fig_e2e.json").read_text())}
+    bench = {r["tag"]: r["median_ms"] for r in json.loads((trt_dir / "fig_bench.json").read_text())
+             if "decoder" in r["onnx"]}
+    ref = e2e["pytorch_jit_bf16"]
+    base = e2e[ORDER[0][0]]
 
     fig, (ax_p, ax_s, ax_l) = plt.subplots(1, 3, figsize=(15.5, 4.6), facecolor=SURFACE)
+    xs = list(range(len(ORDER)))
+    labels = [label for _, _, label in ORDER]
 
     # Dot plot, not bars: differences are small vs the absolute values, so a
     # non-zero axis is needed — honest with point markers, misleading with bars.
-    xs = range(len(configs))
-    for ax, metric, ylabel, fmt in ((ax_p, "psnr", "PSNR (dB)", "{:.2f}"), (ax_s, "ssim", "SSIM", "{:.3f}")):
-        vals = [runs[q][metric] for q in configs]
+    for ax, metric, ylabel, fmt, dfmt in ((ax_p, "psnr", "PSNR (dB)", "{:.2f}", "{:+.2f}"),
+                                          (ax_s, "ssim", "SSIM", "{:.3f}", "{:+.3f}")):
+        vals = [e2e[tag][metric] for tag, _, _ in ORDER]
         ax.axhline(base[metric], color=MUTED, linewidth=1, linestyle="--", zorder=2)
-        ax.scatter(list(xs), vals, s=64, color=SERIES[0], zorder=3)
-        for x, (q, v) in zip(xs, ((q, runs[q][metric]) for q in configs)):
+        ax.scatter(xs, vals, s=64, color=SERIES[0], zorder=3)
+        for x, ((tag, _, _), v) in enumerate(zip(ORDER, vals)):
             ax.annotate(fmt.format(v), (x, v), textcoords="offset points", xytext=(0, 8),
                         ha="center", fontsize=8.5, color=INK)
-            if q != "none":
-                delta = v - base[metric]
-                ax.annotate(f"{delta:+.2f}" if metric == "psnr" else f"{delta:+.3f}",
-                            (x, v), textcoords="offset points", xytext=(0, -14),
-                            ha="center", fontsize=7.5, color=MUTED)
-        ax.set_xticks(list(xs), [LABELS.get(q, q) for q in configs], fontsize=9)
-        ax.set_xlim(-0.6, len(configs) - 0.4)
+            if tag != ORDER[0][0]:
+                ax.annotate(dfmt.format(v - base[metric]), (x, v), textcoords="offset points",
+                            xytext=(0, -14), ha="center", fontsize=7.5, color=MUTED)
+        ax.set_xticks(xs, labels, fontsize=9)
+        ax.set_xlim(-0.6, len(ORDER) - 0.4)
         lo, hi = min(vals), max(vals)
         pad = max((hi - lo) * 0.18, 0.02)
         ax.set_ylim(lo - pad * 1.6, hi + pad * 1.6)
         style(ax, ylabel + "  (axis not from zero)")
 
-    # Latency panel: measured decoder TRT engines (results_e2e/bench.json; encoder is
-    # unquantized in these configs except full VAE — see footnote).
-    bench = {(r["tag"], r["onnx"].split("/")[-1]): r["median_ms"]
-             for r in json.loads(Path("eval_quality/results_e2e/bench.json").read_text())}
-    LAT = {"none": bench.get(("fp16", "decoder_h16.onnx")),
-           "w8a8_dec": bench.get(("int8", "decoder_full.onnx")),
-           "w8a8_dec_mixed": bench.get(("int8", "decoder_mixed.onnx")),
-           "w8a8_all": bench.get(("int8", "decoder_full.onnx"))}
-    lat_cfgs = [q for q in configs if LAT.get(q)]
-    lx = [configs.index(q) for q in lat_cfgs]
-    lv = [LAT[q] for q in lat_cfgs]
-    ax_l.axhline(LAT["none"], color=MUTED, linewidth=1, linestyle="--", zorder=2)
-    ax_l.scatter(lx, lv, s=64, color=SERIES[0], zorder=3)
-    for x, q, v in zip(lx, lat_cfgs, lv):
-        ax_l.annotate(f"{v:.1f}", (x, v), textcoords="offset points", xytext=(0, 8), ha="center", fontsize=8.5, color=INK)
-        if q != "none":
-            ax_l.annotate(f"{100*(v-LAT['none'])/LAT['none']:+.0f}%", (x, v), textcoords="offset points",
+    lv = [bench[btag] for _, btag, _ in ORDER]
+    ax_l.axhline(lv[0], color=MUTED, linewidth=1, linestyle="--", zorder=2)
+    ax_l.scatter(xs, lv, s=64, color=SERIES[0], zorder=3)
+    for x, v in zip(xs, lv):
+        ax_l.annotate(f"{v:.1f}", (x, v), textcoords="offset points", xytext=(0, 8),
+                      ha="center", fontsize=8.5, color=INK)
+        if x:
+            ax_l.annotate(f"{100 * (v - lv[0]) / lv[0]:+.0f}%", (x, v), textcoords="offset points",
                           xytext=(0, -14), ha="center", fontsize=7.5, color=MUTED)
-    if "w8_dec" in configs:
-        ax_l.annotate("no engine\n(weights-only)", (configs.index("w8_dec"), LAT["none"]),
-                      textcoords="offset points", xytext=(0, -26), ha="center", fontsize=7.5, color=MUTED)
-    ax_l.set_xticks(list(range(len(configs))), [LABELS.get(q, q) for q in configs], fontsize=9)
-    ax_l.set_xlim(-0.6, len(configs) - 0.4)
+    ax_l.annotate("same dec engine as W8A8\n(enc engine 23.7→20.3 ms)", (xs[-1], lv[-1]),
+                  textcoords="offset points", xytext=(0, -30), ha="center", fontsize=7, color=MUTED)
+    ax_l.set_xticks(xs, labels, fontsize=9)
+    ax_l.set_xlim(-0.6, len(ORDER) - 0.4)
     lo, hi = min(lv), max(lv)
     pad = max((hi - lo) * 0.25, 0.5)
-    ax_l.set_ylim(lo - pad * 1.6, hi + pad * 1.6)
+    ax_l.set_ylim(lo - pad * 1.9, hi + pad * 1.6)
     style(ax_l, "decoder engine latency, ms/clip  (axis not from zero)")
 
-    fig.suptitle(f"INT8 PTQ quality — {tok_name} on DAVIS val", color=INK, fontsize=13, x=0.02, ha="left")
-    fig.text(0.02, 0.918, "quality: fake-quant (modelopt) · latency: measured decoder TRT engines, 17-frame clip @480p, RTX 4090, CUDA graph · "
-             "encoder unquantized in these configs (full VAE also quantizes it: 21.6→18.5 ms) · dashed = bf16 baseline",
+    fig.suptitle("INT8 PTQ — 0.1-CV8x8x8 on DAVIS val, measured on TensorRT engines",
+                 color=INK, fontsize=13, x=0.02, ha="left")
+    fig.text(0.02, 0.918, "quality AND latency from the same deployed engines (fp16 IO, opset 18, no graph rewrite, "
+             "17-frame clip @480p, batch 1, CUDA graph, RTX 4090, TRT 10.16 cu12) · dashed = fp16 engine baseline · "
+             f"PyTorch JIT bf16 reference on identical inputs: {ref['psnr']:.2f} dB / {ref['ssim']:.3f} / {ref['median_ms']:.0f} ms",
              color=MUTED, fontsize=8)
     fig.tight_layout(rect=(0, 0, 1, 0.9))
-    output = Path(args.output) if args.output else results_dir / "ptq_quality.png"
+    output = Path(args.output)
     fig.savefig(output, dpi=200, facecolor=SURFACE)
     print(f"Wrote {output}")
 

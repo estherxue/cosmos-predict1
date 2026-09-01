@@ -1,3 +1,5 @@
 # upstream .gitignore ignores results/ and *.txt globally; re-include ours
 !results/
 !requirements.txt
+!results_trtfig/
+!results_trtfig/*.txt
