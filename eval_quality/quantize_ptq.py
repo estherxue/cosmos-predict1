@@ -72,6 +72,10 @@ def main():
     args = parser.parse_args()
     args.output_dir = args.output_dir or f"eval_quality/results_quant/{args.tag or args.quant}"
 
+    import torch
+
+    torch.backends.cudnn.enabled = False  # native eager conv3d faults on 4090 with cuDNN
+
     tok = select([args.tokenizer])[0]
     print(f"Loading {tok['name']} natively (config-mapped, JIT weights, {args.dtype})")
     tokenizer = build_tokenizer(tok, args, native=True)
