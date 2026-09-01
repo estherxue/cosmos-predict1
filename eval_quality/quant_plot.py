@@ -52,7 +52,7 @@ def main():
     base = runs["none"]
     tok_name = base["name"]
 
-    fig, (ax_p, ax_s) = plt.subplots(1, 2, figsize=(11, 4.6), facecolor=SURFACE)
+    fig, (ax_p, ax_s, ax_l) = plt.subplots(1, 3, figsize=(15.5, 4.6), facecolor=SURFACE)
 
     # Dot plot, not bars: differences are small vs the absolute values, so a
     # non-zero axis is needed — honest with point markers, misleading with bars.
@@ -76,9 +76,38 @@ def main():
         ax.set_ylim(lo - pad * 1.6, hi + pad * 1.6)
         style(ax, ylabel + "  (axis not from zero)")
 
+    # Latency panel: measured decoder TRT engines (results_e2e/bench.json; encoder is
+    # unquantized in these configs except full VAE — see footnote).
+    bench = {(r["tag"], r["onnx"].split("/")[-1]): r["median_ms"]
+             for r in json.loads(Path("eval_quality/results_e2e/bench.json").read_text())}
+    LAT = {"none": bench.get(("fp16", "decoder_h16.onnx")),
+           "w8a8_dec": bench.get(("int8", "decoder_full.onnx")),
+           "w8a8_dec_mixed": bench.get(("int8", "decoder_mixed.onnx")),
+           "w8a8_all": bench.get(("int8", "decoder_full.onnx"))}
+    lat_cfgs = [q for q in configs if LAT.get(q)]
+    lx = [configs.index(q) for q in lat_cfgs]
+    lv = [LAT[q] for q in lat_cfgs]
+    ax_l.axhline(LAT["none"], color=MUTED, linewidth=1, linestyle="--", zorder=2)
+    ax_l.scatter(lx, lv, s=64, color=SERIES[0], zorder=3)
+    for x, q, v in zip(lx, lat_cfgs, lv):
+        ax_l.annotate(f"{v:.1f}", (x, v), textcoords="offset points", xytext=(0, 8), ha="center", fontsize=8.5, color=INK)
+        if q != "none":
+            ax_l.annotate(f"{100*(v-LAT['none'])/LAT['none']:+.0f}%", (x, v), textcoords="offset points",
+                          xytext=(0, -14), ha="center", fontsize=7.5, color=MUTED)
+    if "w8_dec" in configs:
+        ax_l.annotate("no engine\n(weights-only)", (configs.index("w8_dec"), LAT["none"]),
+                      textcoords="offset points", xytext=(0, -26), ha="center", fontsize=7.5, color=MUTED)
+    ax_l.set_xticks(list(range(len(configs))), [LABELS.get(q, q) for q in configs], fontsize=9)
+    ax_l.set_xlim(-0.6, len(configs) - 0.4)
+    lo, hi = min(lv), max(lv)
+    pad = max((hi - lo) * 0.25, 0.5)
+    ax_l.set_ylim(lo - pad * 1.6, hi + pad * 1.6)
+    style(ax_l, "decoder engine latency, ms/clip  (axis not from zero)")
+
     fig.suptitle(f"INT8 PTQ quality — {tok_name} on DAVIS val", color=INK, fontsize=13, x=0.02, ha="left")
-    fig.text(0.02, 0.918, "fake-quant (modelopt) · quality only, not deployed-int8 speed · dashed = native bf16 baseline",
-             color=MUTED, fontsize=9)
+    fig.text(0.02, 0.918, "quality: fake-quant (modelopt) · latency: measured decoder TRT engines, 17-frame clip @480p, RTX 4090, CUDA graph · "
+             "encoder unquantized in these configs (full VAE also quantizes it: 21.6→18.5 ms) · dashed = bf16 baseline",
+             color=MUTED, fontsize=8)
     fig.tight_layout(rect=(0, 0, 1, 0.9))
     output = Path(args.output) if args.output else results_dir / "ptq_quality.png"
     fig.savefig(output, dpi=200, facecolor=SURFACE)
