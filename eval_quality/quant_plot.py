@@ -15,7 +15,8 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-ORDER = ["none", "w8_dec", "w8a8_dec", "w8a8_dec_sq", "w8a8_dec_mixed", "w8a8_all"]
+ORDER = ["none", "w8_dec", "w8a8_dec", "w8a8_dec_mixed", "w8a8_all"]
+HIDE = {"w8a8_dec_sq"}  # identical to plain W8A8 (no-op on conv nets) — text-only result
 LABELS = {"none": "bf16", "w8_dec": "W8 dec", "w8a8_dec": "W8A8 dec",
           "w8a8_all": "full VAE", "w8a8_dec_sq": "+SQ", "w8a8_dec_mixed": "mixed"}
 SCATTER_SKIP = {"w8a8_all", "w8a8_dec_sq"}  # off-scale / identical-to-plain — keep the scatter readable
@@ -45,13 +46,13 @@ def main():
     for path in results_dir.glob("*/metrics.json"):
         r = json.loads(path.read_text())["results"][0]
         runs[r.get("quant", path.parent.name)] = r
-    configs = [q for q in ORDER if q in runs] + sorted(set(runs) - set(ORDER))
+    configs = [q for q in ORDER if q in runs] + sorted(set(runs) - set(ORDER) - HIDE)
     if "none" not in runs:
         raise SystemExit("missing baseline run (results_quant/none) — run quantize_ptq.py --quant none first")
     base = runs["none"]
     tok_name = base["name"]
 
-    fig, (ax_p, ax_s, ax_m) = plt.subplots(1, 3, figsize=(15, 4.6), facecolor=SURFACE)
+    fig, (ax_p, ax_s) = plt.subplots(1, 2, figsize=(11, 4.6), facecolor=SURFACE)
 
     # Dot plot, not bars: differences are small vs the absolute values, so a
     # non-zero axis is needed — honest with point markers, misleading with bars.
@@ -74,28 +75,6 @@ def main():
         pad = max((hi - lo) * 0.18, 0.02)
         ax.set_ylim(lo - pad * 1.6, hi + pad * 1.6)
         style(ax, ylabel + "  (axis not from zero)")
-
-    def spearman(pairs):
-        n = len(pairs)
-        xr = sorted(range(n), key=lambda i: pairs[i][0])
-        yr = sorted(range(n), key=lambda i: pairs[i][1])
-        rank = lambda order: {i: r for r, i in enumerate(order)}
-        rx, ry = rank(xr), rank(yr)
-        return 1 - 6 * sum((rx[i] - ry[i]) ** 2 for i in range(n)) / (n * (n**2 - 1))
-
-    quant_configs = [q for q in configs if q != "none" and q not in SCATTER_SKIP]
-    for i, q in enumerate(quant_configs):
-        pts = [(base["samples"][s]["motion"], base["samples"][s]["psnr"] - runs[q]["samples"][s]["psnr"])
-               for s in base["samples"] if s in runs[q]["samples"]]
-        ax_m.scatter([p[0] for p in pts], [p[1] for p in pts], s=26, color=SERIES[1 + i % 3],
-                     label=f"{LABELS.get(q, q)} (ρ={spearman(pts):+.2f})", zorder=3)
-    ax_m.axhline(0, color=MUTED, linewidth=1, linestyle="--", zorder=2)
-    ax_m.set_xlabel("clip motion score (mean |frame diff|, 0–255 scale)", color=MUTED)
-    if quant_configs:
-        ax_m.legend(frameon=False, fontsize=8.5, labelcolor=INK, loc="upper right",
-                    title="damage tracks baseline PSNR (ρ≈0.97),\nnot motion itself — dB ceiling effect",
-                    title_fontproperties={"size": 7.5})
-    style(ax_m, "PSNR loss vs baseline (dB)")
 
     fig.suptitle(f"INT8 PTQ quality — {tok_name} on DAVIS val", color=INK, fontsize=13, x=0.02, ha="left")
     fig.text(0.02, 0.918, "fake-quant (modelopt) · quality only, not deployed-int8 speed · dashed = native bf16 baseline",
