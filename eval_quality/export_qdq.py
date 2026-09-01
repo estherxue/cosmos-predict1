@@ -27,10 +27,16 @@ from run_eval import VIDEO_EXTS, build_tokenizer
 from tokenizers_registry import select
 
 
-def make_config(mtq, keep_bf16):
+def make_config(mtq, keep_bf16, weights_only=False):
     import copy
 
     cfg = copy.deepcopy(mtq.INT8_DEFAULT_CFG)
+    if weights_only:  # disable all activation/input quantizers (W8 weights-only)
+        for entry in cfg["quant_cfg"]:
+            if isinstance(entry, dict) and "input_quantizer" in entry.get("quantizer_name", ""):
+                entry.pop("cfg", None)
+                entry["enable"] = False
+        cfg["quant_cfg"].append({"quantizer_name": "*input_quantizer", "enable": False})
     for pattern in keep_bf16:
         cfg["quant_cfg"].append({"quantizer_name": f"*{pattern}*", "enable": False})
     return cfg
@@ -54,6 +60,7 @@ def main():
     parser.add_argument("--batch", type=int, default=1, help="fixed batch size of the exported graph")
     parser.add_argument("--part", default="both", choices=["both", "encoder", "decoder"])
     parser.add_argument("--fp16", action="store_true", help="export fp16 weights/activations around Q/DQ (no fp32 fallbacks in TRT)")
+    parser.add_argument("--weights_only", action="store_true", help="W8: quantize weights only, activations untouched")
     parser.add_argument("--opset", type=int, default=17)
     parser.add_argument("--fusion_patches", nargs="*", default=None,
                         help="subset of {norm, conv, resize}; empty list = all")
@@ -84,7 +91,7 @@ def main():
                 x = numpy2tensor(b, tokenizer._dtype, args.device)
                 tokenizer.decode(tokenizer.encode(x)[0])
 
-    mtq.quantize(tokenizer, make_config(mtq, args.keep_bf16), forward_loop=forward_loop)
+    mtq.quantize(tokenizer, make_config(mtq, args.keep_bf16, args.weights_only), forward_loop=forward_loop)
     if args.qat_state:
         sd = torch.load(args.qat_state, map_location=args.device)
         missing, unexpected = tokenizer.load_state_dict(sd, strict=False)
