@@ -1,0 +1,2281 @@
+{
+  "tag": "final_enc",
+  "total_ms": 20.371,
+  "by_precision": {
+    "Float": 3.218,
+    "Half": 16.524,
+    "Int8": 0.51,
+    "Int32": 0.119,
+    "?": 0.0
+  },
+  "layers": [
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl77_2",
+      "mean_ms": 0.5658,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.0/conv3d/Conv",
+      "mean_ms": 0.5451,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.0/conv3d/Conv",
+      "mean_ms": 0.5438,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.0/conv3d/Conv",
+      "mean_ms": 0.5437,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_MulMaxrSubExpSumDivMul_myl202_8",
+      "mean_ms": 0.5413,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.0/MatMul_myl202_7",
+      "mean_ms": 0.513,
+      "type": "gemm",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.0/MatMul_1_myl202_12",
+      "mean_ms": 0.4955,
+      "type": "gemm",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.1/conv3d/Conv + /enc/encoder/block.1/Add",
+      "mean_ms": 0.3026,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.0/conv3d/Conv",
+      "mean_ms": 0.288,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl67_2",
+      "mean_ms": 0.2488,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl85_2",
+      "mean_ms": 0.2484,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.1/conv3d/Conv",
+      "mean_ms": 0.2339,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.1/conv3d/Conv",
+      "mean_ms": 0.2338,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.1/conv3d/Conv",
+      "mean_ms": 0.2338,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.1/Pad_469",
+      "mean_ms": 0.2046,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.1/Pad_548",
+      "mean_ms": 0.2045,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.1/Pad_390",
+      "mean_ms": 0.2043,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.1/Pad_311",
+      "mean_ms": 0.2039,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/conv_in/conv_in.0/conv3d/Conv",
+      "mean_ms": 0.2025,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl77_3",
+      "mean_ms": 0.2023,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl67_3",
+      "mean_ms": 0.1952,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl85_3",
+      "mean_ms": 0.1951,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv1/conv1.1/conv3d/Conv",
+      "mean_ms": 0.1825,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv1/conv1.1/conv3d/Conv",
+      "mean_ms": 0.1825,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv2/conv2.1/conv3d/Conv + /enc/encoder/block.1/Add",
+      "mean_ms": 0.1824,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv2/conv2.1/conv3d/Conv",
+      "mean_ms": 0.182,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/conv1/conv3d/Conv + /enc/encoder/downsample/Add",
+      "mean_ms": 0.1741,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_1",
+      "mean_ms": 0.1733,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv",
+      "mean_ms": 0.1678,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/downsample/Pad_605",
+      "mean_ms": 0.1597,
+      "type": "Padding",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Cast_1",
+      "mean_ms": 0.1592,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3163 + /enc/encoder/block.1/conv1/conv1.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.1/conv1/conv1.0/conv3d_1/Conv",
+      "mean_ms": 0.1575,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3197 + /enc/encoder/block.0/conv1/conv1.0/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.0/conv1/conv1.0/conv3d_2/Conv",
+      "mean_ms": 0.1573,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3335 + /enc/encoder/block_2/conv1/conv1.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_2/conv1/conv1.0/conv3d/Conv",
+      "mean_ms": 0.1572,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3142 + /enc/encoder/block.0/conv2/conv2.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.0/conv2/conv2.0/conv3d_1/Conv",
+      "mean_ms": 0.1571,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3231 + /enc/encoder/block.1/conv1/conv1.0/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.1/conv1/conv1.0/conv3d_2/Conv",
+      "mean_ms": 0.157,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3265 + /enc/encoder/block_1/conv1/conv1.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_1/conv1/conv1.0/conv3d/Conv",
+      "mean_ms": 0.1564,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3180 + /enc/encoder/block.1/conv2/conv2.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.1/conv2/conv2.0/conv3d_1/Conv",
+      "mean_ms": 0.1561,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3214 + /enc/encoder/block.0/conv2/conv2.0/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.0/conv2/conv2.0/conv3d_2/Conv",
+      "mean_ms": 0.156,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3248 + /enc/encoder/block.1/conv2/conv2.0/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.1/conv2/conv2.0/conv3d_2/Conv",
+      "mean_ms": 0.1553,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3352 + /enc/encoder/block_2/conv2/conv2.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_2/conv2/conv2.0/conv3d/Conv",
+      "mean_ms": 0.155,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3282 + /enc/encoder/block_1/conv2/conv2.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_1/conv2/conv2.0/conv3d/Conv",
+      "mean_ms": 0.1531,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv2/conv2.0/conv3d/Conv",
+      "mean_ms": 0.1513,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/block.1/norm1/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_399.../enc/encoder/block.1/Mul]}",
+      "mean_ms": 0.1466,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to /enc/encoder/block.1/conv2/conv2.1/conv3d/Conv + /enc/encoder/block.1/Add",
+      "mean_ms": 0.146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Pad_1_174",
+      "mean_ms": 0.1411,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv2/conv2.1/Pad_390",
+      "mean_ms": 0.1305,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.1/norm1/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_399.../enc/encoder/block.1/Mul]}",
+      "mean_ms": 0.1303,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv2/conv2.1/Pad_548",
+      "mean_ms": 0.1299,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv1/conv1.1/Pad_469",
+      "mean_ms": 0.1293,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv2/conv2.0/conv3d/Conv",
+      "mean_ms": 0.1287,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv1/conv1.0/conv3d/Conv",
+      "mean_ms": 0.1278,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv1/conv1.1/Pad_311",
+      "mean_ms": 0.1273,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_14",
+      "mean_ms": 0.1263,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Pad_116",
+      "mean_ms": 0.1244,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.1/norm2/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_478.../enc/encoder/block.1/Mul_1]}",
+      "mean_ms": 0.1221,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.0/norm2/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_320.../enc/encoder/block.0/Mul_1]}",
+      "mean_ms": 0.1218,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/downsample/Pad_605",
+      "mean_ms": 0.116,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl218_2",
+      "mean_ms": 0.1091,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl206_2",
+      "mean_ms": 0.1089,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_15",
+      "mean_ms": 0.1076,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/nin_shortcut/conv3d/Conv",
+      "mean_ms": 0.105,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl214_4",
+      "mean_ms": 0.1044,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl130_2",
+      "mean_ms": 0.1037,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl146_2",
+      "mean_ms": 0.1034,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl178_2",
+      "mean_ms": 0.1029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl162_2",
+      "mean_ms": 0.1027,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl194_2",
+      "mean_ms": 0.1025,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_Tran_myl214_9",
+      "mean_ms": 0.102,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/downsample/conv1/conv3d/Conv + /enc/encoder/downsample/Add",
+      "mean_ms": 0.1014,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl202_9",
+      "mean_ms": 0.1002,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/AveragePool",
+      "mean_ms": 0.0999,
+      "type": "CaskPooling",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Cast_3",
+      "mean_ms": 0.0987,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl59_2",
+      "mean_ms": 0.0977,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_Tran_myl202_4",
+      "mean_ms": 0.0969,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Slice_1",
+      "mean_ms": 0.0898,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/conv_in/conv_in.1/Pad_233",
+      "mean_ms": 0.0882,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "PWN(/enc/encoder/patcher3d/Constant_51_output_0 + ONNXTRT_Broadcast_176, /enc/encoder/patcher3d/Div_1)",
+      "mean_ms": 0.0863,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3125 + /enc/encoder/block.0/conv1/conv1.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.0/conv1/conv1.0/conv3d_1/Conv",
+      "mean_ms": 0.0861,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/conv_in/conv_in.1/conv3d/Conv",
+      "mean_ms": 0.0846,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_4",
+      "mean_ms": 0.0791,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_2",
+      "mean_ms": 0.0786,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "PWN(/enc/encoder/patcher3d/Constant_28_output_0 + ONNXTRT_Broadcast, /enc/encoder/patcher3d/Div)",
+      "mean_ms": 0.0776,
+      "type": "PointWiseV2",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_3",
+      "mean_ms": 0.0751,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_5",
+      "mean_ms": 0.0748,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.1/MatMul_myl214_7",
+      "mean_ms": 0.0722,
+      "type": "gemm",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/conv_in/conv_in.1/conv3d/Conv",
+      "mean_ms": 0.0713,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3240 + /enc/encoder/block.1/conv1/conv1.1/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.1/conv1/conv1.1/conv3d_2/Conv",
+      "mean_ms": 0.0684,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddTranReshCastSubMulMeanMean_myl234_2",
+      "mean_ms": 0.068,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3274 + /enc/encoder/block_1/conv1/conv1.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_1/conv1/conv1.1/conv3d/Conv",
+      "mean_ms": 0.0678,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3172 + /enc/encoder/block.1/conv1/conv1.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.1/conv1/conv1.1/conv3d_1/Conv",
+      "mean_ms": 0.0677,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3206 + /enc/encoder/block.0/conv1/conv1.1/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.0/conv1/conv1.1/conv3d_2/Conv",
+      "mean_ms": 0.0677,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3223 + /enc/encoder/block.0/conv2/conv2.1/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.0/conv2/conv2.1/conv3d_2/Conv",
+      "mean_ms": 0.0676,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3344 + /enc/encoder/block_2/conv1/conv1.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_2/conv1/conv1.1/conv3d/Conv",
+      "mean_ms": 0.0674,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl59_3",
+      "mean_ms": 0.0671,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3134 + /enc/encoder/block.0/conv1/conv1.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.0/conv1/conv1.1/conv3d_1/Conv",
+      "mean_ms": 0.0669,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3151 + /enc/encoder/block.0/conv2/conv2.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.0/conv2/conv2.1/conv3d_1/Conv",
+      "mean_ms": 0.0669,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3257 + /enc/encoder/block.1/conv2/conv2.1/conv3d/weight_quantizer_1/QuantizeLinear + /enc/encoder/block.1/conv2/conv2.1/conv3d_2/Conv",
+      "mean_ms": 0.0666,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3189 + /enc/encoder/block.1/conv2/conv2.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.1/conv2/conv2.1/conv3d_1/Conv",
+      "mean_ms": 0.0664,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3361 + /enc/encoder/block_2/conv2/conv2.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_2/conv2/conv2.1/conv3d/Conv",
+      "mean_ms": 0.0664,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3291 + /enc/encoder/block_1/conv2/conv2.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block_1/conv2/conv2.1/conv3d/Conv",
+      "mean_ms": 0.0659,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.1_1/Pad_778",
+      "mean_ms": 0.0631,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.1_1/Pad_865",
+      "mean_ms": 0.0631,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.1_1/Pad_1043",
+      "mean_ms": 0.0631,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.1_2/Pad_1130",
+      "mean_ms": 0.0631,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.1_2/Pad_1217",
+      "mean_ms": 0.063,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.1_2/Pad_1304",
+      "mean_ms": 0.0629,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.1_1/Pad_956",
+      "mean_ms": 0.0628,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block_2/conv1/conv1.1/Pad_1818",
+      "mean_ms": 0.0628,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block_1/conv1/conv1.1/Pad_1478",
+      "mean_ms": 0.0627,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block_1/conv2/conv2.1/Pad_1565",
+      "mean_ms": 0.0627,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block_2/conv2/conv2.1/Pad_1905",
+      "mean_ms": 0.0627,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.1_2/Pad_1391",
+      "mean_ms": 0.0625,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.1/proj_out/conv3d/Conv",
+      "mean_ms": 0.0537,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.0/proj_out/conv3d/Conv",
+      "mean_ms": 0.0489,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl214_3",
+      "mean_ms": 0.0489,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv1/conv1.0/conv3d/Conv",
+      "mean_ms": 0.0485,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl202_3",
+      "mean_ms": 0.0484,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/conv2/Pad_695",
+      "mean_ms": 0.0453,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/conv2/conv3d/Conv + /enc/encoder/downsample/Add_1",
+      "mean_ms": 0.0422,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl214_13",
+      "mean_ms": 0.0396,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl138_2",
+      "mean_ms": 0.0387,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl170_2",
+      "mean_ms": 0.0387,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTran_myl206_3",
+      "mean_ms": 0.0383,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl118_2",
+      "mean_ms": 0.0382,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl154_2",
+      "mean_ms": 0.0381,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl226_2",
+      "mean_ms": 0.0379,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl186_2",
+      "mean_ms": 0.0378,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTran_myl194_3",
+      "mean_ms": 0.0377,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to /enc/encoder/downsample/conv1/conv3d/Conv + /enc/encoder/downsample/Add",
+      "mean_ms": 0.0368,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl162_3",
+      "mean_ms": 0.034,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/conv_in/conv_in.1/Pad_233",
+      "mean_ms": 0.0338,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl178_3",
+      "mean_ms": 0.0338,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl130_3",
+      "mean_ms": 0.0337,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl146_3",
+      "mean_ms": 0.0337,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 2 to {ForeignNode[(Unnamed Layer* 3078) [Constant].../enc/encoder/attn_1/attn_1.1/Transpose_5 + /enc/encoder/attn_1/attn_1.1/Reshape_3 + /enc/encoder/attn_1/attn_1.1/Reshape_4 + /enc/encoder/attn_1/attn_1.1/Transpose_6]}",
+      "mean_ms": 0.0335,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl218_3",
+      "mean_ms": 0.0332,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 2 to {ForeignNode[/enc/encoder/attn_1/attn_1.0/Transpose + /enc/encoder/attn_1/attn_1.0/Reshape + /enc/encoder/attn_1/attn_1.0/Reshape_3 + /enc/encoder/attn_1/attn_1.0/Transpose_3.../enc/encoder/attn_1/attn_1.0/Reshape_6 + /enc/encoder/attn_1/attn_1.0/Reshape_7 + /enc/encoder/attn_1/attn_1.0/Transpose_5]}",
+      "mean_ms": 0.0331,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3307 + /enc/encoder/attn_1/attn_1.0/v/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/attn_1/attn_1.0/v/conv3d/Conv",
+      "mean_ms": 0.0318,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3325 + /enc/encoder/attn_1/attn_1.1/v/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/attn_1/attn_1.1/v/conv3d/Conv",
+      "mean_ms": 0.0318,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3303 + /enc/encoder/attn_1/attn_1.0/k/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/attn_1/attn_1.0/k/conv3d/Conv",
+      "mean_ms": 0.0313,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3317 + /enc/encoder/attn_1/attn_1.1/q/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/attn_1/attn_1.1/q/conv3d/Conv",
+      "mean_ms": 0.0311,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3299 + /enc/encoder/attn_1/attn_1.0/q/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/attn_1/attn_1.0/q/conv3d/Conv",
+      "mean_ms": 0.0308,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3321 + /enc/encoder/attn_1/attn_1.1/k/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/attn_1/attn_1.1/k/conv3d/Conv",
+      "mean_ms": 0.0308,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.0/norm1/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor.../enc/encoder/block.0/Mul]}",
+      "mean_ms": 0.0283,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3369 + /enc/encoder/conv_out/conv_out.0/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/conv_out/conv_out.0/conv3d/Conv",
+      "mean_ms": 0.0275,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "__myl_TranReshCastSubMulMeanMean_myl110_2",
+      "mean_ms": 0.0274,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3155 + /enc/encoder/block.0/nin_shortcut/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/block.0/nin_shortcut/conv3d_1/Conv",
+      "mean_ms": 0.0271,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.1/norm1/norm_1/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_882.../enc/encoder/block.1_1/Mul]}",
+      "mean_ms": 0.0267,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Tran_myl202_13",
+      "mean_ms": 0.0265,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl234_3",
+      "mean_ms": 0.0261,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/AveragePool_1",
+      "mean_ms": 0.0251,
+      "type": "CaskPooling",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_9_output_0 copy",
+      "mean_ms": 0.0241,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_25_output_0 copy",
+      "mean_ms": 0.0236,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_12_output_0 copy",
+      "mean_ms": 0.0234,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_17",
+      "mean_ms": 0.0231,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_10_output_0 copy",
+      "mean_ms": 0.023,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_11_output_0 copy",
+      "mean_ms": 0.0229,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl154_3",
+      "mean_ms": 0.0228,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_18",
+      "mean_ms": 0.0227,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl118_3",
+      "mean_ms": 0.0226,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_SlicSlicSlicSlicSlicSlicMulMoveMulMoveMulMoveAddAdd_myl214_12",
+      "mean_ms": 0.0226,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_8_output_0 copy",
+      "mean_ms": 0.0225,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl170_3",
+      "mean_ms": 0.0224,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl186_3",
+      "mean_ms": 0.0224,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_19",
+      "mean_ms": 0.0222,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl138_3",
+      "mean_ms": 0.0222,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_16",
+      "mean_ms": 0.022,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSilu_myl226_3",
+      "mean_ms": 0.0219,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Resize",
+      "mean_ms": 0.0216,
+      "type": "Resize",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.1/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.0216,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block_1/conv1/conv1.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0215,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block_2/conv1/conv1.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0215,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.021,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0208,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.1/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.0208,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.1/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.0208,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block_1/conv2/conv2.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0208,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Resize_output_0 copy",
+      "mean_ms": 0.0207,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0207,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0207,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.1/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.0207,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block_2/conv2/conv2.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0206,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_7",
+      "mean_ms": 0.0198,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/block.0/nin_shortcut/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0197,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_13",
+      "mean_ms": 0.0191,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_10",
+      "mean_ms": 0.0191,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_12",
+      "mean_ms": 0.019,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_9",
+      "mean_ms": 0.019,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/downsample/conv3/conv3d/Conv",
+      "mean_ms": 0.019,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_11",
+      "mean_ms": 0.0189,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_8",
+      "mean_ms": 0.0188,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_6",
+      "mean_ms": 0.0187,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_23",
+      "mean_ms": 0.0182,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0182,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_27",
+      "mean_ms": 0.0179,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/downsample/conv2/conv3d/Conv + /enc/encoder/downsample/Add_1",
+      "mean_ms": 0.0173,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_22_output_0 copy",
+      "mean_ms": 0.0162,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_24_output_0 copy",
+      "mean_ms": 0.0162,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.1/norm2/norm_2/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1317.../enc/encoder/block.1_2/Mul_1]}",
+      "mean_ms": 0.0161,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block_1/conv1/conv1.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0161,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block_2/conv1/conv1.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0161,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.1/norm2/norm_1/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_969.../enc/encoder/block.1_1/Mul_1]}",
+      "mean_ms": 0.016,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.0/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.0159,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.0/norm2/norm_1/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_791.../enc/encoder/block.0_1/Mul_1]}",
+      "mean_ms": 0.0158,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/block_2/norm1/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1744.../enc/encoder/block_2/Mul]}",
+      "mean_ms": 0.0158,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv2/conv2.1_1/Pad_1043",
+      "mean_ms": 0.0156,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv1/conv1.1_2/Pad_1304",
+      "mean_ms": 0.0156,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv2/conv2.1_2/Pad_1391",
+      "mean_ms": 0.0155,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv2/conv2.1_1/Pad_865",
+      "mean_ms": 0.0154,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0154,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.1/conv1/conv1.1_1/Pad_956",
+      "mean_ms": 0.0154,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block_1/norm2/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1491.../enc/encoder/block_1/Mul_1]}",
+      "mean_ms": 0.0154,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block_2/norm2/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1831.../enc/encoder/block_2/Mul_1]}",
+      "mean_ms": 0.0154,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_26_output_0 copy",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.0/norm2/norm_2/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1143.../enc/encoder/block.0_2/Mul_1]}",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv1/conv1.0/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/block_1/norm1/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1404.../enc/encoder/block_1/Mul]}",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/attn_1/attn_1.0/Transpose + /enc/encoder/attn_1/attn_1.0/Reshape + /enc/encoder/attn_1/attn_1.0/Reshape_3 + /enc/encoder/attn_1/attn_1.0/Transpose_3.../enc/encoder/attn_1/attn_1.0/Reshape_6 + /enc/encoder/attn_1/attn_1.0/Reshape_7 + /enc/encoder/attn_1/attn_1.0/Transpose_5]}",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/attn_1/attn_1.1/norm/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1646.../enc/encoder/attn_1/attn_1.1/norm/Reshape_1 + /enc/encoder/attn_1/attn_1.1/norm/Transpose_1]}",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.1/v/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/norm_out/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1918.../enc/encoder/Mul]}",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/conv_out/conv_out.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0153,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_21",
+      "mean_ms": 0.0152,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/block.0/norm1/norm_2/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1056.../enc/encoder/block.0_2/Mul]}",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/block.1/norm1/norm_2/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1230.../enc/encoder/block.1_2/Mul]}",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block_1/conv2/conv2.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/attn_1/attn_1.0/v/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block_2/conv2/conv2.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0152,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/attn_1/attn_1.0/proj_out/conv3d/Conv",
+      "mean_ms": 0.0151,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[(Unnamed Layer* 3078) [Constant].../enc/encoder/attn_1/attn_1.1/Transpose_5 + /enc/encoder/attn_1/attn_1.1/Reshape_3 + /enc/encoder/attn_1/attn_1.1/Reshape_4 + /enc/encoder/attn_1/attn_1.1/Transpose_6]}",
+      "mean_ms": 0.0151,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/attn_1/attn_1.1/proj_out/conv3d/Conv",
+      "mean_ms": 0.0151,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv2/conv2.0/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.015,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/block.1/conv2/conv2.0/conv3d/input_quantizer_1/QuantizeLinear",
+      "mean_ms": 0.015,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/attn_1/attn_1.0/norm/norm/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_1578.../enc/encoder/attn_1/attn_1.0/norm/Reshape_1 + /enc/encoder/attn_1/attn_1.0/norm/Transpose_1]}",
+      "mean_ms": 0.015,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv1/conv1.1_1/Pad_778",
+      "mean_ms": 0.0148,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/attn_1/attn_1.0/Transpose + /enc/encoder/attn_1/attn_1.0/Reshape + /enc/encoder/attn_1/attn_1.0/Reshape_3 + /enc/encoder/attn_1/attn_1.0/Transpose_3.../enc/encoder/attn_1/attn_1.0/Reshape_6 + /enc/encoder/attn_1/attn_1.0/Reshape_7 + /enc/encoder/attn_1/attn_1.0/Transpose_5]}",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block_2/conv1/conv1.1/Pad_1818",
+      "mean_ms": 0.0147,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_26",
+      "mean_ms": 0.0146,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv1/conv1.1_2/Pad_1130",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block.0/conv2/conv2.1_2/Pad_1217",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block_1/conv1/conv1.1/Pad_1478",
+      "mean_ms": 0.0146,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[/enc/encoder/block.1/norm1/norm_1/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_882.../enc/encoder/block.1_1/Mul]}",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block_2/conv2/conv2.1/Pad_1905",
+      "mean_ms": 0.0145,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_25",
+      "mean_ms": 0.0144,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_20",
+      "mean_ms": 0.0144,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to /enc/encoder/block_1/conv2/conv2.1/Pad_1565",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to {ForeignNode[(Unnamed Layer* 3078) [Constant].../enc/encoder/attn_1/attn_1.1/Transpose_5 + /enc/encoder/attn_1/attn_1.1/Reshape_3 + /enc/encoder/attn_1/attn_1.1/Reshape_4 + /enc/encoder/attn_1/attn_1.1/Transpose_6]}",
+      "mean_ms": 0.0144,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_24",
+      "mean_ms": 0.0143,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_22",
+      "mean_ms": 0.0142,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Output Tensor 0 to /enc/encoder/downsample/conv1/conv3d/Conv + /enc/encoder/downsample/Add",
+      "mean_ms": 0.0138,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_20_output_0 copy",
+      "mean_ms": 0.0117,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/Add_output_0 copy",
+      "mean_ms": 0.0114,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_AddSqrtDivMulCastAddReshMulAddReshTranSiluCast_myl110_3",
+      "mean_ms": 0.0112,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_21_output_0 copy",
+      "mean_ms": 0.0106,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/downsample/Slice_1",
+      "mean_ms": 0.0104,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 0 to {ForeignNode[/enc/encoder/block.0/norm1/norm_1/Constant_1_output_0 + ONNXTRT_unsqueezeTensor_704.../enc/encoder/block.0/conv1/conv1.0/conv3d/input_quantizer/Cast]}",
+      "mean_ms": 0.0102,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Input Tensor 1 to /enc/encoder/downsample/conv2/conv3d/Conv + /enc/encoder/downsample/Add_1",
+      "mean_ms": 0.01,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Slice",
+      "mean_ms": 0.0095,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/conv1/conv1.0/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0095,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_7_output_0 copy",
+      "mean_ms": 0.0078,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/patcher3d/Conv_6_output_0 copy",
+      "mean_ms": 0.0077,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "Reformatting CopyNode for Output Tensor 0 to /enc/encoder/patcher3d/Conv_13",
+      "mean_ms": 0.0074,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3382 + /enc/quant_conv/conv3d/weight_quantizer/QuantizeLinear + /enc/quant_conv/conv3d/Conv",
+      "mean_ms": 0.0063,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "onnx::QuantizeLinear_3378 + /enc/encoder/conv_out/conv_out.1/conv3d/weight_quantizer/QuantizeLinear + /enc/encoder/conv_out/conv_out.1/conv3d/Conv",
+      "mean_ms": 0.006,
+      "type": "CaskConvolution",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/conv_out/conv_out.1/conv3d/input_quantizer/QuantizeLinear",
+      "mean_ms": 0.0053,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "/enc/encoder/conv_out/conv_out.1/Pad_1992",
+      "mean_ms": 0.0052,
+      "type": "Slice",
+      "precision": "?",
+      "out_dtype": "Float"
+    },
+    {
+      "name": "/enc/encoder/downsample/Slice_1_output_0 copy",
+      "mean_ms": 0.005,
+      "type": "Reformat",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_IotaIotaCastCastReshReshEqlGtrOrSeleEqlMulSeleSlicSlicMaxSlicMaxSubExpSlicSlicAddSlicAddDivEtc_myl214_8",
+      "mean_ms": 0.0046,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "__myl_Move_myl77_1",
+      "mean_ms": 0.0038,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl130_1",
+      "mean_ms": 0.0038,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl226_0",
+      "mean_ms": 0.0038,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl59_1",
+      "mean_ms": 0.0037,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl67_0",
+      "mean_ms": 0.0032,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl77_0",
+      "mean_ms": 0.0032,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl85_0",
+      "mean_ms": 0.0032,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl118_0",
+      "mean_ms": 0.0032,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl186_0",
+      "mean_ms": 0.0032,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl59_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl67_1",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl85_1",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl130_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl138_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl146_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl154_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl154_1",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl162_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl178_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl206_0",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl234_1",
+      "mean_ms": 0.0031,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl110_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl118_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl138_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl146_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl162_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl170_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl170_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl178_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl186_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl194_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl206_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl218_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl218_1",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl234_0",
+      "mean_ms": 0.003,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl110_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl194_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "__myl_Move_myl226_1",
+      "mean_ms": 0.0029,
+      "type": "kgen",
+      "precision": "?",
+      "out_dtype": "Int32"
+    },
+    {
+      "name": "Reformatting CopyNode for Network Input video",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Half"
+    },
+    {
+      "name": "/enc/encoder/block.0/nin_shortcut/conv3d/input_quantizer/Cast",
+      "mean_ms": 0.0,
+      "type": "NoOp",
+      "precision": "?",
+      "out_dtype": "Int8"
+    },
+    {
+      "name": "entry^bb^signal^1_myl202_0",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^2_myl202_1",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^1_myl202_2",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3027_myl202_5",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3029_myl202_6",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3031_myl202_10",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye3033_myl202_11",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^signal^1_myl214_0",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^2_myl214_1",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "entry^bb^wait^1_myl214_2",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye7533_myl214_5",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye7535_myl214_6",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye7537_myl214_10",
+      "mean_ms": 0.0,
+      "type": "signal",
+      "precision": "?",
+      "out_dtype": "?"
+    },
+    {
+      "name": "__mye7539_myl214_11",
+      "mean_ms": 0.0,
+      "type": "wait",
+      "precision": "?",
+      "out_dtype": "?"
+    }
+  ]
+}

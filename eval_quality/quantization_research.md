@@ -407,3 +407,56 @@ PSNR/SSIM/latency 均出自同一引擎(数据: `results_trtfig/fig_e2e.json`、
 挂);pip 装 `tensorrt` 元包在新环境解析到 **cu13** 轮子,driver 570(CUDA 12.8)上
 CUDA error 35 —— 显式装 `tensorrt-cu12==<同版本>` 与原结果保持版本一致;后台队列脚本
 必须逐步门控(`&&` + 显式 FAIL 标记),否则失败链会"空跑"并打出全部完成标记。
+
+
+### 六配置 TRT 图第二轮 + 最终配置逐层 profile + 命名注明 (2026-09-02 下午)
+
+**命名注明(两种 "mixed" 不是一回事):**
+- **dec mixed**:decoder 量化、但保 `conv_out/norm_out/up.0` 三处 fp16 —— 质量优先;
+- **enc mix+dec full**:部署式配置 —— encoder 量化保 `patcher/conv_in/down.0`,decoder
+  全量 int8 —— 速度优先,把 1 dB 预算用满。图和下表均已按此标注。
+
+第二轮整图重测(用户 pod,driver 580,同 TRT 10.16.1.11 cu12,torch 2.7.1+cu126;
+数据 `results_trtfig/fig_e2e.json` / `fig_bench.json`,已覆盖第一轮 5 配置版本):
+
+| 配置 | PSNR | Δ | SSIM | e2e ms | dec 引擎 ms | enc 引擎 ms |
+|---|---|---|---|---|---|---|
+| PyTorch bf16 | 28.10 | — | 0.786 | 181.1 | — | — |
+| fp16 | 28.11 | 基线 | 0.787 | 63.9 | 40.0 | 23.0 |
+| W8 dec | 28.11 | +0.00 | 0.787 | 63.7 | 39.7 | 23.0 |
+| W8A8 dec | 27.53 | −0.58 | 0.747 | 56.6 | 32.0 | 23.0 |
+| dec mixed | 28.02 | −0.09 | 0.784 | 59.3 | 34.8 | 23.0 |
+| **enc mix+dec full** | **27.49** | **−0.62** | 0.745 | **54.1 (−15%)** | 32.0 | 20.3 |
+| full VAE | 19.25 | −8.86 | 0.581 | 53.4 | 32.0 | 19.5 |
+
+关键验证:**enc mix+dec full 在全新宿主机、全新校准下精确复现了部署配置的 −0.62 dB**
+(它无图重写/opt5,加上后即为当年部署引擎)。质量列与第一轮 host 逐位一致(质量与
+宿主机无关);两轮 host 的 W8 dec 分别 +2%/−1% —— "仅权重无加速"结论稳(±1% 噪声)。
+
+**最终配置逐层 profile(这次是对的引擎:cr 重写 + enc-mixed / dec-full;
+`results_trtfig/profile_final_{enc,dec}.json`)** —— 修正记录:results_e2e 里的
+`profile_mixed_h16_*` 实为 enc-mixed + dec-**mixed** 无重写引擎,此前误标为部署配置:
+
+| 算子组 | dec cr-full (30.4 ms, 397层) | enc cr-mixed (20.4 ms, 324层) |
+|---|---|---|
+| Conv/Deconv(int8 链,Q 融进 conv)| 17.8 ms / 58.6% | 12.6 ms / 61.7% |
+| 归一化应用/激活/逐元素 | 4.7 ms / 15.6% | 2.7 ms / 13.4% |
+| GroupNorm 统计(强制 fp32)| 4.2 ms / 13.7% | 2.2 ms / 10.9% |
+| Reformat(拷贝)| 2.1 ms / 6.8% | 1.3 ms / 6.5% |
+| Transpose/Reshape/glue | 1.5 ms / 4.8% | 1.3 ms / 6.3% |
+
+对比无重写 dec-full(501 层):重写后 397 层,glue 组从 ~5.7% 保持相当但绝对值随
+总时长下降;conv 占比 58.6%(计算主导),非 conv 最大项仍是 GroupNorm fp32 统计
+(13.7%,已知死胡同)。profile 总时长(30.4+20.4)与部署 e2e ~50 ms 吻合(逐层
+profiling 无法用 CUDA graph,略高)。
+
+**优化贡献总表**(汇总,详见前文各节;同轮内自洽):有效 = TRT 化 3.0–3.4×、INT8
+−19%、图重写(int8)−8.5%、encoder 量化 enc引擎 −12~15%、CUDA graph −1%、fp16 IO
+−1.2%;无效 = 仅权重 W8(±1%)、SmoothQuant(no-op)、fp16 GN 重写(+34%)、opt5
+(−0.2%)、strongly-typed(0)、batch4(+16%/clip)、opset18 GN(−0.2%)、fp16 下的
+图重写(0)。
+
+Pod 运维坑(新增):新版 runpod 镜像 PEP 668 拒绝 pip → `PIP_BREAK_SYSTEM_PACKAGES=1`;
+`pkill -f <脚本名>` 会匹配同一条远程命令里的 `nohup bash <脚本>` 路径而自杀 —— kill 与
+启动不要放同一条 ssh 命令;ssh.runpod.io 代理会无输出挂死(ConnectTimeout 不覆盖代理
+握手),pod 有公网 TCP 22 映射时一律走直连(还能用 scp)。

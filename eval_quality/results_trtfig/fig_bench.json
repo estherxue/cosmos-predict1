@@ -1,11 +1,11 @@
 [
   {
-    "tag": "h16_g",
-    "onnx": "/workspace/trt/decoder_h16.onnx",
-    "median_ms": 40.41,
+    "tag": "figf16dec_g",
+    "onnx": "/workspace/trt/decoder_fig.onnx",
+    "median_ms": 40.0,
     "cuda_graph": true,
     "opt_level": 3,
-    "ms_per_frame": 2.377,
+    "ms_per_frame": 2.353,
     "batch": 1,
     "io": {
       "latent": [
@@ -29,10 +29,10 @@
   {
     "tag": "figw8_g",
     "onnx": "/workspace/trt/decoder_figw8.onnx",
-    "median_ms": 41.09,
+    "median_ms": 39.72,
     "cuda_graph": true,
     "opt_level": 3,
-    "ms_per_frame": 2.417,
+    "ms_per_frame": 2.337,
     "batch": 1,
     "io": {
       "latent": [
@@ -55,11 +55,11 @@
   },
   {
     "tag": "figfull_g",
-    "onnx": "/workspace/trt/decoder_plaindec.onnx",
-    "median_ms": 32.76,
+    "onnx": "/workspace/trt/decoder_figfull.onnx",
+    "median_ms": 31.96,
     "cuda_graph": true,
     "opt_level": 3,
-    "ms_per_frame": 1.927,
+    "ms_per_frame": 1.88,
     "batch": 1,
     "io": {
       "latent": [
@@ -83,10 +83,10 @@
   {
     "tag": "figmixed_g",
     "onnx": "/workspace/trt/decoder_figmixed.onnx",
-    "median_ms": 35.74,
+    "median_ms": 34.78,
     "cuda_graph": true,
     "opt_level": 3,
-    "ms_per_frame": 2.102,
+    "ms_per_frame": 2.046,
     "batch": 1,
     "io": {
       "latent": [
@@ -110,10 +110,10 @@
   {
     "tag": "figf16_g",
     "onnx": "/workspace/trt/encoder_fig.onnx",
-    "median_ms": 23.65,
+    "median_ms": 23.04,
     "cuda_graph": true,
     "opt_level": 3,
-    "ms_per_frame": 1.391,
+    "ms_per_frame": 1.355,
     "batch": 1,
     "io": {
       "video": [
@@ -137,10 +137,37 @@
   {
     "tag": "figvae_g",
     "onnx": "/workspace/trt/encoder_figvae.onnx",
-    "median_ms": 20.28,
+    "median_ms": 19.51,
     "cuda_graph": true,
     "opt_level": 3,
-    "ms_per_frame": 1.193,
+    "ms_per_frame": 1.148,
+    "batch": 1,
+    "io": {
+      "video": [
+        1,
+        3,
+        17,
+        480,
+        864
+      ],
+      "latent": [
+        1,
+        16,
+        3,
+        60,
+        108
+      ]
+    },
+    "trt": "10.16.1.11",
+    "gpu": "NVIDIA GeForce RTX 4090"
+  },
+  {
+    "tag": "figencmix_g",
+    "onnx": "/workspace/trt/encoder_figencmix.onnx",
+    "median_ms": 20.34,
+    "cuda_graph": true,
+    "opt_level": 3,
+    "ms_per_frame": 1.197,
     "batch": 1,
     "io": {
       "video": [
