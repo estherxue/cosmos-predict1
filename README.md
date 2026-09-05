@@ -1,121 +1,90 @@
-> [!IMPORTANT]
-> ## 🚀 [Cosmos 3 Has Arrived](https://github.com/NVIDIA/Cosmos)
->
-> Cosmos 3 is NVIDIA's next-generation foundation model platform for Physical AI. Compared with Cosmos-Predict1, Cosmos 3 delivers significantly stronger world prediction capabilities, producing more accurate, coherent, and physically grounded future-state predictions across a wide range of environments and embodiments.
->
-> Beyond improving prediction quality, Cosmos 3 unifies capabilities that previously required multiple specialized models. A single Cosmos 3 model can reason, predict future world states, transfer across domains and modalities, and generate actions and policies for embodied agents within one unified architecture.
->
-> This repository is no longer under active development and will receive only limited maintenance updates. Future model releases, features, documentation, and community support will be focused on Cosmos 3.
->
-> 👉 Visit the new Cosmos home: https://github.com/NVIDIA/Cosmos
->
-> There you will find the latest Cosmos 3 models, technical reports, tutorials, benchmarks, and ecosystem updates.
->
-> Thank you for your support of Cosmos-Predict1. We encourage all users to migrate to Cosmos 3 for the latest state-of-the-art Physical AI capabilities.
+# Cosmos Tokenizer: compression–quality study and INT8/TensorRT deployment
 
-### [Product Website](https://www.nvidia.com/en-us/ai/cosmos/) | [Hugging Face](https://huggingface.co/collections/nvidia/cosmos-predict1-67c9d1b97678dbf7669c89a7) | [Paper](https://arxiv.org/abs/2501.03575) | [Paper Website](https://research.nvidia.com/labs/dir/cosmos-predict1)
+Experiments on the Cosmos video tokenizer (the causal 3D-conv autoencoder shipped with
+cosmos-predict1): how reconstruction quality trades against compression rate, what temporal
+compression actually damages, how the officially published DAVIS numbers were measured, and
+how far INT8 + TensorRT can push inference speed within a 1 dB quality budget.
 
-Cosmos-Predict1 is a key branch of Cosmos World Foundation Models (WFMs) specialized for future state prediction, often referred to as world models. The tree main branches of Cosmos WFMs are [cosmos-predict](https://github.com/nvidia-cosmos/cosmos-predict1), [cosmos-transfer](https://github.com/nvidia-cosmos/cosmos-transfer1), and [cosmos-reason](https://github.com/nvidia-cosmos/cosmos-reason1). We visualize the architecture of Cosmos-Predict1 in the following figure.
+All experiment code lives in [`eval_quality/`](eval_quality/) (usage:
+[`eval_quality/README.md`](eval_quality/README.md); full findings and decision log:
+[`eval_quality/quantization_research.md`](eval_quality/quantization_research.md)).
+This is a fork of [nvidia-cosmos/cosmos-predict1](https://github.com/nvidia-cosmos/cosmos-predict1);
+upstream code is unmodified.
 
-<p align="center">
-    <img src="assets/predict1_diagram.png" alt="Cosmos-Predict1 Architecture Diagram">
-</p>
+Benchmarks: DAVIS 2017 val (30 clips, 480p, 17 frames) for the main harness; DAVIS 2016
+(50 sequences, 1080p) for the official-protocol reproduction. GPU: RTX 4090 / 3090 (RunPod).
 
+## 1. Quality vs compression rate
 
-Cosmos-Predict1 includes the following:
+Six Cosmos-0.1 video tokenizers (continuous CV and discrete DV; compression = nominal
+spatio-temporal downsampling):
 
-- **Diffusion-based world foundation models** for Text2World and Video2World generation, where a user can generate visual simulation based on text prompts and video prompts.
-- **Autoregressive-based world foundation models** for Video2World generation, where a user can generate visual simulation based on video prompts and optional text prompts.
-- **Image and video tokenizers** for tokenizing videos into continuous tokens (latent vectors) and discrete tokens (integers) efficiently and effectively.
-- **Post-training scripts** for helping Physical AI builders post-train pre-trained Cosmos-Predict1 for their applications.
+![quality vs compression](eval_quality/results_full/quality_vs_compression.png)
 
-## News
-- **[2025/05]** **Cosmos AV Single2MultiView** is available! Now you can create dynamic, multi-view clips from just one video. Try it out and tell us what you think!  
-    - [Inference guide](examples/inference_diffusion_single2multiview.md)  
-    - [PyTorch post-training](examples/post-training_diffusion_single2multiview.md)  
-    - [Hugging Face model](https://huggingface.co/nvidia/Cosmos-Predict1-7B-Video2World-Sample-AV-Single2MultiView)  
+- PSNR falls monotonically with compression; continuous beats discrete at every matched rate
+  (CV: 29.5 → 28.1 → 26.0 dB; DV: 26.2 → 25.6 → 23.9 dB for 256× → 512× → 2048×).
 
-## Example Model Behavior
+## 2. Temporal compression selectively damages motion; spatial doesn't
 
- [Cosmos-Predict Text2World](https://github.com/nvidia-cosmos/cosmos-predict1)
+Paired models isolate each axis (same 30 clips; motion score = mean |frame diff|):
 
-<video src="https://github.com/user-attachments/assets/8abcc5d0-0840-47ae-8f95-10fc0dae7092"> Your browser does not support the video tag.</video>
+| degradation (2× temporal vs 4× spatial) | low-motion | high-motion | ρ(motion, damage) |
+|---|---|---|---|
+| CV4x8x8 → CV8x8x8 (temporal ×2) | +1.03 dB (×1.27 MSE) | **+1.79 dB (×1.53 MSE)** | **+0.73** |
+| CV8x8x8 → CV8x16x16 (spatial ×4) | +2.12 dB | +2.20 dB | −0.05 (flat) |
 
-[Cosmos-Predict Video2World](https://github.com/nvidia-cosmos/cosmos-predict1)
+Per-clip extremes for the temporal step: static drift-chicane ×1.06 MSE vs fastest clip
+shooting ×2.20. The DV family replicates the direction (ρ = +0.36 / −0.37).
 
-<video src="https://github.com/user-attachments/assets/d598af27-55de-4bc9-b68e-24b70876be9f"> Your browser does not support the video tag. </video>
+## 3. The official DAVIS numbers are measured on H.264-recompressed content
 
-## Getting Started
+Reproducing the published protocol (`eval_davis_official.py`, DAVIS 2016 / 1080p /
+TokenBench video-MSE PSNR, 0.1-CV4x8x8) and toggling only where the H.264 round-trip
+(mediapy default qp28) is applied:
 
-We provide a comphrehensive set of examples to illustrate how to perform inference, post-training, etc, with Cosmos-Predict1. Click a relevant example below and start your Cosmos journey.
+| input / reconstruction | PSNR | SSIM |
+|---|---|---|
+| pristine / pristine | 32.42 | 0.893 |
+| qp28 / qp28 (= the public CLI pipeline) | **32.77** | 0.904 |
+| **official (paper / project page)** | **32.80** | 0.900 |
 
-### Installation
+Input-side smoothing raises the score (+0.79 dB), output-side recompression lowers it
+(−0.52 dB); the official pipeline does both. Any external comparison must replicate or
+declare this.
 
-Please refer to [INSTALL.md](INSTALL.md) for general instructions on environment setup.
+## 4. INT8 PTQ + TensorRT: 3.67× at −0.62 dB
 
-### Inference with pre-trained Cosmos-Predict1 models
-* [Inference with diffusion-based Text2World models](/examples/inference_diffusion_text2world.md) **[with multi-GPU support]**
-* [Inference with diffusion-based Video2World models](/examples/inference_diffusion_video2world.md) **[with multi-GPU support]**
-* [Inference with diffusion-based WorldInterpolator models](/examples/inference_diffusion_WorldInterpolator.md) **[with multi-GPU support]**
-* [Inference with diffusion-based Single2MultiView AV models](/examples/inference_diffusion_single2multiview.md) **[with multi-GPU support]**
-* [Inference with autoregressive-based base models](/examples/inference_autoregressive_base.md) **[with multi-GPU support]**
-* [Inference with autoregressive-based Video2World models](/examples/inference_autoregressive_video2world.md) **[with multi-GPU support]**
-* [Inference with tokenizer models](/examples/inference_tokenizer.md)
+Layer-sensitivity scan → mixed-precision scheme (encoder keeps patcher/conv_in/down.0;
+decoder fully INT8), exported as explicit Q/DQ ONNX and deployed with TensorRT 10:
 
-### Post-train pre-trained Cosmos-Predict1 models
-* [Post-train diffusion-based Text2World models using custom datasets](/examples/post-training_diffusion_text2world.md) **[with multi-node support]**
-* [Post-train diffusion-based Video2World models using custom datasets](/examples/post-training_diffusion_video2world.md) **[with multi-node support]**
-* [Post-train diffusion-based Video2World models with action control using custom datasets](/examples/post-training_diffusion_video2world_action.md) **[with multi-node support]**
-* [Post-train diffusion-based WorldInterpolator models using custom datasets](/examples/post-training_diffusion_interpolator.md) **[with multi-node support]**
-* [Post-train diffusion-based Text2World models using custom multi-view datasets](/examples/post-training_diffusion_text2world_multiview.md) **[with multi-node support]**
-* [Post-train diffusion-based Video2World models using custom multi-view datasets)](/examples/post-training_diffusion_video2world_multiview.md) **[with multi-node support]**
-* [Post-train diffusion-based Single2MultiView models using custom multi-view datasets](/examples/post-training_diffusion_single2multiview.md) **[with multi-node support]**
-* [Post-train autoregressive-based base models using custom datasets](/examples/post-training_autoregressive_base.md) **[with multi-node support]**
-* [Post-train tokenizers using custom datasets](/examples/post-training_tokenizer.md) **[with multi-node support]**
+![INT8 PTQ on TensorRT engines](eval_quality/results_quant/ptq_quality.png)
 
-### Inference with post-trained models:
-* [Inference with post-trained multi-view diffusion-based Text2World models)](/examples/inference_diffusion_text2world_multiview.md) **[with multi-GPU support]**
-* [Inference with post-trained multi-view diffusion-based Video2World models)](/examples/inference_diffusion_video2world_multiview.md) **[with multi-GPU support]**
+Cumulative chain on one host (30 clips, end-to-end encode+decode):
 
+| stage | ms/clip | speedup | PSNR |
+|---|---|---|---|
+| PyTorch JIT bf16 | 185.3 | 1× | 28.10 |
+| TensorRT fp16 + CUDA graph | 61.4 | 3.02× | 28.11 |
+| + INT8 (enc-mixed, dec-full) | 53.6 | 3.46× | 27.49 |
+| + graph rewrite + opt5 | **50.5** | **3.67×** | 27.49 |
 
-## Cosmos-Predict1 Models
+What worked: INT8 (−19% decoder), the numerically-exact graph rewrite (−8.5%, int8 only —
+it unblocks Q/DQ fusion), encoder quantization (−12% encoder). What didn't (all measured):
+weights-only W8 (±1%), SmoothQuant (no-op on conv nets), fp16 GroupNorm rewrite (+34%,
+precision-broken), batch > 1 (+16%/clip), builder opt level 5 (<0.5%).
 
-Cosmos-Predict1 include the following models
+Quality side-notes: quantization damage is content-agnostic (×1.03–1.04 MSE across all
+motion levels — complementary to temporal-compression damage, not compounding), and its
+error is signal-correlated: reconstructions look slightly *sharper* than bf16 (edge-aligned
+quantization noise acts like a mild unsharp mask) while PSNR/SSIM still drop.
 
-**Diffusion models**
+## Repository layout
 
-* [Cosmos-Predict1-7B-Text2World](https://huggingface.co/nvidia/Cosmos-Predict1-7B-Text2World): Text to visual world generation
-* [Cosmos-Predict1-14B-Text2World](https://huggingface.co/nvidia/Cosmos-Predict1-14B-Text2World): Text to visual world generation
-* [Cosmos-Predict1-7B-Video2World](https://huggingface.co/nvidia/Cosmos-Predict1-7B-Video2World): Video + Text based future visual world generation
-* [Cosmos-Predict1-14B-Video2World](https://huggingface.co/nvidia/Cosmos-Predict1-14B-Video2World): Video + Text based future visual world generation
-* [Cosmos-Predict1-7B-WorldInterpolator](https://huggingface.co/nvidia/Cosmos-Predict1-7B-WorldInterpolator): Generates a smooth, higher-FPS video segment.
-
-**Autoregressive models**
-
-* [Cosmos-Predict1-4B](https://huggingface.co/nvidia/Cosmos-Predict1-4B): Future visual world generation
-* [Cosmos-Predict1-12B](https://huggingface.co/nvidia/Cosmos-Predict1-12B): Future visual world generation
-* [Cosmos-Predict1-5B-Video2World](https://huggingface.co/nvidia/Cosmos-Predict1-5B-Video2World): Video + Text based future visual world generation
-* [Cosmos-Predict1-13B-Video2World](https://huggingface.co/nvidia/Cosmos-Predict1-13B-Video2World): Video + Text based future visual world generation
-
-**Tokenizers**
-
-* [Cosmos-Tokenize1-CV8×8×8-720p](https://huggingface.co/nvidia/Cosmos-Tokenize1-CV8x8x8-720p): Continuous Video Tokenizer with 8x8x8 spatio-temporal compression with, 121 frames context
-* [Cosmos-Tokenize1-DV8×16×16-720p](https://huggingface.co/nvidia/Cosmos-Tokenize1-DV8x16x16-720p): Discrete Video Tokenizer with 8x16x16 spatio-temporal compression, and 49 frames context
-* [Cosmos-Tokenize1-CI8×8-360p](https://huggingface.co/nvidia/Cosmos-Tokenize1-CI8x8-360p): Continuous Image Tokenizer with 8x8 spatial compression with low-resolution support
-* [Cosmos-Tokenize1-CI16x16-360p](https://huggingface.co/nvidia/Cosmos-Tokenize1-CI16x16-360p): Continuous Image Tokenizer with 16x16 spatial compression with low-resolution support
-* [Cosmos-Tokenize1-CV4×8×8-360p](https://huggingface.co/nvidia/Cosmos-Tokenize1-CV4x8x8-360p): Continuous Video Tokenizer with 4x8x8 spatio-temporal compression with low-resolution support
-* [Cosmos-Tokenize1-DI8×8-360p](https://huggingface.co/nvidia/Cosmos-Tokenize1-DI8x8-360p): Discrete Image Tokenizer with 8x8 spatial compression with low-resolution support
-* [Cosmos-Tokenize1-DI16x16-360p](https://huggingface.co/nvidia/Cosmos-Tokenize1-DI16x16-360p): Discrete Image Tokenizer with 16x16 spatial compression with low-resolution support
-* [Cosmos-Tokenize1-DV4×8×8-360p](https://huggingface.co/nvidia/Cosmos-Tokenize1-DV4x8x8-360p): Discrete Video Tokenizer with 4x8x8 spatio-temporal compression with low-resolution support
-
-<!-- ------------------------------ -->
-
-## License and Contact
-
-This project will download and install additional third-party open source software projects. Review the license terms of these open source projects before use.
-
-This model includes safety and content moderation features powered by Llama Guard 3. Llama Guard 3 is used solely as a content input filter and is subject to its own license.
-
-NVIDIA Cosmos source code is released under the [Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0).
-
-NVIDIA Cosmos models are released under the [NVIDIA Open Model License](https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license). For a custom license, please contact [cosmos-license@nvidia.com](mailto:cosmos-license@nvidia.com).
+| path | contents |
+|---|---|
+| `eval_quality/*.py` | harness, registry, exports, TRT bench/eval/profile, plots |
+| `eval_quality/results_full*/` | quality-vs-compression sweeps (per-clip samples + motion) |
+| `eval_quality/results_davis_official/` | official-protocol runs incl. H.264 variants |
+| `eval_quality/results_quant/` | PTQ ladder, sensitivity scans, visuals, figure |
+| `eval_quality/results_trtfig/`, `results_e2e/` | TRT engine measurements, e2e ladder, profiles |
+| `eval_quality/quantization_research.md` | findings, isolation matrices, pitfalls, decisions |
